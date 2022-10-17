@@ -1,0 +1,42 @@
+{
+  "name": "stock-web",
+  "version": "1.0.0",
+  "description": "small project",
+  "main": "./server/index.js",
+  "scripts": {
+    "start": "node ./server/index.js",
+    "backend": "nodemon ./server/index.js",
+    "dev": "concurrently \" npm run backend\" \"npm run start --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSKIM999/TireStock-Management-Web.git"
+  },
+  "author": "CSKIM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CSKIM999/TireStock-Management-Web/issues"
+  },
+  "homepage": "https://github.com/CSKIM999/TireStock-Management-Web#readme",
+  "dependencies": {
+    "@material-ui/styles": "^4.11.5",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "concurrently": "^7.3.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.1",
+    "react-calendar": "^3.7.0",
+    "redux-persist": "^6.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "webpack-cli": "^4.10.0"
+  }
+}
