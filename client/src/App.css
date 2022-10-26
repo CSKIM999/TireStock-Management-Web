@@ -1,0 +1,7 @@
+.sideBar .MuiAccordionSummary-content  {
+    justify-content: center;
+}
+.sideBar .MuiAccordionDetails-root  {
+    display: flex;
+    justify-content: center;
+}

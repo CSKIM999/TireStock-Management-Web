@@ -1,14 +1,14 @@
 import React from "react";
 import { AppBar, Stack } from "@mui/material";
-import SectionRight from "./Sections/SectionRight";
-import SectionLeft from "./Sections/SectionLeft";
+import NavRight from "./Sections/NavRight";
+import NavLeft from "./Sections/NavLeft";
 
 function NavBar() {
   return (
     <AppBar position="static">
-      <Stack direction="row" justifyContent="space-between">
-        <SectionLeft />
-        <SectionRight />
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <NavLeft />
+        <NavRight />
       </Stack>
     </AppBar>
   );

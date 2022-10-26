@@ -1,22 +1,22 @@
 import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import NavBar from "../NavBar/NavBar";
-import ItemBox from "../ContentsPage/ItemBox";
-import RepairBox from "../ContentsPage/RepairBox";
+import { Box, Grid } from "@mui/material";
+import Cover from "./Sections/Cover";
+import Items from "./Sections/Items";
 
 function LandingPage() {
   console.log("landing");
   return (
     <Box>
-      <NavBar />
-      <Typography>LANDING-PAGE</Typography>
-      <Grid container>
-        <Grid xs={12} md={8}>
-          <ItemBox />
+      <Grid container direction="column" height="100vh">
+        {/* COVER */}
+        <Grid item xs={6}>
+          <Cover />
         </Grid>
-        <Grid xs={12} md={4}>
-          <RepairBox />
+        <Grid item container xs={4} sx={{ px: 5 }}>
+          <Items />
         </Grid>
+
+        {/* ITEMS */}
       </Grid>
     </Box>
   );
