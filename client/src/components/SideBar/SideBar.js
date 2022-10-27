@@ -3,20 +3,20 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Button,
   Divider,
   List,
   ListItem,
   ListItemButton,
-  Stack,
   Typography,
 } from "@mui/material";
 import * as React from "react";
 
 function SideBar() {
   const [expanded, setExpanded] = React.useState(null);
-
+  const AccordionButtonSX = { p: 1, width: "100%" };
+  const ListItemButtonSX = { justifyContent: "center", color: "primary" };
+  const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -24,7 +24,7 @@ function SideBar() {
   return (
     <List className="sideBar" sx={{ mt: 5 }}>
       <Divider />
-      <ListItemButton sx={{ justifyContent: "center", color: "primary" }}>
+      <ListItemButton sx={ListItemButtonSX}>
         <Typography>HOME</Typography>
       </ListItemButton>
       <Divider />
@@ -33,24 +33,18 @@ function SideBar() {
           onChange={handleChange("tire")}
           disableGutters
           expanded={expanded === "tire"}
-          sx={{
-            boxShadow: "none",
-            width: "100%",
-          }}
+          sx={AccordionSX}
         >
           <AccordionSummary expandIcon={<ArrowUpward />}>
             <Typography>TIRE</Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ p: 0 }}>
-            <Button
-              variant="text"
-              sx={{ p: 1, width: "100%", color: "primary" }}
-            >
+          <AccordionDetails>
+            <Button variant="text" sx={AccordionButtonSX}>
               NEW
             </Button>
           </AccordionDetails>
-          <AccordionDetails sx={{ p: 0 }}>
-            <Button variant="text" sx={{ p: 1, width: "100%" }}>
+          <AccordionDetails>
+            <Button variant="text" sx={AccordionButtonSX}>
               USED
             </Button>
           </AccordionDetails>
@@ -60,19 +54,27 @@ function SideBar() {
       <ListItem disablePadding>
         <Accordion
           disableGutters
-          sx={{ boxShadow: "none", m: 0, width: "100%" }}
+          sx={AccordionSX}
           expanded={expanded === "wheel"}
           onChange={handleChange("wheel")}
         >
           <AccordionSummary expandIcon={<ArrowUpward />}>
             <Typography>WHEEL</Typography>
           </AccordionSummary>
-          <AccordionDetails>NEW</AccordionDetails>
-          <AccordionDetails>USED</AccordionDetails>
+          <AccordionDetails>
+            <Button variant="text" sx={AccordionButtonSX}>
+              NEW
+            </Button>
+          </AccordionDetails>
+          <AccordionDetails>
+            <Button variant="text" sx={AccordionButtonSX}>
+              USED
+            </Button>
+          </AccordionDetails>
         </Accordion>
       </ListItem>
       <Divider />
-      <ListItemButton sx={{ justifyContent: "center" }}>
+      <ListItemButton sx={ListItemButtonSX}>
         <Typography>REPAIR</Typography>
       </ListItemButton>
     </List>

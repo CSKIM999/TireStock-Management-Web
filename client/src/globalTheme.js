@@ -7,21 +7,30 @@ const complementaryColor = "#02A9B3";
 
 export const globalTheme = createTheme({
   components: {
-    MuiTab: {
+    MuiAccordion: {
       styleOverrides: {
         root: {
-          color: bgColor,
+          borderRadius: "0 !important",
         },
       },
     },
     MuiTabs: {
       styleOverrides: {
-        indicator: {
-          background: "#ea605d",
+        root: {
+          "& ::-webkit-scrollbar": {
+            width: "0.5rem",
+          },
+          "& ::-webkit-scrollbar-track": {
+            backgroundColor: "orange",
+            borderRadius: "10px",
+          },
+          "& ::-webkit-scrollbar-thumb": {
+            backgroundColor: "red",
+            borderRadius: "10px",
+          },
         },
       },
     },
-
     MuiTypography: {
       styleOverrides: {
         caption: {

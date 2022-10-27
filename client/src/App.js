@@ -22,7 +22,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/login" element={<LoginPage />} />
-            <Route exact path="/items" element={<TirePage />} />
+            <Route exact path="/tire" element={<TirePage />} />
           </Routes>
         </Grid>
       </Grid>
