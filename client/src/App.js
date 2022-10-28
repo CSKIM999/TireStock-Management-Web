@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage/LandingPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import NavBar from "./components/NavBar/NavBar";
-import TirePage from "./components/ItemPage/TirePage";
+import ItemPage from "./components/ItemPage/ItemPage";
 import { Grid } from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
+import ServicePage from "./components/ServicePage/ServicePage";
 
 function App() {
   return (
@@ -22,7 +23,27 @@ function App() {
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/login" element={<LoginPage />} />
-            <Route exact path="/tire" element={<TirePage />} />
+            <Route exact path="/service" element={<ServicePage />} />
+            <Route
+              exact
+              path="/tire/new"
+              element={<ItemPage item="tire" type="NEW" />}
+            />
+            <Route
+              exact
+              path="/tire/used"
+              element={<ItemPage item="tire" type="USED" />}
+            />
+            <Route
+              exact
+              path="/wheel/new"
+              element={<ItemPage item="wheel" type="NEW" />}
+            />
+            <Route
+              exact
+              path="/wheel/used"
+              element={<ItemPage item="wheel" type="USED" />}
+            />
           </Routes>
         </Grid>
       </Grid>

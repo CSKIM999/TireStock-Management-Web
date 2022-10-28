@@ -18,14 +18,14 @@ export const globalTheme = createTheme({
       styleOverrides: {
         root: {
           "& ::-webkit-scrollbar": {
-            width: "0.5rem",
+            width: "0.4rem",
           },
           "& ::-webkit-scrollbar-track": {
-            backgroundColor: "orange",
+            backgroundColor: pointColor,
             borderRadius: "10px",
           },
           "& ::-webkit-scrollbar-thumb": {
-            backgroundColor: "red",
+            backgroundColor: complementaryColor,
             borderRadius: "10px",
           },
         },

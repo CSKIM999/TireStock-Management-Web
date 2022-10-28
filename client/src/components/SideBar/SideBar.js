@@ -20,7 +20,20 @@ function SideBar() {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
+  const type = ["NEW", "USED"];
+  function accordionProps() {
+    return (
+      <React.Fragment>
+        {type.map((item, index) => (
+          <AccordionDetails key={index}>
+            <Button variant="text" sx={AccordionButtonSX}>
+              {item}
+            </Button>
+          </AccordionDetails>
+        ))}
+      </React.Fragment>
+    );
+  }
   return (
     <List className="sideBar" sx={{ mt: 5 }}>
       <Divider />
@@ -38,7 +51,8 @@ function SideBar() {
           <AccordionSummary expandIcon={<ArrowUpward />}>
             <Typography>TIRE</Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          {accordionProps()}
+          {/* <AccordionDetails>
             <Button variant="text" sx={AccordionButtonSX}>
               NEW
             </Button>
@@ -47,7 +61,7 @@ function SideBar() {
             <Button variant="text" sx={AccordionButtonSX}>
               USED
             </Button>
-          </AccordionDetails>
+          </AccordionDetails> */}
         </Accordion>
       </ListItem>
       <Divider />
@@ -61,7 +75,8 @@ function SideBar() {
           <AccordionSummary expandIcon={<ArrowUpward />}>
             <Typography>WHEEL</Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          {accordionProps()}
+          {/* <AccordionDetails>
             <Button variant="text" sx={AccordionButtonSX}>
               NEW
             </Button>
@@ -70,7 +85,7 @@ function SideBar() {
             <Button variant="text" sx={AccordionButtonSX}>
               USED
             </Button>
-          </AccordionDetails>
+          </AccordionDetails> */}
         </Accordion>
       </ListItem>
       <Divider />
