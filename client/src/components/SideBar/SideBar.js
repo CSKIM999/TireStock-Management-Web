@@ -13,6 +13,7 @@ import {
 import * as React from "react";
 
 function SideBar() {
+  // TODO [redux 사용 현재탭관리]
   const [expanded, setExpanded] = React.useState(null);
   const AccordionButtonSX = { p: 1, width: "100%" };
   const ListItemButtonSX = { justifyContent: "center", color: "primary" };
@@ -43,25 +44,15 @@ function SideBar() {
       <Divider />
       <ListItem disablePadding>
         <Accordion
-          onChange={handleChange("tire")}
+          onChange={handleChange("tires")}
           disableGutters
-          expanded={expanded === "tire"}
+          expanded={expanded === "tires"}
           sx={AccordionSX}
         >
           <AccordionSummary expandIcon={<ArrowUpward />}>
-            <Typography>TIRE</Typography>
+            <Typography>TIRES</Typography>
           </AccordionSummary>
           {accordionProps()}
-          {/* <AccordionDetails>
-            <Button variant="text" sx={AccordionButtonSX}>
-              NEW
-            </Button>
-          </AccordionDetails>
-          <AccordionDetails>
-            <Button variant="text" sx={AccordionButtonSX}>
-              USED
-            </Button>
-          </AccordionDetails> */}
         </Accordion>
       </ListItem>
       <Divider />
@@ -69,23 +60,13 @@ function SideBar() {
         <Accordion
           disableGutters
           sx={AccordionSX}
-          expanded={expanded === "wheel"}
-          onChange={handleChange("wheel")}
+          expanded={expanded === "wheels"}
+          onChange={handleChange("wheels")}
         >
           <AccordionSummary expandIcon={<ArrowUpward />}>
-            <Typography>WHEEL</Typography>
+            <Typography>WHEELS</Typography>
           </AccordionSummary>
           {accordionProps()}
-          {/* <AccordionDetails>
-            <Button variant="text" sx={AccordionButtonSX}>
-              NEW
-            </Button>
-          </AccordionDetails>
-          <AccordionDetails>
-            <Button variant="text" sx={AccordionButtonSX}>
-              USED
-            </Button>
-          </AccordionDetails> */}
         </Accordion>
       </ListItem>
       <Divider />
@@ -96,4 +77,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default React.memo(SideBar);

@@ -7,7 +7,7 @@ import ItemCard from "../modules/ItemCard";
 const gridItemOptionSX = { display: { xs: "none", md: "flex" } };
 function getOptions(type) {
   console.log(type);
-  if (type === "tire")
+  if (type === "tires")
     return (
       <Grid container direction="row">
         <Grid item sx={gridItemOptionSX} md={1.5}>
@@ -18,7 +18,7 @@ function getOptions(type) {
         </Grid>
       </Grid>
     );
-  else if (type === "wheel") return <OptionForWheel />;
+  else if (type === "wheels") return <OptionForWheel />;
 }
 
 function ItemPage(props) {

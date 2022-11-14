@@ -21,29 +21,31 @@ function App() {
         </Grid>
         <Grid item xs={11}>
           <Routes>
-            <Route exact path="/" element={<LandingPage />} />
+            <Route exact path="/" element={<LandingPage reset={false} />} />
             <Route exact path="/login" element={<LoginPage />} />
             <Route exact path="/service" element={<ServicePage />} />
             <Route
               exact
-              path="/tire/new"
-              element={<ItemPage item="tire" type="NEW" />}
+              path="/tires/new"
+              element={<ItemPage item="tires" type="NEW" />}
             />
             <Route
               exact
-              path="/tire/used"
-              element={<ItemPage item="tire" type="USED" />}
+              path="/tires/used"
+              element={<ItemPage item="tires" type="USED" />}
             />
             <Route
               exact
-              path="/wheel/new"
-              element={<ItemPage item="wheel" type="NEW" />}
+              path="/wheels/new"
+              element={<ItemPage item="wheels" type="NEW" />}
             />
             <Route
               exact
-              path="/wheel/used"
-              element={<ItemPage item="wheel" type="USED" />}
+              path="/wheels/used"
+              element={<ItemPage item="wheels" type="USED" />}
             />
+            {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
+            <Route path="*" element={<LandingPage reset={true} />} />
           </Routes>
         </Grid>
       </Grid>

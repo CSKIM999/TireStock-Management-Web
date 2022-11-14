@@ -107,6 +107,7 @@ export const globalTheme = createTheme({
     background: {
       default: bgColor,
       paper: bgColor,
+      info: complementaryColor,
     },
     primary: {
       main: pointColor,
