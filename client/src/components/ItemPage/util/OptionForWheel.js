@@ -7,8 +7,9 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import ItemOption from "../../modules/ItemOption";
+import itemOptionTable from "./itemOptionTable";
 
-function OptionForWheel() {
+function OptionForWheel(props) {
   const [region, setRegion] = React.useState("ALL");
   const [design, setDesign] = React.useState("ALL");
 
@@ -20,8 +21,20 @@ function OptionForWheel() {
   };
   return (
     <Stack>
-      <Grid container direction="row" flexWrap="nowrap">
-        <Grid item container direction="column" spacing={2}>
+      <Grid
+        container
+        direction="row"
+        flexWrap="nowrap"
+        justifyContent={"center"}
+      >
+        <Grid
+          item
+          container
+          direction="column"
+          spacing={2}
+          md={5}
+          sx={{ mr: 10 }}
+        >
           <Grid item>
             <Typography>REGION</Typography>
             <ToggleButtonGroup
@@ -29,6 +42,7 @@ function OptionForWheel() {
               exclusive
               value={region}
               onChange={regionChange}
+              fullWidth
             >
               <ToggleButton value="ALL">ALL</ToggleButton>
               <ToggleButton value="국산">국산</ToggleButton>
@@ -42,6 +56,7 @@ function OptionForWheel() {
               exclusive
               value={design}
               onChange={designChange}
+              fullWidth
             >
               <ToggleButton value="ALL">ALL</ToggleButton>
               <ToggleButton value="normal">일반</ToggleButton>
@@ -49,8 +64,15 @@ function OptionForWheel() {
             </ToggleButtonGroup>
           </Grid>
         </Grid>
-        <Grid item sx={{ display: { xs: "none", md: "flex" } }}>
-          <ItemOption />
+        <Grid
+          item
+          sx={{ display: { xs: "none", md: "flex" } }}
+          justifyContent={"space-evenly"}
+          md={2}
+        >
+          <ItemOption
+            prop={{ title: "인치", option: { ...itemOptionTable.wheel.인치 } }}
+          />
         </Grid>
       </Grid>
     </Stack>

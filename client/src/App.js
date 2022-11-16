@@ -13,6 +13,7 @@ function App() {
   return (
     // github-page 에서 deploy 할 경우 browserRouter 은 작동하지 않을 수 있음.
     // BrouserRouter => HashRouter 로 대체가능.
+
     <Router>
       <NavBar />
       <Grid container>

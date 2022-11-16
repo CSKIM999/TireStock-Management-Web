@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
-function ItemOption() {
+function ItemOption(props) {
   const [value, setValue] = React.useState(0);
   const indicatorProp = {
     sx: {
@@ -10,12 +10,25 @@ function ItemOption() {
       mx: 1,
     },
   };
-  const props = {
-    title: "Tire Width",
-    option: [145, 150, 155, 160, 165, 170, 175, 180, 185],
-  };
+
+  const prop = props.prop;
+  let options = [];
+  if (Array.isArray(prop.option)) {
+    options = [...prop.option];
+  } else {
+    for (
+      let i = prop.option.start;
+      i <= prop.option.end;
+      i += prop.option.step
+    ) {
+      options.push(i);
+    }
+  }
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (props.getState) {
+      props.getState(props.index, event.target.id);
+    }
   };
   return (
     <Box
@@ -23,7 +36,7 @@ function ItemOption() {
       className="optionSet"
       sx={{ display: "flex", flexDirection: "column", height: "100%" }}
     >
-      <Typography sx={{ pl: 1, pb: 1 }}>{props.title} &gt;</Typography>
+      <Typography sx={{ pl: 1, pb: 1 }}>{prop.title} &gt;</Typography>
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -35,8 +48,19 @@ function ItemOption() {
         TabIndicatorProps={indicatorProp}
       >
         {props &&
-          ["Default", ...props.option].map((item, index) => (
-            <Tab label={item} key={index} sx={{ color: "white", zIndex: 1 }} />
+          ["전체", ...options].map((item, index) => (
+            <Tab
+              label={
+                prop.title === "컨디션" && index >= 1
+                  ? `++${item}%`
+                  : prop.title === "인치" && index >= 1
+                  ? `R${item}`
+                  : item
+              }
+              key={index}
+              id={item}
+              sx={{ color: "white", zIndex: 1 }}
+            />
           ))}
       </Tabs>
     </Box>

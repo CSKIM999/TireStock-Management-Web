@@ -1,8 +1,9 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 
-function ItemCard() {
-  const props = {
+function ItemCard(props) {
+  // const prop = {...props.data}
+  const prop = {
     title: "금호 마제스티 솔루스",
     width: 245,
     profile: 30,
@@ -12,19 +13,19 @@ function ItemCard() {
   };
 
   const headerContent = [
-    props.title ? props.title : undefined,
-    props.width && props.size
-      ? [props.width, props.profile, props.size].join(" - ")
-      : props.size.length === 3
-      ? props.size.slice(1) + "Inch"
+    prop.title ? prop.title : undefined,
+    prop.width && prop.size
+      ? [prop.width, prop.profile, prop.size].join(" - ")
+      : prop.size.length === 3
+      ? prop.size.slice(1) + "Inch"
       : undefined,
   ];
   const bodyContnet = [
-    props.brand ? props.brand : props.region ? props.region : undefined,
-    props.condition
-      ? "++" + props.condition + "%"
-      : props.design
-      ? props.design
+    prop.brand ? prop.brand : prop.region ? prop.region : undefined,
+    prop.condition
+      ? "++" + prop.condition + "%"
+      : prop.design
+      ? prop.design
       : undefined,
   ];
   return (
