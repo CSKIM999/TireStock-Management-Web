@@ -11,7 +11,7 @@ const OptionBoard = (type, setStateFunction) => {
         {Object.entries(itemOptionTable.tire).map((item, index) => {
           const data = item[1];
           return (
-            <Grid key={index} item sx={gridItemOptionSX} md={2}>
+            <Grid key={index} item sx={gridItemOptionSX} md={1.7}>
               <ItemOption
                 getState={setStateFunction}
                 index={index}

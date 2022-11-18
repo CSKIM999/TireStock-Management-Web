@@ -6,6 +6,7 @@ import ItemBoard from "./Sections/ItemBoard";
 import itemOptionTable from "./util/itemOptionTable";
 const tireKeys = Object.keys(itemOptionTable.tire);
 function ItemPage(props) {
+  console.log(props);
   const [OptionValue, setOptionValue] = React.useState(
     props.item === "tires"
       ? new Array(5).fill("전체")
@@ -14,10 +15,9 @@ function ItemPage(props) {
   const [SearchedItem, setSearchedItem] = React.useState([]);
 
   React.useEffect(() => {
-    console.log("USE-EFFECT", OptionValue);
     // TODO : Axios 사용해서 재고정보 가져오기 OptionValue : [전체]
     // 내가 원하는 중복제거 distinct
-    var keywordURL = "/api/tires/?type=used";
+    var keywordURL = `/api/${props.item}/?type=${props.type}`; // 여기 마지막 used 대신 param 받을것
     OptionValue.map((item, index) => {
       if (item !== "전체") {
         keywordURL += `&${tireKeys[index]}=${item}`;
@@ -42,7 +42,9 @@ function ItemPage(props) {
   return (
     <Grid container direction="column" sx={{ px: 10, py: 5 }}>
       <Grid item xs={2}>
-        <Typography>TIRE &gt; {props.type}</Typography>
+        <Typography>
+          {props.item.toUpperCase()} &gt; {props.type.toUpperCase()}
+        </Typography>
         {OptionBoard(props.item, handleOption)}
       </Grid>
       <ItemBoard renderData={SearchedItem} />

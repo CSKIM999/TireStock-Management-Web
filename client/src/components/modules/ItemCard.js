@@ -3,19 +3,21 @@ import React from "react";
 
 function ItemCard(props) {
   // const prop = {...props.data}
-  const prop = {
-    title: "금호 마제스티 솔루스",
-    width: 245,
-    profile: 30,
-    size: "R19",
-    brand: "금호타이어",
-    condition: 90,
-  };
+
+  const prop = props.prop;
+  // const prop = {
+  //   title: "금호 마제스티 솔루스",
+  //   width: 245,
+  //   profile: 30,
+  //   size: "R19",
+  //   brand: "금호타이어",
+  //   condition: 90,
+  // };
 
   const headerContent = [
     prop.title ? prop.title : undefined,
     prop.width && prop.size
-      ? [prop.width, prop.profile, prop.size].join(" - ")
+      ? [prop.width, prop.profile, "R" + prop.size].join(" - ")
       : prop.size.length === 3
       ? prop.size.slice(1) + "Inch"
       : undefined,
