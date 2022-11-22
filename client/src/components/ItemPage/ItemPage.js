@@ -4,6 +4,7 @@ import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import OptionBoard from "./Sections/OptionBoard";
 import ItemBoard from "./Sections/ItemBoard";
 import itemOptionTable from "./util/itemOptionTable";
+import BreadCrumb from "../modules/BreadCrumb";
 const tireKeys = Object.keys(itemOptionTable.tire);
 function ItemPage(props) {
   console.log(props);
@@ -42,9 +43,7 @@ function ItemPage(props) {
   return (
     <Grid container direction="column" sx={{ px: 10, py: 5 }}>
       <Grid item xs={2}>
-        <Typography>
-          {props.item.toUpperCase()} &gt; {props.type.toUpperCase()}
-        </Typography>
+        {BreadCrumb(props.item, props.type)}
         {OptionBoard(props.item, handleOption)}
       </Grid>
       <ItemBoard renderData={SearchedItem} />

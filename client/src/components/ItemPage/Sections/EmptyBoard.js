@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 const EmptyBoard = () => {
   return (
-    <Grid item direction="row" xs={12}>
+    <Grid item xs={12}>
       <Paper
         sx={{
           display: "flex",

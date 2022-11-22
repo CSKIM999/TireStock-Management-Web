@@ -15,25 +15,52 @@ import * as React from "react";
 function SideBar() {
   // TODO [redux 사용 현재탭관리]
   const [expanded, setExpanded] = React.useState(null);
+  const [pathNow, setPathNow] = React.useState("");
   React.useEffect(() => {
-    console.log(window.location.pathname);
+    setPathNow(window.location.pathname);
+    const [blnk, mainPath, detailPath] = window.location.pathname.split("/");
+    if (mainPath) {
+      switch (mainPath) {
+        case "tires":
+          setExpanded(mainPath);
+          break;
+        case "wheels":
+          setExpanded(mainPath);
+          break;
+        default:
+          break;
+      }
+    }
   }, [window.location.pathname]);
 
-  const AccordionButtonSX = { p: 1, width: "100%" };
-  const ListItemButtonSX = { justifyContent: "center", color: "primary" };
-  const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const type = ["NEW", "USED"];
+
+  const type = ["new", "used"];
   const sideItems = ["tires", "wheels"];
-  function accordionProps() {
+
+  const ListItemButtonSX = { justifyContent: "center", color: "primary" };
+  const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
+
+  function accordionProps(prop) {
     return (
       <React.Fragment>
         {type.map((item, index) => (
           <AccordionDetails key={index}>
-            <Button variant="text" sx={AccordionButtonSX}>
-              {item}
+            <Button
+              variant="text"
+              sx={{
+                p: 1,
+                width: "100%",
+                bgcolor:
+                  `/${prop}/${item}` === pathNow
+                    ? "white"
+                    : "background.default",
+              }}
+              href={`/${prop}/${item}`}
+            >
+              {item.toUpperCase()}
             </Button>
           </AccordionDetails>
         ))}
@@ -52,7 +79,7 @@ function SideBar() {
           <AccordionSummary expandIcon={<ArrowUpward />}>
             <Typography>{item.toUpperCase()}</Typography>
           </AccordionSummary>
-          {accordionProps()}
+          {accordionProps(item)}
         </Accordion>
       </ListItem>
       <Divider />
@@ -66,7 +93,7 @@ function SideBar() {
       </ListItemButton>
       <Divider />
       {accordionItem}
-      <ListItemButton sx={ListItemButtonSX}>
+      <ListItemButton onClick={() => {}} sx={ListItemButtonSX}>
         <Typography>REPAIR</Typography>
       </ListItemButton>
     </List>

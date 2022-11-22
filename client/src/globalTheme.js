@@ -34,9 +34,7 @@ export const globalTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         caption: {
-          color: ftColor.dark + "!important",
-          fontSize: "0.9rem",
-          fontStyle: "italic",
+          color: ftColor.light + "!important",
         },
         h5: {
           color: ftColor.light,
@@ -48,16 +46,13 @@ export const globalTheme = createTheme({
           color: bgColor + "!important",
         },
         body1: {
-          color: ftColor.dark + "!important",
+          color: ftColor.light + "!important",
         },
         body2: {
           color: ftColor.light + "!important",
         },
         button: {
           color: ftColor.main,
-        },
-        caption: {
-          color: complementaryColor,
         },
       },
     },

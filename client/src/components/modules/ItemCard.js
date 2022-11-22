@@ -2,18 +2,8 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 
 function ItemCard(props) {
-  // const prop = {...props.data}
-
   const prop = props.prop;
-  // const prop = {
-  //   title: "금호 마제스티 솔루스",
-  //   width: 245,
-  //   profile: 30,
-  //   size: "R19",
-  //   brand: "금호타이어",
-  //   condition: 90,
-  // };
-
+  
   const headerContent = [
     prop.title ? prop.title : undefined,
     prop.width && prop.size
