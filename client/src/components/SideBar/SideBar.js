@@ -18,6 +18,7 @@ function SideBar() {
   const [pathNow, setPathNow] = React.useState("");
   React.useEffect(() => {
     setPathNow(window.location.pathname);
+    console.log(pathNow === "/request");
     const [blnk, mainPath, detailPath] = window.location.pathname.split("/");
     if (mainPath) {
       switch (mainPath) {
@@ -40,10 +41,13 @@ function SideBar() {
   const type = ["new", "used"];
   const sideItems = ["tires", "wheels"];
 
-  const ListItemButtonSX = { justifyContent: "center", color: "primary" };
+  const ListItemButtonSX = {
+    justifyContent: "center",
+    color: "primary",
+  };
   const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
 
-  function accordionProps(prop) {
+  const accordionProps = (prop) => {
     return (
       <React.Fragment>
         {type.map((item, index) => (
@@ -53,9 +57,11 @@ function SideBar() {
               sx={{
                 p: 1,
                 width: "100%",
+                color:
+                  `/${prop}/${item}` === pathNow ? "white" : "primary.main",
                 bgcolor:
                   `/${prop}/${item}` === pathNow
-                    ? "white"
+                    ? "primary.main"
                     : "background.default",
               }}
               href={`/${prop}/${item}`}
@@ -66,7 +72,7 @@ function SideBar() {
         ))}
       </React.Fragment>
     );
-  }
+  };
   const accordionItem = sideItems.map((item, index) => (
     <React.Fragment key={index}>
       <ListItem disablePadding>
@@ -93,7 +99,15 @@ function SideBar() {
       </ListItemButton>
       <Divider />
       {accordionItem}
-      <ListItemButton onClick={() => {}} sx={ListItemButtonSX}>
+      <ListItemButton
+        href="/request"
+        sx={{
+          ...ListItemButtonSX,
+          bgcolor: `${
+            "/request" === pathNow ? "primary.main" : "background.default"
+          }`,
+        }}
+      >
         <Typography>REPAIR</Typography>
       </ListItemButton>
     </List>

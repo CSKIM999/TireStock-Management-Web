@@ -7,11 +7,13 @@ const pageURL = {
   HOME: "/",
   타이어: "/tires/new",
   휠: "/wheels/new",
+  "복원 및 문의": "/request",
 };
 const pageMap = {
   HOME: "",
   타이어: "tires",
   휠: "wheels",
+  "복원 및 문의": "request",
 };
 function NavRight(props) {
   const nowPath = window.location.pathname.split("/")[1];

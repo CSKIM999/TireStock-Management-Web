@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Button,
   Container,
   Divider,
   Grid,
@@ -38,9 +39,9 @@ const DetailDescribe = (props) => {
       }}
     >
       <Stack sx={{ height: "100%" }}>
-        <Grid container direction={"column"} sx={{ height: "100%" }}>
+        <Grid container direction={"column"} sx={{ height: "100%", p: 4 }}>
           {/* Section Header */}
-          <Grid container direction={"row"} alignItems="flex-end" sx={{ p: 2 }}>
+          <Grid item container direction={"row"} alignItems="flex-end">
             <Grid item xs={4}>
               <Typography
                 variant="h5"
@@ -55,14 +56,7 @@ const DetailDescribe = (props) => {
           </Grid>
 
           {/* SECTION - info */}
-          <Grid
-            item
-            xs="auto"
-            container
-            alignItems="center"
-            direction={"row"}
-            sx={{ px: 2 }}
-          >
+          <Grid item xs="auto" container alignItems="center" direction={"row"}>
             {/* INFO - TAG */}
             <Grid item xs={4}>
               <Stack spacing={spacingTop}>
@@ -85,17 +79,38 @@ const DetailDescribe = (props) => {
           <Divider />
 
           {/* SECTION -  detail */}
-          <Grid item xs={"auto"} container direction={"row"} sx={{ p: 2 }}>
-            {/* DETAIL - TAG */}
-            <Stack>
-              <Typography>HI</Typography>
-              <Typography>HI</Typography>
-            </Stack>
+          <Grid item xs={"auto"} container direction="column" sx={{ pt: 2 }}>
+            <Grid item xs={1} container direction={"row"} alignItems="flex-end">
+              <Grid item>
+                <Typography
+                  variant="h5"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  Detail
+                </Typography>
+              </Grid>
+              <Typography variant="caption" sx={{ fontWeight: "bold", px: 3 }}>
+                제품 상세
+              </Typography>
+            </Grid>
 
-            {/* DETAIL - detail */}
-            <Grid item xs={"auto"} container direction="column">
-              <Typography>HI</Typography>
-              <Typography>HI</Typography>
+            {/* DETAIL - description */}
+            {/* TODO : 받아온 정보 나열 */}
+            <Grid item xs={"auto"} container direction="column" sx={{ py: 2 }}>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+              <Typography>DESCRIPTION</Typography>
+            </Grid>
+            {/* DETAIL - RequsetZone */}
+            <Grid item xs={"auto"}>
+              <Stack direction="row" alignItems="center">
+                <Button>HELLO</Button>
+                <Typography>012-345-6789</Typography>
+              </Stack>
             </Grid>
           </Grid>
         </Grid>

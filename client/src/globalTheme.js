@@ -14,6 +14,16 @@ export const globalTheme = createTheme({
         },
       },
     },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          ".ReqItem .MuiGrid-root": {
+            display: "flex",
+            justifyContent: "center",
+          },
+        },
+      },
+    },
     MuiTabs: {
       styleOverrides: {
         root: {
@@ -116,6 +126,9 @@ export const globalTheme = createTheme({
     },
     error: {
       main: "#ea605d",
+    },
+    success: {
+      main: "#6fbf73",
     },
     divider: bgColor,
   },
