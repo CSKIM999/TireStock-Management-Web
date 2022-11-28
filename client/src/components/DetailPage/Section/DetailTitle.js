@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Typography } from "@mui/material";
 
-const DetailTitle = (props) => {
+const ItemDetailTitle = (props) => {
   return (
     <Stack spacing={2}>
       <Typography color="primary.main" variant="h5" fontWeight="bold">
@@ -11,4 +11,4 @@ const DetailTitle = (props) => {
   );
 };
 
-export default DetailTitle;
+export default ItemDetailTitle;

@@ -41,6 +41,25 @@ export const globalTheme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          "& ::-webkit-scrollbar": {
+            width: ".7rem",
+          },
+          "& ::-webkit-scrollbar-track": {
+            backgroundColor: pointColor,
+            borderRadius: "10px",
+          },
+          "& ::-webkit-scrollbar-thumb": {
+            backgroundColor: complementaryColor,
+            border: "2px solid",
+            borderColor: pointColor,
+            borderRadius: "10px",
+          },
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         caption: {

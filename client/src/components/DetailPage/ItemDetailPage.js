@@ -9,16 +9,19 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import DetailDescribe from "./Section/DetailDescribe";
-import DetailTitle from "./Section/DetailTitle";
+import ItemDetailBody from "./Section/DetailBody";
+import ItemDetailTitle from "./Section/DetailTitle";
 import BreadCrumb from "../modules/BreadCrumb";
+import { useParams } from "react-router-dom";
+
 const itemBoxSX = "1px solid black";
 const itemPaperSX = {
   width: "100%",
   height: "100%",
   bgcolor: "secondary.main",
 };
-function DetailPage(props) {
+
+function ItemDetailPage(props) {
   // const prop = props.prop;
   const prop = {
     request: "item",
@@ -35,17 +38,20 @@ function DetailPage(props) {
   };
 
   // TODO : axios 통해서 item 일경우, request 일 경우 따져서 param id 사용해서 해당 detail 가져오기
+  let { id } = useParams();
   if (prop.request && prop.request === "item") {
     // id 가지고 정보 받아오기
+    // db에 id가 없다면 정보와 함께 에러창 발생
   }
+
   const TitleTag = `${prop.item.toUpperCase()} > ${prop.type.toUpperCase()}`;
 
   return (
     <Box sx={{ px: 10, pt: 5, height: "100%" }}>
-      <Grid container direction="column" height="100%">
+      <Grid container flexWrap="nowrap" direction="column" height="100%">
         <Grid item xs={1}>
           {BreadCrumb(prop.item, prop.type)}
-          <DetailTitle title={prop.title} />
+          <ItemDetailTitle title={prop.title} />
         </Grid>
         <Divider />
         <Grid
@@ -60,8 +66,8 @@ function DetailPage(props) {
             <Paper sx={itemPaperSX}></Paper>
           </Grid>
           {/* Detail Section */}
-          <Grid item xs={12} md={6.5}>
-            <DetailDescribe type={prop.item} prop={prop.data} />
+          <Grid item xs={12} md={6.5} minWidth={500}>
+            <ItemDetailBody type={prop.item} prop={prop.data} />
           </Grid>
         </Grid>
       </Grid>
@@ -69,4 +75,4 @@ function DetailPage(props) {
   );
 }
 
-export default DetailPage;
+export default ItemDetailPage;

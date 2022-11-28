@@ -15,11 +15,12 @@ import * as React from "react";
 function SideBar() {
   // TODO [redux 사용 현재탭관리]
   const [expanded, setExpanded] = React.useState(null);
-  const [pathNow, setPathNow] = React.useState("");
+  const [mainpathNow, setMainpathNow] = React.useState("");
+  const [detailpathNow, setDetailpathNow] = React.useState("");
   React.useEffect(() => {
-    setPathNow(window.location.pathname);
-    console.log(pathNow === "/request");
     const [blnk, mainPath, detailPath] = window.location.pathname.split("/");
+    setMainpathNow(mainPath);
+    setDetailpathNow(detailPath);
     if (mainPath) {
       switch (mainPath) {
         case "tires":
@@ -58,9 +59,11 @@ function SideBar() {
                 p: 1,
                 width: "100%",
                 color:
-                  `/${prop}/${item}` === pathNow ? "white" : "primary.main",
+                  `/${prop}/${item}` === `/${mainpathNow}/${detailpathNow}`
+                    ? "white"
+                    : "primary.main",
                 bgcolor:
-                  `/${prop}/${item}` === pathNow
+                  `/${prop}/${item}` === `/${mainpathNow}/${detailpathNow}`
                     ? "primary.main"
                     : "background.default",
               }}
@@ -104,7 +107,9 @@ function SideBar() {
         sx={{
           ...ListItemButtonSX,
           bgcolor: `${
-            "/request" === pathNow ? "primary.main" : "background.default"
+            "/request" === `/${mainpathNow}/${detailpathNow}`
+              ? "primary.main"
+              : "background.default"
           }`,
         }}
       >

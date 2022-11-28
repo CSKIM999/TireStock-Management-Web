@@ -8,8 +8,8 @@ import ItemPage from "./components/ItemPage/ItemPage";
 import { Grid, Box, Stack } from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
 import ServicePage from "./components/ServicePage/ServicePage";
-import DetailPage from "./components/DetailPage/DetailPage";
 import FAQPage from "./components/FAQPage/FAQPage";
+import ItemDetailPage from "./components/DetailPage/ItemDetailPage";
 
 function App() {
   return (
@@ -48,7 +48,11 @@ function App() {
                 path="/wheels/used"
                 element={<ItemPage item="wheels" type="used" />}
               />
-              <Route exact path="/detail" element={<DetailPage />} />
+              <Route
+                exact
+                path="/:item/:type/:id"
+                element={<ItemDetailPage />}
+              />
               <Route exact path="/request" element={<FAQPage />} />
               {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
               <Route path="*" element={<LandingPage reset={true} />} />
