@@ -7,7 +7,7 @@ function MatchItem(props) {
   if (props.renderData) {
     if (props.renderData.length > 0) {
       return props.renderData.map((item, index) => (
-        <Grid key={index} item xs={12} sm={6} lg={4}>
+        <Grid key={index} item xs={6} lg={4} xl={3}>
           <ItemCard prop={item} />
         </Grid>
       ));
@@ -24,7 +24,7 @@ const ItemBoard = (props) => {
   // }, [props.renderData]);
 
   return (
-    <Grid item container direction="row">
+    <Grid item container spacing={5} direction="row">
       {MatchItem(props)}
     </Grid>
   );

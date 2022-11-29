@@ -95,7 +95,7 @@ function SideBar() {
     </React.Fragment>
   ));
   return (
-    <List className="sideBar" sx={{ mt: 5 }}>
+    <List className="sideBar" sx={{ mt: 5, pl: 3, minWidth: 120 }}>
       <Divider />
       <ListItemButton sx={ListItemButtonSX}>
         <Typography>HOME</Typography>

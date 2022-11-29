@@ -42,6 +42,10 @@ const tireSchema = Schema({
   detail: {
     type: String,
   },
+  brand: {
+    type: String,
+    required: true,
+  },
 });
 
 const Tire = mongoose.model("Tire", tireSchema);

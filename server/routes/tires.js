@@ -36,7 +36,13 @@ router.get("/", (req, res) => {
       return res.status(200).json({ success: true, payload: body });
     });
 });
-
+router.get("/:_id", (req, res) => {
+  const _id = req.params._id;
+  Tire.findById(_id).exec((err, body) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ success: true, payload: body });
+  });
+});
 router.post("/test", (req, res) => {
   // 생성할땐 상관없이 그냥 집어넣기
   // 삭제할 땐 하나씩 순회해서 자신이 마지막 원소인지 판별

@@ -25,35 +25,25 @@ function App() {
           </Grid>
           <Grid item xs={11}>
             <Routes>
-              <Route exact path="/" element={<LandingPage reset={false} />} />
-              <Route exact path="/login" element={<LoginPage />} />
-              <Route exact path="/service" element={<ServicePage />} />
+              <Route path="/" element={<LandingPage reset={false} />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/service" element={<ServicePage />} />
+
+              <Route path="/tires/:type" element={<ItemPage item="tires" />} />
               <Route
-                exact
-                path="/tires/new"
-                element={<ItemPage item="tires" type="new" />}
+                path="/wheels/:type"
+                element={<ItemPage item="wheels" />}
+              />
+              <Route path="/:item/:type/:id" element={<ItemDetailPage />} />
+              <Route path="/request" element={<FAQPage />} />
+              {/* <Route
+                path="/wheels/:type/:id"
+                element={<ItemDetailPage item="wheels" />}
               />
               <Route
-                exact
-                path="/tires/used"
-                element={<ItemPage item="tires" type="used" />}
-              />
-              <Route
-                exact
-                path="/wheels/new"
-                element={<ItemPage item="wheels" type="new" />}
-              />
-              <Route
-                exact
-                path="/wheels/used"
-                element={<ItemPage item="wheels" type="used" />}
-              />
-              <Route
-                exact
-                path="/:item/:type/:id"
-                element={<ItemDetailPage />}
-              />
-              <Route exact path="/request" element={<FAQPage />} />
+                path="/tires/:type/:id"
+                element={<ItemDetailPage item="tires" />}
+              /> */}
               {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
               <Route path="*" element={<LandingPage reset={true} />} />
             </Routes>

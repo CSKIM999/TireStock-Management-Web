@@ -6,18 +6,22 @@ const tagDetail = {
   wheels: ["Size", "Region", "Design"],
 };
 const spacingTop = 6;
+
 const ProductInfo = (prop) => {
-  let params = useParams();
+  // let { type, item } = useParams();
+
+  console.log("PInfo => ", prop);
+  let { item } = useParams();
   let renderData = [];
-  let type = params.type;
-  let item = params.item;
-  console.log(type);
   if (item === "tires") {
     renderData = renderData.concat([
       `${prop.width} - ${prop.profile} - ${prop.condition}`,
-      prop.brand,
+      `${prop.brand ? prop.brand : "Brand 정보 없음"}`,
       `++${prop.condition}%`,
     ]);
+  } else if (item === "wheels") {
+  } else {
+    renderData = ["REQUEST", "REQUEST", "REQUEST"];
   }
   return (
     <Grid item xs={5.5} container alignItems="center" direction={"row"}>
