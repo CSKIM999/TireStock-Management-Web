@@ -4,14 +4,16 @@ import React from "react";
 
 /**
  *
- * @param {string} state success / pending / ""EMPTY
+ * @param {string} state success / pending / fulfilled  / ""EMPTY
  * @returns ICON
  */
 const iconSet = (state) => {
   switch (state) {
     case "success":
       return <CheckCircle color="success" />;
-    case "pending":
+    case "fulfilled": //진행중
+      return <Help color="primary" />;
+    case "pending": //보류
       return <Help color="primary" />;
     default:
       return <BugReport color="error" />;
@@ -20,7 +22,7 @@ const iconSet = (state) => {
 
 /**
  *
- * @param {string} state [success / pending / ""EMPTY]
+ * @param {string} state [success / pending / fulfilled / ""EMPTY]
  * @param {string} title
  * @param {date} date
  * @param {string} _id

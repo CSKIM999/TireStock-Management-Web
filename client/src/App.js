@@ -23,7 +23,7 @@ function App() {
           <Grid item xs={1}>
             <SideBar />
           </Grid>
-          <Grid item xs={11}>
+          <Grid item xs={11} className="mainContents">
             <Routes>
               <Route path="/" element={<LandingPage reset={false} />} />
               <Route path="/login" element={<LoginPage />} />
@@ -34,8 +34,15 @@ function App() {
                 path="/wheels/:type"
                 element={<ItemPage item="wheels" />}
               />
-              <Route path="/:item/:type/:id" element={<ItemDetailPage />} />
-              <Route path="/request" element={<FAQPage />} />
+              <Route
+                path="/:item/:type/:id"
+                element={<ItemDetailPage type="item" />}
+              />
+              <Route path="/requests" element={<FAQPage />} />
+              <Route
+                path="/requests/:id"
+                element={<ItemDetailPage type="request" />}
+              />
               {/* <Route
                 path="/wheels/:type/:id"
                 element={<ItemDetailPage item="wheels" />}

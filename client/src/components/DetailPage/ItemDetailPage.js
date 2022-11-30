@@ -21,82 +21,88 @@ const itemPaperSX = {
   bgcolor: "secondary.main",
 };
 
-function ItemDetailPage(props) {
-  const navigate = useNavigate();
-  // const prop = props.prop;
-  // const prop = {
-  //   item: "tires",
-  //   type: "new",
-  //   data: {
-  //     width: 265,
-  //     profile: 45,
-  //     size: 19,
-  //     brand: "금호타이어",
-  //     condition: 90,
-  //   },
-  //   title: "금호 마제스티 솔루스",
-  // };
-  let body = {
+const handleItem = (item, response) => {
+  let temp = {
     title: "",
     type: "",
     data: {},
-    flag: false,
   };
-  // TODO : axios 통해서 item 일경우, request 일 경우 따져서 param id 사용해서 해당 detail 가져오기
+  switch (item) {
+    case "tires":
+      temp.title = response.title;
+      temp.type = response.type;
+      temp.data.width = response.width ? response.width : "";
+      temp.data.profile = response.profile ? response.profile : "";
+      temp.data.size = response.size ? response.size : "";
+      temp.data.condition = response.condition ? response.condition : "";
+      temp.data.detail = response.detail ? response.detail : "";
+      return temp;
+    case "wheels":
+      temp.title = response.title;
+      temp.type = response.type;
+      temp.data.region = response.region ? response.region : "";
+      temp.data.size = response.size ? response.size : "";
+      temp.data.design = response.design ? response.design : "";
+      return temp;
+    case "request":
+      return temp;
+    default:
+      return false;
+  }
+};
+
+function ItemDetailPage(props) {
+  const navigate = useNavigate();
   let { item, id } = useParams();
-  if (["tires", "wheels", "requests"].includes(item)) {
+  const [Body, setBody] = React.useState({
+    title: "",
+    type: "",
+    data: {},
+  });
+
+  React.useEffect(() => {
+    if (!["requests", "tires", "wheels"].includes(item)) {
+      console.log("ERROR");
+      return;
+    }
     Axios.get(`/api/${item}/${id}`).then((response) => {
       if (response) {
-        const res = response.data.payload;
-        body.flag = true;
-        body.title = res.title;
-        body.type = res.type;
-        body.data.width = res.width;
-        body.data.profile = res.profile;
-        body.data.size = res.size;
-        body.data.condition = res.condition;
-        body.data.size = res.size;
-        console.log(body);
+        setBody(handleItem(item, response.data.payload));
       } else {
         console.log("axios error");
-        navigate("/");
       }
     });
-    // console.log(id);
-    // id 가지고 정보 받아오기
-    // db에 id가 없다면 정보와 함께 에러창 발생
-  } else {
-    navigate("/");
-  }
+  }, []);
 
-  console.log("must be here", item, body);
-  return (
-    <Box sx={{ px: 10, pt: 5, height: "100%" }}>
-      <Grid container flexWrap="nowrap" direction="column" height="100%">
-        <Grid item xs={1}>
-          {BreadCrumb(item, body.type)}
-          <ItemDetailTitle title={body.title} />
-        </Grid>
-        <Divider />
-        <Grid
-          item
-          xs={8}
-          container
-          direction="row"
-          sx={{ py: 3, borderTop: itemBoxSX, borderBottom: itemBoxSX }}
-        >
-          {/* Image Section */}
-          <Grid item xs={12} md={5.5} sx={{ pr: 2 }}>
-            <Paper sx={itemPaperSX}></Paper>
+  if (Body.title) {
+    return (
+      <Box sx={{ px: 10, pt: 5, height: "100%" }}>
+        <Grid container flexWrap="nowrap" direction="column" height="100%">
+          <Grid item xs={1}>
+            {BreadCrumb(item, Body.type)}
+            <ItemDetailTitle title={Body.title} />
           </Grid>
-          {/* Detail Section */}
-          <Grid item xs={12} md={6.5} minWidth={500}>
-            <ItemDetailBody prop={body.data} />
+          <Divider />
+          <Grid
+            item
+            xs={8}
+            container
+            direction="row"
+            sx={{ py: 3, borderTop: itemBoxSX, borderBottom: itemBoxSX }}
+          >
+            {/* Image Section */}
+            <Grid item xs={12} md={5.5} sx={{ pr: 2 }}>
+              <Paper sx={itemPaperSX}></Paper>
+            </Grid>
+            {/* Detail Section */}
+            <Grid item xs={12} md={6.5} minWidth={500}>
+              <ItemDetailBody prop={Body.data} />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Box>
-  );
+      </Box>
+    );
+  }
 }
 
 export default ItemDetailPage;

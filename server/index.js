@@ -15,8 +15,10 @@ mongoose
   .then(() => console.log("MongoDB CONNECTED..."))
   .catch((err) => console.log(err));
 
+app.use("/api/users", require("./routes/users"));
 app.use("/api/tires", require("./routes/tires"));
 app.use("/api/wheels", require("./routes/wheels"));
+app.use("/api/requests", require("./routes/requests"));
 
 app.get("/", (req, res) => {
   return res.send("hello~~ cskim speaking");

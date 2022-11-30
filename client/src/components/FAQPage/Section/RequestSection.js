@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Paper, Stack } from "@mui/material";
 import FAQItem from "../util/FAQItem";
 
 function RequsetSection(props) {
@@ -16,8 +16,20 @@ function RequsetSection(props) {
         <Button>문의하기</Button>
         <Button>문의하기</Button>
       </Box>
-      {FAQItem("success", "ITEM TITLE", "YYYY/MM/DD")}
-      {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+      {/* 1page = 10개 */}
+      <Paper elevation={0}>
+        {FAQItem("success", "ITEM TITLE", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+        {FAQItem("pending", "ITEM TITLE2", "YYYY/MM/DD")}
+      </Paper>
     </Stack>
   );
 }

@@ -20,6 +20,7 @@ const ItemDetailBody = (props) => {
   // Deatil-Item => wheel 이라면 region, design, size 가 들어오고 tire 라면 size-3, brand, condition 이 들어옴
   // Detail-Req => ????
   const prop = props.prop;
+  console.log("ID", prop);
   return (
     <Paper
       sx={{
@@ -36,7 +37,7 @@ const ItemDetailBody = (props) => {
       >
         {ProductInfo(prop)}
         <Divider sx={{ py: 1, mb: 2 }} />
-        {DetailDescribe("Detail", "제품상세")}
+        {DetailDescribe("Detail", "제품상세", prop.detail)}
       </Grid>
     </Paper>
   );

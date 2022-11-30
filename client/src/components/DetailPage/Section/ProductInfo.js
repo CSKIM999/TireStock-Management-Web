@@ -9,15 +9,13 @@ const spacingTop = 6;
 
 const ProductInfo = (prop) => {
   // let { type, item } = useParams();
-
-  console.log("PInfo => ", prop);
   let { item } = useParams();
   let renderData = [];
   if (item === "tires") {
     renderData = renderData.concat([
-      `${prop.width} - ${prop.profile} - ${prop.condition}`,
+      `${prop.width} - ${prop.profile} - ${prop.size}`,
       `${prop.brand ? prop.brand : "Brand 정보 없음"}`,
-      `++${prop.condition}%`,
+      `${prop.condition ? `++${prop.condition}%` : "Condition 정보 없음"}`,
     ]);
   } else if (item === "wheels") {
   } else {

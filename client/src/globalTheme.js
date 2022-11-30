@@ -21,6 +21,9 @@ export const globalTheme = createTheme({
             display: "flex",
             justifyContent: "center",
           },
+          ".mainContents": {
+            maxWidth: "1600px !important",
+          },
         },
       },
     },

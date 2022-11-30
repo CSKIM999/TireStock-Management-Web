@@ -103,11 +103,11 @@ function SideBar() {
       <Divider />
       {accordionItem}
       <ListItemButton
-        href="/request"
+        href="/requests"
         sx={{
           ...ListItemButtonSX,
           bgcolor: `${
-            "/request" === `/${mainpathNow}/${detailpathNow}`
+            "/requests" === `/${mainpathNow}`
               ? "primary.main"
               : "background.default"
           }`,
