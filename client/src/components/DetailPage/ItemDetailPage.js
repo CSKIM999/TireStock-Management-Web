@@ -44,7 +44,10 @@ const handleItem = (item, response) => {
       temp.data.size = response.size ? response.size : "";
       temp.data.design = response.design ? response.design : "";
       return temp;
-    case "request":
+    case "requests":
+      temp.title = response.title;
+      temp.type = undefined;
+      temp.data.detail = response.detail;
       return temp;
     default:
       return false;
@@ -54,6 +57,9 @@ const handleItem = (item, response) => {
 function ItemDetailPage(props) {
   const navigate = useNavigate();
   let { item, id } = useParams();
+  if (props.type === "request") {
+    item = "requests";
+  }
   const [Body, setBody] = React.useState({
     title: "",
     type: "",

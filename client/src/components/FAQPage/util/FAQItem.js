@@ -19,7 +19,6 @@ const iconSet = (state) => {
       return <BugReport color="error" />;
   }
 };
-
 /**
  *
  * @param {string} state [success / pending / fulfilled / ""EMPTY]
@@ -31,12 +30,10 @@ const iconSet = (state) => {
 function FAQItem(state, title, date, _id = undefined) {
   return (
     <Card>
-      <CardActionArea>
+      <CardActionArea href={_id ? `/requests/${_id}` : ""}>
         <Grid
           container
           className="ReqItem"
-          _id={_id ? _id : ""}
-          // hred=`/request/${_id}`
           sx={{
             py: 2,
             borderBottom: "1px solid white",
@@ -49,7 +46,7 @@ function FAQItem(state, title, date, _id = undefined) {
             <Typography>{title}</Typography>
           </Grid>
           <Grid item xs={3}>
-            <Typography>{date}</Typography>
+            <Typography>{date.split("T")[0].replaceAll("-", " / ")}</Typography>
           </Grid>
         </Grid>
       </CardActionArea>

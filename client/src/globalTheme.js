@@ -30,6 +30,7 @@ export const globalTheme = createTheme({
     MuiTabs: {
       styleOverrides: {
         root: {
+          borderRight: "0px !important",
           "& ::-webkit-scrollbar": {
             width: "0.4rem",
           },
@@ -152,20 +153,23 @@ export const globalTheme = createTheme({
     success: {
       main: "#6fbf73",
     },
-    divider: bgColor,
+    divider: pointColor,
   },
   typography: {
     fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
+      "Noto Sans KR",
+      "Inter",
+      // "Inter",
+      // "-apple-system",
+      // "BlinkMacSystemFont",
+      // '"Segoe UI"',
+      // "Roboto",
+      // '"Helvetica Neue"',
+      // "Arial",
       "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
+      // '"Apple Color Emoji"',
+      // '"Segoe UI Emoji"',
+      // '"Segoe UI Symbol"',
     ].join(","),
   },
 });

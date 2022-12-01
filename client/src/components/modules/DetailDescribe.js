@@ -27,8 +27,17 @@ DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION
 DESCRIPTION DESCRIPTION`;
 
 const DetailDescribe = (title, caption, body) => {
+  const FAQButton = (
+    <Grid item xs={"auto"} sx={{ py: 1 }}>
+      <Stack direction="row" spacing={3} alignItems="center">
+        <Button variant="contained">HELLO</Button>
+        <Typography>012-345-6789</Typography>
+      </Stack>
+    </Grid>
+  );
+
   return (
-    <Grid item xs={5.5} container flexWrap="nowrap" direction="column">
+    <Grid item xs={5} container flexWrap="nowrap" direction="column">
       <Grid item xs={1} container direction={"row"} alignItems="flex-end">
         <Grid item>
           <Typography
@@ -55,16 +64,12 @@ const DetailDescribe = (title, caption, body) => {
       >
         <Paper
           elevation={0}
-          sx={{ maxHeight: 250, overflow: "auto", bgcolor: "secondary.main" }}
+          sx={{ maxHeight: 250, overflow: "auto", bgcolor: "background.main" }}
         >
           <Typography>{body ? body : testString}</Typography>
+          <Typography>Detail description</Typography>
         </Paper>
-        <Grid item xs={"auto"} sx={{ py: 1 }}>
-          <Stack direction="row" spacing={3} alignItems="center">
-            <Button variant="contained">HELLO</Button>
-            <Typography>012-345-6789</Typography>
-          </Stack>
-        </Grid>
+        {title === "문의내용" ? "" : FAQButton}
       </Grid>
     </Grid>
   );

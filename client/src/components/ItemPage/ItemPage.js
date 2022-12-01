@@ -29,7 +29,7 @@ function ItemPage(props) {
       if (response) {
         setSearchedItem(response.data.payload);
       } else {
-        console.log("axios error");
+        console.log("axios error in ITEMPAGE");
       }
     });
   }, [OptionValue]);
