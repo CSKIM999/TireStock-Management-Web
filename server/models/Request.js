@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const commentSchema = Schema({
+  date: { type: Date, required: true },
+  writer: { type: String, required: true },
+  comment: { type: String },
+});
+
 const requestSchema = Schema(
   {
     writer: {
@@ -24,6 +30,7 @@ const requestSchema = Schema(
       type: String,
       required: true,
     },
+    comment: [commentSchema],
   },
   { timestamps: true }
 );

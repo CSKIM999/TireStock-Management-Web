@@ -21,28 +21,28 @@ const ItemDetailBody = (props) => {
   // Deatil-Item => wheel 이라면 region, design, size 가 들어오고 tire 라면 size-3, brand, condition 이 들어옴
   // Detail-Req => ????
   const prop = props.prop;
-  console.log("ID", prop);
   return (
     <Paper
       elevation={5}
       sx={{
         width: "100%",
         height: "100%",
-        bgcolor: "background.main",
+        bgcolor: "background.paper",
       }}
     >
       <Grid
         container
         flexWrap="nowrap"
         direction={"column"}
-        sx={{ height: "100%", px: 4, pt: 4 }}
+        justifyContent="space-between"
+        sx={{ height: "100%", px: 4, pt: 4, pb: 2 }}
       >
         {prop.width
           ? ProductInfo(prop)
           : DetailDescribe("문의내용", "FAQ", prop.detail)}
         <Divider sx={{ py: 1, mb: 2 }} />
         {!prop.width
-          ? ItemComment()
+          ? ItemComment(prop.comment)
           : DetailDescribe("Detail", "제품상세", prop.detail)}
       </Grid>
     </Paper>

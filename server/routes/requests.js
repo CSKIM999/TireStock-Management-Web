@@ -11,6 +11,24 @@ router.post("/", (req, res) => {
   });
 });
 
+router.post("/:_id", (req, res) => {
+  const _id = req.params._id;
+  const newComment = {
+    date: new Date(),
+    writer: req.body.writer,
+    comment: req.body.comment,
+  };
+
+  Request.findByIdAndUpdate(_id, { $push: { comment: newComment } }).exec(
+    (err, body) => {
+      if (err) return res.status(404).json({ success: false, errorcode: err });
+      return res
+        .status(200)
+        .json({ success: true, payload: body.comment, test: req.body });
+    }
+  );
+});
+
 router.get("/", (req, res) => {
   // limit & skip 에 맞는 정보들과 find 해서 가져올거니
   const page = req.query.page;

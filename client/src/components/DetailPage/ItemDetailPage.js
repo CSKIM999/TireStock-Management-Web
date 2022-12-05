@@ -48,6 +48,7 @@ const handleItem = (item, response) => {
       temp.title = response.title;
       temp.type = undefined;
       temp.data.detail = response.detail;
+      temp.data.comment = response.comment;
       return temp;
     default:
       return false;

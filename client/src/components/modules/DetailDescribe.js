@@ -64,7 +64,12 @@ const DetailDescribe = (title, caption, body) => {
       >
         <Paper
           elevation={0}
-          sx={{ maxHeight: 250, overflow: "auto", bgcolor: "background.main" }}
+          sx={{
+            minHeight: 150,
+            maxHeight: 250,
+            overflow: "auto",
+            bgcolor: "background.paper",
+          }}
         >
           <Typography>{body ? body : testString}</Typography>
           <Typography>Detail description</Typography>
