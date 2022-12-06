@@ -16,6 +16,7 @@ router.post("/:_id", (req, res) => {
   const newComment = {
     date: new Date(),
     writer: req.body.writer,
+    w_id: req.body.w_id,
     comment: req.body.comment,
   };
 

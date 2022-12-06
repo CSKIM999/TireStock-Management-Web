@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const commentSchema = Schema({
   date: { type: Date, required: true },
   writer: { type: String, required: true },
+  w_id: { type: String, required: true },
   comment: { type: String },
 });
 

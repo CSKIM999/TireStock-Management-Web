@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Stack } from "@mui/material";
-import LoginButton from "./LoginButton";
+import UserAccount from "./UserAccount";
 
 const pages = ["HOME", "타이어", "휠", "복원 및 문의"];
 const pageURL = {
@@ -45,7 +45,7 @@ function NavRight(props) {
           </Button>
         ))}
       </Stack>
-      <LoginButton />
+      <UserAccount />
     </Stack>
   );
 }

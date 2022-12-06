@@ -20,6 +20,7 @@
   "homepage": "https://github.com/CSKIM999/TireStock-Management-Web#readme",
   "dependencies": {
     "@material-ui/styles": "^4.11.5",
+    "@reduxjs/toolkit": "^1.9.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "concurrently": "^7.3.0",
