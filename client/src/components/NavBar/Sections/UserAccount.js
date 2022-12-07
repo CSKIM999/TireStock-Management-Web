@@ -1,7 +1,15 @@
 import * as React from "react";
-import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { GroupAdd, Login, Logout } from "@mui/icons-material";
-import LoginButton from "../../modules/LoginButton";
+import LoginModule from "../../modules/LoginModule";
+import RegistModule from "../../modules/RegistModule";
 
 function UserAccount(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -17,6 +25,7 @@ function UserAccount(props) {
   const ItemSX = (A, B) => {
     return {
       display: props.login ? A : B,
+      p: 0,
     };
   };
   return (
@@ -37,13 +46,18 @@ function UserAccount(props) {
           horizontal: "left",
         }}
       >
-        <MenuItem id="login" onClick={handleClose} sx={ItemSX("none", "flex")}>
-          <Login sx={{ pr: 0.5 }} />
-          <Typography>로그인</Typography>
+        <MenuItem id="login" sx={ItemSX("none", "flex")}>
+          {/* <Button sx={{ px: 2, py: 1 }} startIcon={<Login />}>
+            로그인
+          </Button> */}
+          {LoginModule(handleClose)}
+          {/* <Login sx={{ pr: 0.5 }} />
+          <Typography>로그인</Typography> */}
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={ItemSX("none", "flex")}>
-          <GroupAdd sx={{ pr: 0.5 }} />
-          <Typography>회원가입</Typography>
+        <MenuItem sx={ItemSX("none", "flex")}>
+          {RegistModule(handleClose)}
+          {/* <GroupAdd sx={{ pr: 0.5 }} />
+          <Typography>회원가입</Typography> */}
         </MenuItem>
         <MenuItem onClick={handleClose} sx={ItemSX("flex", "none")}>
           <Logout sx={{ pr: 0.5 }} />

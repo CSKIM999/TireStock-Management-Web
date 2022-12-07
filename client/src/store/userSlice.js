@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   _id: "",
+  isAuth: "", //true
+  isAdmin: "",
   email: "",
   username: "",
 };
@@ -35,8 +37,9 @@ const userSlice = createSlice({
     logoutUser: () => {
       return { ...initialState };
     },
+    auth: (state) => {},
   },
 });
 
-export const { loginUser, logoutUser, testUser } = userSlice.actions;
+export const { loginUser, logoutUser, testUser, auth } = userSlice.actions;
 export default userSlice;
