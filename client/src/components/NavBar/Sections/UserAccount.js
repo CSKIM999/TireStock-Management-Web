@@ -59,7 +59,7 @@ function UserAccount(props) {
           {/* <GroupAdd sx={{ pr: 0.5 }} />
           <Typography>회원가입</Typography> */}
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={ItemSX("flex", "none")}>
+        <MenuItem sx={ItemSX("flex", "none")}>
           <Logout sx={{ pr: 0.5 }} />
           <Typography>로그아웃</Typography>
         </MenuItem>

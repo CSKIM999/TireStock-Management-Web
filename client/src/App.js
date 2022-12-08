@@ -11,15 +11,18 @@ import ServicePage from "./components/ServicePage/ServicePage";
 import FAQPage from "./components/FAQPage/FAQPage";
 import ItemDetailPage from "./components/DetailPage/ItemDetailPage";
 
+const appWidth = 1600;
+
 function App() {
   return (
     // github-page 에서 deploy 할 경우 browserRouter 은 작동하지 않을 수 있음.
     // BrouserRouter => HashRouter 로 대체가능.
 
     <Router>
-      <Stack height="100vh">
-        <NavBar />
-        <Grid container height="100%">
+      <Stack height="100vh" sx={{ alignItems: "center" }}>
+        <NavBar maxWidth={appWidth} />
+        {/* <Grid container height="100%"> */}
+        <Grid container height="100%" maxWidth={appWidth}>
           <Grid item xs={1}>
             <SideBar />
           </Grid>

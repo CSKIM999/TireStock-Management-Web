@@ -1,7 +1,12 @@
 import { Divider, Grid, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { logoutUser, testUser } from "../../../store/userSlice";
+import {
+  auth,
+  loginUser,
+  logoutUser,
+  testUser,
+} from "../../../store/userSlice";
 
 function Items() {
   const dispatch = useDispatch();
@@ -31,8 +36,10 @@ function Items() {
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography>MAPS</Typography>
-        <button onClick={() => dispatch(testUser())}>TEST</button>
-        <button onClick={() => dispatch(logoutUser())}>LOGOUT</button>
+        {/* <button onClick={() => dispatch(loginUser({ item: "hi" }))}>
+          TEST
+        </button>
+        <button onClick={() => dispatch(logoutUser())}>LOGOUT</button> */}
       </Grid>
     </React.Fragment>
   );

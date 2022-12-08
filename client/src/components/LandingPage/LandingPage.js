@@ -6,8 +6,8 @@ import Items from "./Sections/Items";
 function LandingPage() {
   console.log("landing");
   return (
-    <Box>
-      <Grid container direction="column" height="100vh">
+    <Box sx={{ height: "100%" }}>
+      <Grid container direction="column" height="100%">
         {/* COVER */}
         <Grid item xs={6}>
           <Cover />

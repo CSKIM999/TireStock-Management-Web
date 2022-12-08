@@ -12,14 +12,12 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     minlength: 4,
+    maxlength: 12,
   },
   nickname: {
     type: String,
+    minlength: 2,
     maxlength: 10,
-  },
-  role: {
-    type: Number,
-    default: 0,
   },
   token: {
     type: String,

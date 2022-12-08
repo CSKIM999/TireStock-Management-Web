@@ -15,11 +15,12 @@ const pageMap = {
   휠: "wheels",
   "복원 및 문의": "requests",
 };
-function NavRight(props) {
+function NavRight() {
   const nowPath = window.location.pathname.split("/")[1];
   return (
     <Stack direction="row" alignItems="center" spacing={5} sx={{ pr: 3 }}>
       <Stack
+        justifyContent="flex-end"
         direction="row"
         alignItems="center"
         spacing={5}

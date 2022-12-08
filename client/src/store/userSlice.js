@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import * as Axios from "axios";
 
 const initialState = {
   _id: "",
   isAuth: "", //true
   isAdmin: "",
   email: "",
-  username: "",
+  nickname: "",
 };
 
 // 이렇게 loading state를 통해서 skeleton 이나 progress 사용하는것도 좋아보임.
@@ -29,15 +30,40 @@ const userSlice = createSlice({
       state.email = "abcd";
       state.username = "김찬섭";
     },
+    registerUser: (state, action) => {
+      const request = Axios.post("/api/users/register", action.payload.body, {
+        withCredentials: true,
+      }).then((response) => response.data);
+    },
     loginUser: (state, action) => {
-      state._id = action.payload._id;
-      state.email = action.payload.email;
-      state.username = action.payload.username;
+      const request = Axios.post("/api/users/login", action.payload.body, {
+        withCredentials: true,
+      }).then((response) => {
+        console.log(response.data);
+        return response.data;
+      });
+      const testObject = {
+        _id: 1234,
+        isAdmin: true,
+        isAuth: true,
+        email: "test@te.st",
+        nickname: "cskim",
+      };
+      return { ...testObject };
     },
     logoutUser: () => {
       return { ...initialState };
     },
-    auth: (state) => {},
+    auth: (state, action) => {
+      const nativeToken = action.payload.nativeToken;
+      const token = !nativeToken ? "" : nativeToken;
+      const request = Axios.get("/api/users/auth", {
+        params: { token: token },
+        withCredentials: true,
+      }).then((response) => response.data);
+
+      console.log(request);
+    },
   },
 });
 

@@ -18,6 +18,12 @@ const LoginModule = (CloseMenu) => {
   const [Password, setPassword] = React.useState("");
   React.useEffect(() => {}, []);
 
+  const stopPropagationForTab = (event) => {
+    if (event.key === "Tab") {
+      event.stopPropagation();
+    }
+  };
+
   const IsValid = (str) => {
     if (isEmail(str)) {
       setValidate(false);
@@ -49,7 +55,11 @@ const LoginModule = (CloseMenu) => {
       >
         로그인
       </Button>
-      <Dialog open={DialogOpen} onClose={handleDialog}>
+      <Dialog
+        open={DialogOpen}
+        onKeyDown={stopPropagationForTab}
+        onClose={handleDialog}
+      >
         <DialogTitle>로그인</DialogTitle>
         <Stack spacing={2} sx={{ px: 3, py: 2 }}>
           <TextField

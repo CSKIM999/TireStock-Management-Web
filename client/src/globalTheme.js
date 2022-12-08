@@ -2,16 +2,34 @@ import { createTheme } from "@mui/material/styles";
 const bgColor = "#242424";
 const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#b3b3b3" }; //main-light-dark
 const CardBgColor = "#333333";
+const errorColor = "#ea605d";
+const successColor = "#6fbf73";
 const pointColor = "#FF8736";
 const complementaryColor = "#02A9B3";
 
 export const globalTheme = createTheme({
   components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active  {
+          -webkit-box-shadow: 0 0 0 100px ${bgColor} inset !important;
+          -webkit-text-fill-color: ${ftColor.main}
+        }
+      `,
+    },
     MuiAccordion: {
       styleOverrides: {
         root: {
           borderRadius: "0 !important",
         },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {},
       },
     },
     MuiGrid: {
@@ -48,6 +66,13 @@ export const globalTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
+          ".success fieldset": {
+            border: "2px solid",
+            borderColor: successColor,
+          },
+          ".success label": {
+            color: successColor,
+          },
           "& ::-webkit-scrollbar": {
             width: ".7rem",
           },
@@ -142,16 +167,16 @@ export const globalTheme = createTheme({
     },
     secondary: {
       main: complementaryColor,
-      dark: "#ea605d!important",
+      dark: "#ea605d !important",
     },
     info: {
       main: ftColor.dark,
     },
     error: {
-      main: "#ea605d",
+      main: errorColor,
     },
     success: {
-      main: "#6fbf73",
+      main: successColor,
     },
     divider: pointColor,
   },
