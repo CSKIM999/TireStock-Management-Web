@@ -8,8 +8,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import * as Axios from "axios";
 import isEmail from "validator/lib/isEmail";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../../store/userSlice";
+
 const RegistModule = (CloseMenu) => {
   const [DialogOpen, setDialog] = React.useState(false);
   const [Validate, setValidate] = React.useState(false);
@@ -17,6 +21,8 @@ const RegistModule = (CloseMenu) => {
   const [Password, setPassword] = React.useState("");
   const [Compare, setCompare] = React.useState("");
   const [NickName, setNickName] = React.useState("");
+  const dispatch = useDispatch();
+
   const stateReset = () => {
     setEmail("");
     setPassword("");
@@ -96,7 +102,15 @@ const RegistModule = (CloseMenu) => {
       if (Password !== Compare) {
         return alert("비밀번호가 일치하지 않습니다");
       }
-      console.log(Email, Password, Compare, NickName);
+      const body = {
+        email: Email,
+        password: Password,
+        nickname: NickName,
+      };
+      console.log("ON DISPATCH", body);
+      dispatch(registerUser({ body })).then((response) => {
+        console.log(response);
+      });
       CloseMenu();
       setDialog(false);
       stateReset();
@@ -181,7 +195,7 @@ const RegistModule = (CloseMenu) => {
             onChange={(event) => setNickName(event.target.value)}
           />
           <Stack direction="row-reverse">
-            <Button onClick={handleSubmit}>로그인</Button>
+            <Button onClick={handleSubmit}>확인</Button>
             <Button onClick={handleDialog}>취소</Button>
           </Stack>
         </Stack>

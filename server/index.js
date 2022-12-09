@@ -13,7 +13,7 @@ app.use(cookieParser());
 mongoose
   .connect(config.mongoURI, {})
   .then(() => console.log("MongoDB CONNECTED..."))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Mongoose Connect ERROR", err));
 
 app.use("/api/users", require("./routes/users"));
 app.use("/api/tires", require("./routes/tires"));

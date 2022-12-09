@@ -31,6 +31,7 @@ const userSlice = createSlice({
       state.username = "김찬섭";
     },
     registerUser: (state, action) => {
+      console.log("DISPATCH REGISTUSER", action);
       const request = Axios.post("/api/users/register", action.payload.body, {
         withCredentials: true,
       }).then((response) => response.data);
@@ -67,5 +68,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser, testUser, auth } = userSlice.actions;
+export const { registerUser, loginUser, logoutUser, testUser, auth } =
+  userSlice.actions;
 export default userSlice;

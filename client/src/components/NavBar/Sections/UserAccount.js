@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { GroupAdd, Login, Logout } from "@mui/icons-material";
-import LoginModule from "../../modules/LoginModule";
-import RegistModule from "../../modules/RegistModule";
+import LoginModule from "../modules/LoginModule";
+import RegistModule from "../modules/RegistModule";
 
 function UserAccount(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
