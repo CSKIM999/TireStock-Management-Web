@@ -108,9 +108,7 @@ const RegistModule = (CloseMenu) => {
         nickname: NickName,
       };
       console.log("ON DISPATCH", body);
-      dispatch(registerUser({ body })).then((response) => {
-        console.log(response);
-      });
+      dispatch(registerUser({ body }));
       CloseMenu();
       setDialog(false);
       stateReset();

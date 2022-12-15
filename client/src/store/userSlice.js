@@ -34,13 +34,15 @@ const userSlice = createSlice({
       console.log("DISPATCH REGISTUSER", action);
       const request = Axios.post("/api/users/register", action.payload.body, {
         withCredentials: true,
-      }).then((response) => response.data);
+      }).then((response) => {
+        console.log("IN SLICE", response.data);
+        return response.data;
+      });
     },
     loginUser: (state, action) => {
       const request = Axios.post("/api/users/login", action.payload.body, {
         withCredentials: true,
       }).then((response) => {
-        console.log(response.data);
         return response.data;
       });
       const testObject = {
