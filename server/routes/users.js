@@ -13,7 +13,6 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  console.log(req.body);
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
       return res.json({
@@ -35,7 +34,12 @@ router.post("/login", (req, res) => {
         res
           .cookie("x_auth", user.token, { sameSite: "none", secure: true })
           .status(200)
-          .json({ loginSuccess: true, userId: user._id, token: user.token });
+          .json({
+            loginSuccess: true,
+            userId: user._id,
+            token: user.token,
+            userData: user,
+          });
       });
     });
   });

@@ -11,17 +11,31 @@ import {
 } from "@mui/material";
 import isEmail from "validator/lib/isEmail";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../store/userSlice";
 const LoginModule = (CloseMenu) => {
   const [DialogOpen, setDialog] = React.useState(false);
   const [Validate, setValidate] = React.useState(false);
   const [Email, setEmail] = React.useState("");
   const [Password, setPassword] = React.useState("");
+  const dispatch = useDispatch();
   React.useEffect(() => {}, []);
 
-  const stopPropagationForTab = (event) => {
-    if (event.key === "Tab") {
-      event.stopPropagation();
-    }
+  const keyDownTab = (event) => {
+    console.log("KEYDOWN TAB");
+    event.stopPropagation();
+  };
+  const keyDownEnter = (event) => {
+    console.log("KEYDOWN ENTER");
+    handleSubmit();
+  };
+  const eventMap = {
+    Tab: keyDownTab,
+    Enter: keyDownEnter,
+  };
+
+  const KeydownEvent = (event) => {
+    eventMap[event.key]?.(event);
   };
 
   const IsValid = (str) => {
@@ -36,6 +50,11 @@ const LoginModule = (CloseMenu) => {
     IsValid(Email);
     if (isEmail(Email)) {
       console.log(Email, Password);
+      const body = {
+        email: Email,
+        password: Password,
+      };
+      dispatch(loginUser({ body }));
       CloseMenu();
       setDialog(false);
     } else {
@@ -55,11 +74,7 @@ const LoginModule = (CloseMenu) => {
       >
         로그인
       </Button>
-      <Dialog
-        open={DialogOpen}
-        onKeyDown={stopPropagationForTab}
-        onClose={handleDialog}
-      >
+      <Dialog open={DialogOpen} onKeyDown={KeydownEvent} onClose={handleDialog}>
         <DialogTitle>로그인</DialogTitle>
         <Stack spacing={2} sx={{ px: 3, py: 2 }}>
           <TextField
@@ -69,7 +84,6 @@ const LoginModule = (CloseMenu) => {
             error={Validate}
             helperText={!Validate ? "" : "올바른 이메일을 입력해주세요"}
             placeholder="DUMMY@gmail.com"
-            multiline
             variant="outlined"
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -78,7 +92,6 @@ const LoginModule = (CloseMenu) => {
             label="비밀번호"
             type="password"
             placeholder="DUMMY@gmail.com"
-            multiline
             variant="outlined"
             onChange={(event) => setPassword(event.target.value)}
           />

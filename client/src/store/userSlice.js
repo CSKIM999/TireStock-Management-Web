@@ -25,11 +25,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    testUser: (state) => {
-      state._id = "123";
-      state.email = "abcd";
-      state.username = "김찬섭";
-    },
     registerUser: (state, action) => {
       console.log("DISPATCH REGISTUSER", action);
       const request = Axios.post("/api/users/register", action.payload.body, {
@@ -40,9 +35,12 @@ const userSlice = createSlice({
       });
     },
     loginUser: (state, action) => {
+      console.log("dispatch Success ...", action.payload.body);
       const request = Axios.post("/api/users/login", action.payload.body, {
         withCredentials: true,
       }).then((response) => {
+        console.log("test user response ", request);
+        console.log("Login Success IN SLICE ...", response.data);
         return response.data;
       });
       const testObject = {
@@ -52,7 +50,7 @@ const userSlice = createSlice({
         email: "test@te.st",
         nickname: "cskim",
       };
-      return { ...testObject };
+      // return { ...testObject };
     },
     logoutUser: () => {
       return { ...initialState };

@@ -36,7 +36,6 @@ const RegistModule = (CloseMenu) => {
   };
 
   const dict = {
-    //comment1 = min & comment2 = max
     Email: {
       case1: Validate,
       case2: true,
