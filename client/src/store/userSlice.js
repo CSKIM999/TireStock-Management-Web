@@ -55,6 +55,13 @@ const userSlice = createSlice({
     logoutUser: () => {
       return { ...initialState };
     },
+    testUser: (state, action) => {
+      const request = Axios.post("/api/users/login", action.payload.body, {
+        withCredentials: true,
+      }).then((response) => {
+        console.log("testResponse", response);
+      });
+    },
     auth: (state, action) => {
       const nativeToken = action.payload.nativeToken;
       const token = !nativeToken ? "" : nativeToken;

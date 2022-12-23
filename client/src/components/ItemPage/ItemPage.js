@@ -6,8 +6,14 @@ import ItemBoard from "./Sections/ItemBoard";
 import itemOptionTable from "./util/itemOptionTable";
 import BreadCrumb from "../modules/BreadCrumb";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { testUser } from "../../store/userSlice";
 const tireKeys = Object.keys(itemOptionTable.tire);
 function ItemPage(props) {
+  // tdz
+  const dispatch = useDispatch();
+  //
+
   console.log(props);
   const [OptionValue, setOptionValue] = React.useState(
     props.item === "tires"
@@ -27,6 +33,7 @@ function ItemPage(props) {
     });
     Axios.get(keywordURL).then((response) => {
       if (response) {
+        console.log("???", response);
         setSearchedItem(response.data.payload);
       } else {
         console.log("axios error in ITEMPAGE");
@@ -47,7 +54,13 @@ function ItemPage(props) {
         {OptionBoard(props.item, handleOption)}
       </Grid>
       <ItemBoard renderData={SearchedItem} />
-      <Button onClick={() => console.log(window.location.pathname, type)}>
+      <Button
+        onClick={() => {
+          dispatch(
+            testUser({ body: { email: "test@te.st", password: "1234" } })
+          );
+        }}
+      >
         CHECK
       </Button>
     </Grid>

@@ -4,6 +4,10 @@ const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
+router.post("/test", (req, res) => {
+  return res.status(200);
+});
+
 router.post("/register", (req, res) => {
   const user = new User(req.body);
   user.save((err, userInfo) => {
@@ -14,12 +18,16 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
+    console.log("requset success", req.body);
+
     if (!user) {
       return res.json({
         loginSuccess: false,
         message: "ID ERROR",
+        body: req.body,
       });
     }
+    console.log("user seccess");
 
     user.comparePassword(req.body.password, (err, Match) => {
       if (!Match) {
