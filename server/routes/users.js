@@ -18,8 +18,6 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
-    console.log("requset success", req.body);
-
     if (!user) {
       return res.json({
         loginSuccess: false,
@@ -27,8 +25,6 @@ router.post("/login", (req, res) => {
         body: req.body,
       });
     }
-    console.log("user seccess");
-
     user.comparePassword(req.body.password, (err, Match) => {
       if (!Match) {
         return res.json({
@@ -36,9 +32,9 @@ router.post("/login", (req, res) => {
           message: "PASSWORD ERROR",
         });
       }
-
       user.genToken((err, user) => {
         if (err) return res.status(400).send(err);
+        console.log("HI~ IM HERE~", user);
         res
           .cookie("x_auth", user.token, { sameSite: "none", secure: true })
           .status(200)
@@ -46,7 +42,8 @@ router.post("/login", (req, res) => {
             loginSuccess: true,
             userId: user._id,
             token: user.token,
-            userData: user,
+            nickname: user.nickname,
+            role: user.role,
           });
       });
     });

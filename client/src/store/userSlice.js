@@ -1,11 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as Axios from "axios";
 
 const initialState = {
-  _id: "",
-  isAuth: "", //true
-  isAdmin: "",
-  email: "",
+  userId: "",
+  role: "", //true
   nickname: "",
 };
 
@@ -21,6 +19,19 @@ const initialState = {
 //   state.loading = false;
 //   state.data = [];
 // },
+
+export const test = createAsyncThunk("ASYNC_LOGIN", async (payload) => {
+  console.log("IN ASYNC ", payload.body);
+  const request = await Axios.post("/api/users/login", payload.body, {
+    withCredentials: true,
+  }).then((response) => {
+    console.log("IN ASYNC ACTION", response);
+    if (response.data.loginSuccess) return response.data;
+  });
+  if (request) return request;
+  return { loginSuccess: false };
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -29,27 +40,24 @@ const userSlice = createSlice({
       console.log("DISPATCH REGISTUSER", action);
       const request = Axios.post("/api/users/register", action.payload.body, {
         withCredentials: true,
-      }).then((response) => {
-        console.log("IN SLICE", response.data);
-        return response.data;
       });
+      // }).then((response) => {
+      //   console.log("IN SLICE", response.data);
+      //   return response.data;
+      // });
     },
-    loginUser: (state, action) => {
+    loginUser: async (state, action) => {
       console.log("dispatch Success ...", action.payload.body);
-      const request = Axios.post("/api/users/login", action.payload.body, {
-        withCredentials: true,
-      }).then((response) => {
-        console.log("test user response ", request);
-        console.log("Login Success IN SLICE ...", response.data);
-        return response.data;
+      const request = await Axios.post(
+        "/api/users/login",
+        action.payload.body,
+        {
+          withCredentials: true,
+        }
+      ).then((response) => {
+        if (response.data.loginSuccess) return response.data.userData;
       });
-      const testObject = {
-        _id: 1234,
-        isAdmin: true,
-        isAuth: true,
-        email: "test@te.st",
-        nickname: "cskim",
-      };
+      console.log("REQ >> ", request);
       // return { ...testObject };
     },
     logoutUser: () => {
@@ -72,6 +80,11 @@ const userSlice = createSlice({
 
       console.log(request);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(test.fulfilled, (state, action) => {
+      console.log("ACTION IN BUILDER", action);
+    });
   },
 });
 

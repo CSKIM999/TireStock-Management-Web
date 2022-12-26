@@ -18,11 +18,6 @@ function MatchItem(props) {
 }
 
 const ItemBoard = (props) => {
-  console.log(props.renderData.length);
-  // React.useEffect(() => {
-
-  // }, [props.renderData]);
-
   return (
     <Grid item container spacing={5} direction="row">
       {MatchItem(props)}

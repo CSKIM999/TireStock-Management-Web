@@ -12,12 +12,15 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     minlength: 4,
-    maxlength: 12,
   },
   nickname: {
     type: String,
     minlength: 2,
     maxlength: 10,
+  },
+  role: {
+    type: Number,
+    default: 0,
   },
   token: {
     type: String,
@@ -55,7 +58,6 @@ userSchema.methods.genToken = function (cb) {
   let token = jwt.sign(user._id.toHexString(), "secretToken");
   user.token = token;
   user.save(function (err, user) {
-    console.log(user, err);
     if (err) return cb(err);
     cb(null, user);
   });
