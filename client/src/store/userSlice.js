@@ -3,8 +3,11 @@ import * as Axios from "axios";
 
 const initialState = {
   userId: "",
-  role: "", //true
+  token: "",
   nickname: "",
+  role: "", //true
+  loading: false,
+  state: { type: undefined, data: undefined },
 };
 
 // 이렇게 loading state를 통해서 skeleton 이나 progress 사용하는것도 좋아보임.
@@ -20,51 +23,79 @@ const initialState = {
 //   state.data = [];
 // },
 
-export const test = createAsyncThunk("ASYNC_LOGIN", async (payload) => {
-  console.log("IN ASYNC ", payload.body);
+export const loginUser = createAsyncThunk("ASYNC_LOGIN", async (payload) => {
   const request = await Axios.post("/api/users/login", payload.body, {
     withCredentials: true,
   }).then((response) => {
-    console.log("IN ASYNC ACTION", response);
     if (response.data.loginSuccess) return response.data;
   });
   if (request) return request;
   return { loginSuccess: false };
 });
 
+export const logoutUser = createAsyncThunk("ASYNC_LOGOUT", async (payload) => {
+  const request = await Axios.get("/api/users/logout", {
+    params: { token: payload.token },
+    withCredentials: true,
+  });
+  if (request.data.success) return { success: true, ...initialState };
+  return;
+});
+
+export const registerUser = createAsyncThunk(
+  "ASYNC_REGISTER",
+  async (payload, { rejectWithValue }) => {
+    const request = await Axios.post("/api/users/register", payload.body, {
+      withCredentials: true,
+    });
+    console.log(request);
+    if (!request.data.success)
+      return rejectWithValue(request.data.err.keyValue);
+    return { success: true };
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    registerUser: (state, action) => {
-      console.log("DISPATCH REGISTUSER", action);
-      const request = Axios.post("/api/users/register", action.payload.body, {
-        withCredentials: true,
-      });
-      // }).then((response) => {
-      //   console.log("IN SLICE", response.data);
-      //   return response.data;
-      // });
-    },
-    loginUser: async (state, action) => {
-      console.log("dispatch Success ...", action.payload.body);
-      const request = await Axios.post(
-        "/api/users/login",
-        action.payload.body,
-        {
-          withCredentials: true,
-        }
-      ).then((response) => {
-        if (response.data.loginSuccess) return response.data.userData;
-      });
-      console.log("REQ >> ", request);
-      // return { ...testObject };
-    },
-    logoutUser: () => {
-      return { ...initialState };
-    },
+    // registerUser: (state, action) => {
+    //   console.log("DISPATCH REGISTUSER", action);
+    //   Axios.post("/api/users/register", action.payload.body, {
+    //     withCredentials: true,
+    //   });
+    // },
+
+    // loginUser: async (state, action) => {
+    //   console.log("dispatch Success ...", action.payload.body);
+    //   const request = await Axios.post(
+    //     "/api/users/login",
+    //     action.payload.body,
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   ).then((response) => {
+    //     if (response.data.loginSuccess) return response.data.userData;
+    //   });
+    //   console.log("REQ >> ", request);
+    //   // return { ...testObject };
+    // },
+
+    // logoutUser: (state, action) => {
+    //   Axios.get("/api/users/logout", {
+    //     params: { token: action.token },
+    //     withCredentials: true,
+    //   }).then((response) => {
+    //     if (response.data.error) {
+    //       console.log(response);
+    //       alert("LOGOUT ERROR");
+    //       return
+    //     }
+    //   });
+    //   return { ...initialState };
+    // },
     testUser: (state, action) => {
-      const request = Axios.post("/api/users/login", action.payload.body, {
+      Axios.post("/api/users/login", action.payload.body, {
         withCredentials: true,
       }).then((response) => {
         console.log("testResponse", response);
@@ -82,12 +113,38 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(test.fulfilled, (state, action) => {
-      console.log("ACTION IN BUILDER", action);
-    });
+    builder
+      .addCase(loginUser.fulfilled, (state, action) => {
+        if (action.payload.loginSuccess) {
+          const { loginSuccess, ...response } = action.payload;
+          return { ...response };
+        } else {
+          alert("LOGIN FAILED");
+        }
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        if (action.payload.success) {
+          return { ...initialState };
+        } else {
+          alert("LOGOUT ERROR");
+        }
+        console.log(action);
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.state.type = "pending";
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        console.log(action);
+        state.loading = false;
+        state.state.type = "rejected";
+        state.state.data = Object.keys(action.payload)[0];
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        console.log("console in addCase", action);
+      });
   },
 });
 
-export const { registerUser, loginUser, logoutUser, testUser, auth } =
-  userSlice.actions;
+export const { testUser, auth } = userSlice.actions;
 export default userSlice;

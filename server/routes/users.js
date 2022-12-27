@@ -34,7 +34,6 @@ router.post("/login", (req, res) => {
       }
       user.genToken((err, user) => {
         if (err) return res.status(400).send(err);
-        console.log("HI~ IM HERE~", user);
         res
           .cookie("x_auth", user.token, { sameSite: "none", secure: true })
           .status(200)

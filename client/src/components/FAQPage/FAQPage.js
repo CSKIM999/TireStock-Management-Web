@@ -32,7 +32,6 @@ function FAQPage() {
     const optionURL = DocumentsCount ? `/?page=${Page}` : "";
     Axios.get("/api/requests" + optionURL).then((response) => {
       if (response) {
-        console.log(response);
         if (!DocumentsCount && response.data.totalDocuments) {
           setDocumentsCount(parseInt(response.data.totalDocuments / 10) + 1);
         }

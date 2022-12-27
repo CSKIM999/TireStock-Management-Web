@@ -10,9 +10,18 @@ import {
 import { GroupAdd, Login, Logout } from "@mui/icons-material";
 import LoginModule from "../modules/LoginModule";
 import RegistModule from "../modules/RegistModule";
+import LogoutModule from "../modules/LogoutModule";
+import { useSelector } from "react-redux";
 
 function UserAccount(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [user, setUser] = React.useState(useSelector((state) => state.user));
+  const userState = useSelector((state) => state.user);
+  React.useEffect(() => {
+    setUser(userState);
+    console.log("USER STATE CHANGE DETECTED", user);
+  }, [userState]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -22,12 +31,17 @@ function UserAccount(props) {
   };
   const open = Boolean(anchorEl);
 
-  const ItemSX = (A, B) => {
+  const ItemSX = (map) => {
     return {
-      display: props.login ? A : B,
+      display: user.userId && user.userId.length > 0 ? map.alpha : map.beta,
       p: 0,
     };
   };
+  const itemMap = {
+    login: { alpha: "none", beta: "flex" },
+    logout: { beta: "none", alpha: "flex" },
+  };
+
   return (
     <Box>
       <IconButton
@@ -46,7 +60,7 @@ function UserAccount(props) {
           horizontal: "left",
         }}
       >
-        <MenuItem id="login" sx={ItemSX("none", "flex")}>
+        <MenuItem id="login" sx={ItemSX(itemMap.login)}>
           {/* <Button sx={{ px: 2, py: 1 }} startIcon={<Login />}>
             로그인
           </Button> */}
@@ -54,14 +68,15 @@ function UserAccount(props) {
           {/* <Login sx={{ pr: 0.5 }} />
           <Typography>로그인</Typography> */}
         </MenuItem>
-        <MenuItem sx={ItemSX("none", "flex")}>
+        <MenuItem sx={ItemSX(itemMap.login)}>
           {RegistModule(handleClose)}
           {/* <GroupAdd sx={{ pr: 0.5 }} />
           <Typography>회원가입</Typography> */}
         </MenuItem>
-        <MenuItem sx={ItemSX("flex", "none")}>
-          <Logout sx={{ pr: 0.5 }} />
-          <Typography>로그아웃</Typography>
+        <MenuItem sx={ItemSX(itemMap.logout)}>
+          {LogoutModule(handleClose)}
+          {/* <Logout sx={{ pr: 0.5 }} />
+          <Typography>로그아웃</Typography> */}
         </MenuItem>
       </Menu>
     </Box>

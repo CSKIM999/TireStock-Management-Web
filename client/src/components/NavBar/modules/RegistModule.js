@@ -1,9 +1,10 @@
-import { GroupAdd } from "@mui/icons-material";
+import { GroupAdd, Pending } from "@mui/icons-material";
 import {
   Box,
   Button,
   Dialog,
   DialogTitle,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -11,33 +12,80 @@ import {
 import * as Axios from "axios";
 import isEmail from "validator/lib/isEmail";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../store/userSlice";
-
+import MuiAlert from "@mui/material/Alert";
 const RegistModule = (CloseMenu) => {
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   const [DialogOpen, setDialog] = React.useState(false);
-  const [Validate, setValidate] = React.useState(false);
+  const [emailValidate, setEmailValidate] = React.useState(false);
+  const [nickameValidate, setNicknameValidate] = React.useState(true);
+  const [snackbar, setSnackbar] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    content: "",
+  });
+  const [snackbarContent, setSnackbarContent] = React.useState("");
   const [Email, setEmail] = React.useState("");
   const [Password, setPassword] = React.useState("");
   const [Compare, setCompare] = React.useState("");
   const [NickName, setNickName] = React.useState("");
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user);
+  // TODO
+  // pending => loading 창 돌아가게
+  // reject => 리덕스에서 state.data 로 중복부분 추출 후 스낵바
+  // fulfilled => 회원가입 성공 (red-dot 부분 참고해서 다시구현)
+  React.useEffect(() => {
+    const rejectMap = {
+      email: "이메일",
+      nickname: "닉네임",
+    };
+    console.log(user.state?.type);
+    if (user.nickname.length === 0) {
+      switch (user.state?.type) {
+        case undefined:
+          console.log("undifined");
+          return;
+        case "pending":
+          console.log("pending");
+          return;
+        case "rejected":
+          console.log("rejected", user);
+          setSnackbar({
+            ...snackbar,
+            open: true,
+            content: rejectMap[user.state.data],
+          });
+          console.log(snackbar);
+          // setSnackbarOpen(true);
+          // setSnackbarContent();
+          return;
+        case "fulfilled":
+          console.log("fulfilled");
+          return;
+        default:
+          return;
+      }
+    }
+  }, [user]);
+  const typeSwitch = (target) => {
+    const [opt1, opt2, str1, str2, empty] = Object.values(target);
+    return opt1 ? str1 : opt2 ? str2 : str1;
+  };
   const stateReset = () => {
     setEmail("");
     setPassword("");
     setCompare("");
     setNickName("");
   };
-
-  const typeSwitch = (target) => {
-    const [opt1, opt2, str1, str2, empty] = Object.values(target);
-    return opt1 ? str1 : opt2 ? str2 : str1;
-  };
-
   const dict = {
     Email: {
-      case1: Validate,
+      case1: emailValidate,
       case2: true,
       alert1: "",
       alert2: "올바른 이메일을 입력해주세요",
@@ -67,7 +115,7 @@ const RegistModule = (CloseMenu) => {
   };
 
   const colorClassMap = {
-    Email: Validate ? "success" : "",
+    Email: emailValidate ? "success" : "",
     Password:
       !dict.Password.empty && !dict.Password.case1 && !dict.Password.case2
         ? "success"
@@ -77,7 +125,10 @@ const RegistModule = (CloseMenu) => {
         ? "success"
         : "",
     NickName:
-      !dict.NickName.empty && !dict.NickName.case1 && !dict.NickName.case2
+      nickameValidate &&
+      !dict.NickName.empty &&
+      !dict.NickName.case1 &&
+      !dict.NickName.case2
         ? "success"
         : "",
   };
@@ -89,12 +140,14 @@ const RegistModule = (CloseMenu) => {
   };
   const IsValid = (str) => {
     if (isEmail(str)) {
-      setValidate(false);
+      setEmailValidate(true);
     } else {
-      setValidate(true);
+      setEmailValidate(false);
     }
   };
-
+  const testFunc = () => {
+    console.log(user);
+  };
   const handleSubmit = () => {
     IsValid(Email);
     if (isEmail(Email)) {
@@ -106,11 +159,15 @@ const RegistModule = (CloseMenu) => {
         password: Password,
         nickname: NickName,
       };
-      console.log("ON DISPATCH", body);
       dispatch(registerUser({ body }));
-      CloseMenu();
-      setDialog(false);
-      stateReset();
+      // .then(testFunc());
+      // if (!user.loading) {
+      //   console.log('not Loading')
+      //   CloseMenu();
+      //   setDialog(false);
+      //   stateReset();
+      // } else {
+      // }
     } else {
       return alert("이메일 양식이 올바르지 않습니다");
     }
@@ -134,6 +191,17 @@ const RegistModule = (CloseMenu) => {
         onKeyDown={stopPropagationForTab}
         onClose={handleDialog}
       >
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          sx={{ mb: 10 }}
+        >
+          <Alert severity="error">
+            이미 사용중인 {snackbar.content} 입니다!
+          </Alert>
+        </Snackbar>
         <DialogTitle>회원가입</DialogTitle>
         <Stack spacing={2} sx={{ px: 3, py: 2 }}>
           <TextField
@@ -142,14 +210,14 @@ const RegistModule = (CloseMenu) => {
             label="아이디 / 이메일"
             type="email"
             value={Email}
-            error={!Validate && !dict.Email.empty}
+            error={!emailValidate && !dict.Email.empty}
             helperText={typeSwitch(dict.Email)}
             color={colorClassMap.Email}
             className={colorClassMap.Email}
             placeholder="DUMMY@gmail.com"
             variant="outlined"
             onChange={(event) => {
-              setValidate(isEmail(event.target.value));
+              setEmailValidate(isEmail(event.target.value));
               setEmail(event.target.value);
             }}
           />

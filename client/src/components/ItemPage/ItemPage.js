@@ -7,7 +7,7 @@ import itemOptionTable from "./util/itemOptionTable";
 import BreadCrumb from "../modules/BreadCrumb";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { test, testUser } from "../../store/userSlice";
+import { loginUser } from "../../store/userSlice";
 const tireKeys = Object.keys(itemOptionTable.tire);
 function ItemPage(props) {
   // tdz
@@ -54,7 +54,9 @@ function ItemPage(props) {
       <ItemBoard renderData={SearchedItem} />
       <Button
         onClick={() => {
-          dispatch(test({ body: { email: "test@te.st", password: "1234" } }));
+          dispatch(
+            loginUser({ body: { email: "test@te.st", password: "1234" } })
+          );
         }}
       >
         CHECK

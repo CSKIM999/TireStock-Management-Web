@@ -12,57 +12,66 @@ import {
 } from "@mui/material";
 import * as Axios from "axios";
 import { MapsUgc } from "@mui/icons-material";
-
-const commentInput = (prop) => {};
-
-const commentRender = (prop) => (
-  <Paper
-    elevation={0}
-    sx={{
-      width: "100%",
-      maxHeight: 250,
-      overflow: "auto",
-    }}
-  >
-    {prop.length > 0 &&
-      prop.map((item, index) => (
-        <Grid item container key={index} sx={{ py: 0.5 }}>
-          <Grid item xs={2}>
-            <Typography sx={{ pr: 2 }}>{item.writer}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography>{item.comment}</Typography>
-          </Grid>
-          {/* BUTTONBOX */}
-          <Grid item></Grid>
-        </Grid>
-      ))}
-    {prop.length === 0 && <Typography></Typography>}
-  </Paper>
-);
-
-const InputRender = (
-  <Paper
-    elevation={2}
-    component="form"
-    sx={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    }}
-  >
-    <InputBase
-      placeholder="원하시는 문의 댓글을 작성해주세요"
-      sx={{ width: "80%", p: 1 }}
-    />
-    <Button variant="contained" endIcon={<MapsUgc />} color="primary">
-      ENTER
-    </Button>
-  </Paper>
-);
+import { useSelector } from "react-redux";
 
 const ItemComment = (props) => {
+  const userNickname = useSelector((state) => state.user.nickname);
   React.useEffect(() => {}, []);
+
+  const commentRender = (prop) => (
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100%",
+        maxHeight: 250,
+        overflow: "auto",
+      }}
+    >
+      {prop.length > 0 &&
+        prop.map((item, index) => (
+          <Grid item container key={index} sx={{ py: 0.5 }}>
+            <Grid item xs={2}>
+              <Typography sx={{ pr: 2 }}>{item.writer}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>{item.comment}</Typography>
+            </Grid>
+            {/* BUTTONBOX */}
+            <Grid item></Grid>
+          </Grid>
+        ))}
+      {prop.length === 0 && <Typography></Typography>}
+    </Paper>
+  );
+  const commentInput = () => {
+    if (userNickname.length === 0) return alert("로그인이 필요합니다");
+    console.log("COMMENT INPUT SUCCESS");
+  };
+
+  const InputRender = (
+    <Paper
+      elevation={2}
+      component="form"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <InputBase
+        placeholder="원하시는 문의 댓글을 작성해주세요"
+        sx={{ width: "80%", p: 1 }}
+      />
+      <Button
+        variant="contained"
+        endIcon={<MapsUgc />}
+        color="primary"
+        onClick={commentInput}
+      >
+        ENTER
+      </Button>
+    </Paper>
+  );
   console.log(props);
   return (
     <Grid
