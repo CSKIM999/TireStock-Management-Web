@@ -19,10 +19,9 @@ router.post("/:_id", (req, res) => {
     w_id: req.body.w_id,
     comment: req.body.comment,
   };
-
   Request.findByIdAndUpdate(_id, { $push: { comment: newComment } }).exec(
     (err, body) => {
-      if (err) return res.status(404).json({ success: false, errorcode: err });
+      if (err) return res.status(400).json({ success: false, errorcode: err });
       return res
         .status(200)
         .json({ success: true, payload: body.comment, test: req.body });
@@ -62,5 +61,23 @@ router.get("/:_id", (req, res) => {
     return res.status(200).json({ success: true, payload: body });
   });
 });
+router.delete("/:_id", (req, res) => {
+  const _id = req.params._id;
+  console.log("on REQ DEL", _id);
+  return res.status(200).json({ success: true });
+});
+router.delete("/:_id/:commentId", (req, res) => {
+  const _id = req.params._id;
+  const commentId = req.params.commentId;
 
+  Request.findByIdAndUpdate(_id, {
+    $pull: { comment: { _id: commentId } },
+  }).exec((err, body) => {
+    if (err) return res.status(400).json({ success: false, errorcode: err });
+    else
+      return res
+        .status(200)
+        .json({ success: true, payload: body.comment, test: req.body });
+  });
+});
 module.exports = router;

@@ -11,12 +11,57 @@ import {
   Typography,
 } from "@mui/material";
 import * as Axios from "axios";
-import { MapsUgc } from "@mui/icons-material";
+import { HighlightOff, MapsUgc } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const ItemComment = (props) => {
-  const userNickname = useSelector((state) => state.user.nickname);
+  const user = useSelector((state) => state.user);
+  const RequestId = useParams().id;
+  const [Comment, setComment] = React.useState("");
   React.useEffect(() => {}, []);
+  const commentHandler = () => {
+    if (user.nickname.length === 0) return alert("로그인이 필요합니다");
+    if (Comment.trim().length === 0) return alert("댓글 내용을 작성해주세요");
+    const request = Axios.post(`/api/requests/${RequestId}`, {
+      writer: user.nickname,
+      w_id: user.userId,
+      comment: Comment.trim(),
+    }).then((response) => {
+      console.log(response);
+    });
+  };
+  const onDelete = (_id) => {
+    const request = Axios.delete(`/api/requests/${RequestId}/${_id}`);
+  };
+
+  const InputRender = (
+    <Paper
+      elevation={2}
+      component="form"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <InputBase
+        placeholder="원하시는 문의 댓글을 작성해주세요"
+        sx={{ width: "80%", p: 1 }}
+        onChange={(event) => {
+          setComment(event.target.value);
+        }}
+      />
+      <Button
+        variant="contained"
+        endIcon={<MapsUgc />}
+        color="primary"
+        onClick={commentHandler}
+      >
+        ENTER
+      </Button>
+    </Paper>
+  );
 
   const commentRender = (prop) => (
     <Paper
@@ -33,46 +78,23 @@ const ItemComment = (props) => {
             <Grid item xs={2}>
               <Typography sx={{ pr: 2 }}>{item.writer}</Typography>
             </Grid>
-            <Grid item>
+            <Grid item xs={8}>
               <Typography>{item.comment}</Typography>
             </Grid>
             {/* BUTTONBOX */}
-            <Grid item></Grid>
+            {item.w_id === user.userId && (
+              <Grid item xs={1}>
+                <IconButton onClick={() => onDelete(item._id)} sx={{ p: 0 }}>
+                  <HighlightOff color="error" />
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
         ))}
       {prop.length === 0 && <Typography></Typography>}
     </Paper>
   );
-  const commentInput = () => {
-    if (userNickname.length === 0) return alert("로그인이 필요합니다");
-    console.log("COMMENT INPUT SUCCESS");
-  };
 
-  const InputRender = (
-    <Paper
-      elevation={2}
-      component="form"
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <InputBase
-        placeholder="원하시는 문의 댓글을 작성해주세요"
-        sx={{ width: "80%", p: 1 }}
-      />
-      <Button
-        variant="contained"
-        endIcon={<MapsUgc />}
-        color="primary"
-        onClick={commentInput}
-      >
-        ENTER
-      </Button>
-    </Paper>
-  );
-  console.log(props);
   return (
     <Grid
       item
