@@ -19,8 +19,8 @@ const iconSet = (state) => {
       return <BugReport color="error" />;
   }
 };
+
 /**
- *
  * @param {string} state [success / pending / fulfilled / ""EMPTY]
  * @param {string} title
  * @param {date} date

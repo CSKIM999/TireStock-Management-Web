@@ -15,24 +15,29 @@ import { HighlightOff, MapsUgc } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const ItemComment = (props) => {
+const ItemComment = (props, captureComment) => {
   const user = useSelector((state) => state.user);
   const RequestId = useParams().id;
   const [Comment, setComment] = React.useState("");
-  React.useEffect(() => {}, []);
+
   const commentHandler = () => {
     if (user.nickname.length === 0) return alert("로그인이 필요합니다");
     if (Comment.trim().length === 0) return alert("댓글 내용을 작성해주세요");
-    const request = Axios.post(`/api/requests/${RequestId}`, {
+    Axios.post(`/api/requests/${RequestId}`, {
       writer: user.nickname,
       w_id: user.userId,
       comment: Comment.trim(),
     }).then((response) => {
+      captureComment();
+      setComment("");
       console.log(response);
     });
   };
+
   const onDelete = (_id) => {
-    const request = Axios.delete(`/api/requests/${RequestId}/${_id}`);
+    Axios.delete(`/api/requests/${RequestId}/${_id}`).then(() => {
+      captureComment();
+    });
   };
 
   const InputRender = (
@@ -48,6 +53,7 @@ const ItemComment = (props) => {
       <InputBase
         placeholder="원하시는 문의 댓글을 작성해주세요"
         sx={{ width: "80%", p: 1 }}
+        value={Comment}
         onChange={(event) => {
           setComment(event.target.value);
         }}

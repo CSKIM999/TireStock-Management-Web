@@ -67,11 +67,8 @@ function ItemDetailPage(props) {
     data: {},
   });
 
-  React.useEffect(() => {
-    if (!["requests", "tires", "wheels"].includes(item)) {
-      console.log("ERROR");
-      return;
-    }
+  const AxiosBody = () => {
+    console.log("axios !");
     Axios.get(`/api/${item}/${id}`).then((response) => {
       if (response) {
         setBody(handleItem(item, response.data.payload));
@@ -79,6 +76,13 @@ function ItemDetailPage(props) {
         console.log("axios error");
       }
     });
+  };
+  React.useEffect(() => {
+    if (!["requests", "tires", "wheels"].includes(item)) {
+      console.log("== Wrong param ");
+      return;
+    }
+    AxiosBody();
   }, []);
 
   if (Body.title) {
@@ -103,7 +107,7 @@ function ItemDetailPage(props) {
             </Grid>
             {/* Detail Section */}
             <Grid item xs={12} md={6.5} minWidth={500}>
-              <ItemDetailBody prop={Body.data} />
+              <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
             </Grid>
           </Grid>
         </Grid>
