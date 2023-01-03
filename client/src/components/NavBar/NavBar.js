@@ -10,7 +10,7 @@ function NavBar(props) {
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ maxWidth: props.maxWidth }}
+        sx={props.SX}
         container
       >
         <Grid item xs={1}>

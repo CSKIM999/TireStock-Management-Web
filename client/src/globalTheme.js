@@ -66,13 +66,6 @@ export const globalTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          ".success fieldset": {
-            border: "2px solid",
-            borderColor: successColor,
-          },
-          ".success label": {
-            color: successColor,
-          },
           "& ::-webkit-scrollbar": {
             width: ".7rem",
           },
@@ -85,6 +78,13 @@ export const globalTheme = createTheme({
             border: "2px solid",
             borderColor: pointColor,
             borderRadius: "10px",
+          },
+          ".success fieldset": {
+            border: "2px solid",
+            borderColor: successColor,
+          },
+          ".success label": {
+            color: successColor,
           },
         },
       },
