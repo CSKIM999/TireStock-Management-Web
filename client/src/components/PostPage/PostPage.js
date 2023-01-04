@@ -9,13 +9,22 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useDropzone } from "react-dropzone";
+import { useCallbackPrompt, usePrompt } from "../modules/Blocker";
 import BreadCrumb from "../modules/BreadCrumb";
 import Upload from "./modules/Upload";
 
 function PostPage() {
   const [Title, setTitle] = React.useState("");
   const [Contents, setContents] = React.useState("");
+  const [Images, setImages] = React.useState([]);
+
+  // usePrompt("Detected");
+  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
+    Title || Contents || Images.length > 0
+  );
+  React.useEffect(() => {
+    console.log("propmt", showPrompt);
+  }, [showPrompt]);
 
   const submit = () => {
     if (!Title.trim() || !Contents.trim()) {
@@ -96,7 +105,7 @@ function PostPage() {
         </Grid>
 
         <Divider orientation="vertical" sx={{ height: "100%" }} />
-        {Upload()}
+        {Upload([Images, setImages])}
       </Grid>
       <Divider sx={{ my: 2 }} />
       <Grid item display="flex" justifyContent="center">
@@ -106,6 +115,18 @@ function PostPage() {
           </Button>
           <Button size="large" onClick={() => submit()} variant="outlined">
             REGIST
+          </Button>
+          <Button
+            size="large"
+            onClick={() => {
+              if (Title || Contents) {
+                console.log("gg");
+              }
+              console.log(Title, Contents, Images);
+            }}
+            variant="outlined"
+          >
+            STATE TEST
           </Button>
         </Stack>
       </Grid>

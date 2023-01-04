@@ -57,7 +57,7 @@ const handleItem = (item, response) => {
 
 function ItemDetailPage(props) {
   const navigate = useNavigate();
-  let { item, id } = useParams();
+  let { item, type, id } = useParams();
   if (props.type === "request") {
     item = "requests";
   }
@@ -68,18 +68,25 @@ function ItemDetailPage(props) {
   });
 
   const AxiosBody = () => {
-    console.log("axios !");
-    Axios.get(`/api/${item}/${id}`).then((response) => {
-      if (response) {
-        setBody(handleItem(item, response.data.payload));
-      } else {
-        console.log("axios error");
-      }
-    });
+    console.log("axios !", type);
+    Axios.get(`/api/${item}/${id}`)
+      .then((response) => {
+        if (response) {
+          setBody(handleItem(item, response.data.payload));
+        } else {
+          console.log("axios error");
+        }
+      })
+      .catch((err) => {
+        console.log("ERROR >> ", err.code);
+        navigate(`/${item}/${type ? type : ""}`);
+      });
+    console.log(item, id);
   };
   React.useEffect(() => {
     if (!["requests", "tires", "wheels"].includes(item)) {
       console.log("== Wrong param ");
+      navigate("/");
       return;
     }
     AxiosBody();
