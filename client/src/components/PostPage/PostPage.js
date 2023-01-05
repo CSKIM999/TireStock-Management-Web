@@ -9,7 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useCallbackPrompt, usePrompt } from "../modules/Blocker";
+import { useDispatch } from "react-redux";
+import { useCallbackPrompt } from "../../hooks/useCallbackPrompt";
+import { testData } from "../../store/dataSlice";
 import BreadCrumb from "../modules/BreadCrumb";
 import Upload from "./modules/Upload";
 
@@ -17,11 +19,17 @@ function PostPage() {
   const [Title, setTitle] = React.useState("");
   const [Contents, setContents] = React.useState("");
   const [Images, setImages] = React.useState([]);
-
+  const [ThumbNails, setThumbNails] = React.useState([]);
+  const dispatch = useDispatch();
   // usePrompt("Detected");
+  // const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
+  //   Title || Contents || Images.length > 0
+  // );
+
   const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
     Title || Contents || Images.length > 0
   );
+
   React.useEffect(() => {
     console.log("propmt", showPrompt);
   }, [showPrompt]);
@@ -105,7 +113,11 @@ function PostPage() {
         </Grid>
 
         <Divider orientation="vertical" sx={{ height: "100%" }} />
-        {Upload([Images, setImages])}
+
+        <Upload
+          images={[Images, setImages]}
+          thumbNails={[ThumbNails, setThumbNails]}
+        />
       </Grid>
       <Divider sx={{ my: 2 }} />
       <Grid item display="flex" justifyContent="center">
@@ -119,10 +131,7 @@ function PostPage() {
           <Button
             size="large"
             onClick={() => {
-              if (Title || Contents) {
-                console.log("gg");
-              }
-              console.log(Title, Contents, Images);
+              dispatch(testData());
             }}
             variant="outlined"
           >

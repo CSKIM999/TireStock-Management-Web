@@ -22,6 +22,7 @@ import { UNSAFE_NavigationContext, useLocation } from "react-router-dom";
 //   }, [navigator, blocker, when]);
 // }
 export const useBlocker = (blocker, when = true) => {
+  console.log("useBlocker CALL");
   const { navigator } = useContext(UNSAFE_NavigationContext);
 
   useEffect(() => {
@@ -65,9 +66,16 @@ export const useCallbackPrompt = (when) => {
     setShowPrompt(false);
     setBlockedLocation(null);
   }, []);
+  const confirmNavigation = useCallback(() => {
+    if (blockedLocation) {
+      blockedLocation.retry();
+      cancelNavigation(); // 클린업
+    }
+  }, [blockedLocation]);
 
   const blocker = useCallback(
     (tx) => {
+      console.log("in blocker", tx);
       if (tx.location.pathname !== location.pathname) {
         setBlockedLocation(tx);
         setShowPrompt(true);
@@ -75,13 +83,6 @@ export const useCallbackPrompt = (when) => {
     },
     [location]
   );
-
-  const confirmNavigation = useCallback(() => {
-    if (blockedLocation) {
-      blockedLocation.retry();
-      cancelNavigation(); // 클린업
-    }
-  }, [blockedLocation]);
 
   useBlocker(blocker, when);
 

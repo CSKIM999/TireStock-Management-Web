@@ -55,7 +55,7 @@ function App() {
               <Route path="/post" element={<PostPage />} />
 
               {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
-              <Route path="*" element={<LandingPage reset={true} />} />
+              {/* <Route path="*" element={<LandingPage reset={true} />} /> */}
             </Routes>
           </Grid>
         </Grid>
