@@ -52,6 +52,7 @@ function PostPage() {
         height: "70%",
         minHeight: "450px",
         maxHeight: "800px",
+        flexWrap: "nowrap",
       }}
     >
       <Grid item xs={0.5}>
@@ -73,6 +74,7 @@ function PostPage() {
           xs={8}
           direction="column"
           justifyContent="space-around"
+          flexWrap="nowrap"
         >
           <Grid item container xs={1} alignItems="center">
             <Grid item xs={MapTable.left.left} sx={MapTable.left.sx}>
@@ -114,10 +116,7 @@ function PostPage() {
 
         <Divider orientation="vertical" sx={{ height: "100%" }} />
 
-        <Upload
-          images={[Images, setImages]}
-          thumbNails={[ThumbNails, setThumbNails]}
-        />
+        <Upload images={[Images, setImages]} />
       </Grid>
       <Divider sx={{ my: 2 }} />
       <Grid item display="flex" justifyContent="center">

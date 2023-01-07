@@ -1,15 +1,31 @@
 import React from "react";
-import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import Dropzone from "react-dropzone";
 import { CloudUploadOutlined } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import imageCompression from "browser-image-compression";
+import { useLocation } from "react-router-dom";
+import { pushThumbNail } from "../../../store/dataSlice";
 
 const Upload = (props) => {
+  // 글을 쓰는건 전부 post 로 통일하자!
+  const path = useLocation().pathname;
   const [Images, setImages] = props.images;
-  const [ThumbNails, setThumbNails] = props.thumbNails;
   const data = useSelector((state) => state.data);
+  const dispatch = useDispatch();
+
+  const mappingArr = [0, 1, 2, 3, 4];
+  const Thumbnails = useSelector((state) => state.data.thumbNail.items);
+
   const UploadHandler = async (files) => {
     if (files[0].size > 1000000)
       return alert("파일을 업로드 할 수 없습니다 크기를 확인해주세요!");
@@ -40,12 +56,11 @@ const Upload = (props) => {
       maxSizeMB: 1,
       maxWidthOrHeight: 50,
     };
-    console.log(files[0]);
     formData.append("file", files[0]);
     setImages([...Images, files[0]]);
     const compressedFile = await imageCompression(files[0], compressOption);
-    console.log("hi?", compressedFile, files[0]);
-    setThumbNails([...ThumbNails, window.URL.createObjectURL(compressedFile)]);
+    const compressedURL = window.URL.createObjectURL(compressedFile);
+    dispatch(pushThumbNail({ url: compressedURL, path: path }));
   };
   return (
     <Grid item container direction="column" xs={3}>
@@ -61,7 +76,6 @@ const Upload = (props) => {
             aspectRatio: "1/1",
             border: "1px solid",
             borderColor: "primary.main",
-            // bgColor: "primary.main",
           }}
         >
           <Dropzone onDrop={UploadHandler}>
@@ -90,18 +104,28 @@ const Upload = (props) => {
             bgcolor: "primary.main",
           }}
         >
-          <Stack direction="row">
-            {ThumbNails[0] &&
-              ThumbNails.map((item, index) => (
-                <Container
-                  sx={{ maxHeight: "100%", backgroundImage: `${item}` }}
+          <Stack direction="row" sx={{ height: "100%" }}>
+            {Thumbnails[0] &&
+              mappingArr.map((item) => (
+                <Badge
+                  badgeContent="1"
+                  key={`thumbNail${item}`}
+                  invisible={true}
                 >
-                  {/* <img className="thumbNail" id={index} src={item} /> */}
-                </Container>
+                  <Container
+                    sx={{
+                      p: 0,
+                      height: "100%",
+                      backgroundImage: Thumbnails[item]
+                        ? `url(${Thumbnails[item]})`
+                        : "",
+                    }}
+                  />
+                </Badge>
               ))}
           </Stack>
         </Paper>
-        <Button onClick={() => console.log(ThumbNails)}>TEST</Button>
+        <Button onClick={() => console.log(Thumbnails)}>TEST</Button>
       </Stack>
     </Grid>
   );
