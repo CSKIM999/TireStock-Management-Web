@@ -13,6 +13,7 @@ import ItemDetailBody from "./Section/DetailBody";
 import ItemDetailTitle from "./Section/DetailTitle";
 import BreadCrumb from "../modules/BreadCrumb";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const itemBoxSX = "1px solid black";
 const itemPaperSX = {
@@ -46,7 +47,8 @@ const handleItem = (item, response) => {
       return temp;
     case "requests":
       temp.title = response.title;
-      temp.type = undefined;
+      temp.type = response.state;
+      temp.data.userID = response.writer._id;
       temp.data.detail = response.detail;
       temp.data.comment = response.comment;
       return temp;
@@ -57,6 +59,8 @@ const handleItem = (item, response) => {
 
 function ItemDetailPage(props) {
   const navigate = useNavigate();
+  const userID = useSelector((state) => state.user.userID);
+  const [ControlFlag, setControlFlag] = React.useState(false);
   let { item, type, id } = useParams();
   if (props.type === "request") {
     item = "requests";
@@ -67,21 +71,19 @@ function ItemDetailPage(props) {
     data: {},
   });
 
-  const AxiosBody = () => {
-    console.log("axios !", type);
+  const AxiosBody = async () => {
     Axios.get(`/api/${item}/${id}`)
       .then((response) => {
         if (response) {
-          setBody(handleItem(item, response.data.payload));
-        } else {
-          console.log("axios error");
+          if (response.data.payload.writer._id === userID) setControlFlag(true);
+          return setBody(handleItem(item, response.data.payload));
         }
+        return console.log("Axios error");
       })
       .catch((err) => {
-        console.log("ERROR >> ", err.code);
+        console.log("ERROR CODE >> ", err);
         navigate(`/${item}/${type ? type : ""}`);
       });
-    console.log(item, id);
   };
   React.useEffect(() => {
     if (!["requests", "tires", "wheels"].includes(item)) {
@@ -98,7 +100,7 @@ function ItemDetailPage(props) {
         <Grid container flexWrap="nowrap" direction="column" height="100%">
           <Grid item xs={1}>
             {BreadCrumb(item, Body.type)}
-            <ItemDetailTitle title={Body.title} />
+            <ItemDetailTitle title={Body.title} ControlFlag={ControlFlag} />
           </Grid>
           <Divider />
           <Grid
@@ -117,6 +119,7 @@ function ItemDetailPage(props) {
               <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
             </Grid>
           </Grid>
+          <Button onClick={() => console.log(Body, ControlFlag)}>!!</Button>
         </Grid>
       </Box>
     );

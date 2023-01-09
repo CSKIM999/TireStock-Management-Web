@@ -8,6 +8,7 @@ const userData = window.navigator.platform.slice(0, 3);
 const platform = PC.indexOf(userData) >= 0 ? "PC" : "MOBILE";
 export default function AUTH(SpecificComponent, option, adminRoute = null) {
   // option : null/아무나 true/로그인한 자 false/로그인하지 않은 자
+  // post 페이지가 아닌데 redux-data-path 가 비어있지 않다면 초기화해주기
   function AuthenticationCheck(props) {
     let user = useSelector((state) => state.user);
     const token =

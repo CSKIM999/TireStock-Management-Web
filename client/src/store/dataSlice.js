@@ -8,12 +8,24 @@ const initialState = {
   },
 };
 
+const revokeAll = (arr) => {
+  if (arr) {
+    arr.map((item) => {
+      if (typeof item === "string") URL.revokeObjectURL(item);
+    });
+  }
+};
+
 const dataSlice = createSlice({
   name: "data",
   initialState,
   reducers: {
     testData: (state, action) => {
       state.thumbNail.items.push("test");
+    },
+    revokeThumbNail: (state) => {
+      revokeAll(state.thumbNail.items);
+      return { ...initialState };
     },
     pushThumbNail: (state, action) => {
       const { path, url } = action.payload;
@@ -29,13 +41,14 @@ const dataSlice = createSlice({
       };
       if (statePath === "") {
         // path 가 비어있을 때
+        // dataSlice.caseReducers.revokeThumbNail(state,action)
         pushState(url, path);
       } else {
         // path 가 비어있지 않을때
         if (statePath !== path) {
           // 받아온 path 와 기존 path 가 다를 때 => 기존 데이터 덮어쓰고 경고창
           // TODO ... 현재 items 에 들어있는 url 들을 전부 revoke 해줄 것.
-
+          revokeAll(state.thumbNail.items);
           pushState(url, path, true);
           return alert("[ ERROR ] 오류로 인해 기존 데이터가 덮어씌워집니다!");
         } else {
@@ -47,5 +60,5 @@ const dataSlice = createSlice({
   },
 });
 
-export const { testData, pushThumbNail } = dataSlice.actions;
+export const { testData, pushThumbNail, revokeThumbNail } = dataSlice.actions;
 export default dataSlice;

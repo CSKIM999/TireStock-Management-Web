@@ -34,6 +34,7 @@ const RegistModule = (CloseMenu) => {
   const [Password, setPassword] = React.useState("");
   const [Compare, setCompare] = React.useState("");
   const [NickName, setNickName] = React.useState("");
+  const [Loading, setLoading] = React.useState(undefined);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // TODO
@@ -45,34 +46,31 @@ const RegistModule = (CloseMenu) => {
       email: "이메일",
       nickname: "닉네임",
     };
-    console.log(user.state?.type);
-    if (user.nickname.length === 0) {
-      switch (user.state?.type) {
-        case undefined:
-          console.log("undifined");
-          return;
-        case "pending":
-          console.log("pending");
-          return;
-        case "rejected":
-          console.log("rejected", user);
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            content: rejectMap[user.state.data],
-          });
-          console.log(snackbar);
-          // setSnackbarOpen(true);
-          // setSnackbarContent();
-          return;
-        case "fulfilled":
-          console.log("fulfilled");
-          return;
-        default:
-          return;
-      }
+    // console.log(user.state?.type);
+    switch (user.state?.type) {
+      case undefined:
+        console.log("undifined");
+        return;
+      case "pending":
+        console.log("pending");
+        return;
+      case "rejected":
+        console.log("rejected", user);
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          content: rejectMap[user.state.data],
+        });
+        return;
+      case "fulfilled":
+        console.log("fulfilled");
+        return;
+      default:
+        return;
     }
-  }, [user]);
+    // if (NickName === 0) {
+    // }
+  }, [Loading]);
   const typeSwitch = (target) => {
     const [opt1, opt2, str1, str2, empty] = Object.values(target);
     return opt1 ? str1 : opt2 ? str2 : str1;
@@ -145,10 +143,8 @@ const RegistModule = (CloseMenu) => {
       setEmailValidate(false);
     }
   };
-  const testFunc = () => {
-    console.log(user);
-  };
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     IsValid(Email);
     if (isEmail(Email)) {
       if (Password !== Compare) {
@@ -159,7 +155,15 @@ const RegistModule = (CloseMenu) => {
         password: Password,
         nickname: NickName,
       };
-      dispatch(registerUser({ body }));
+      // dispatch(registerUser({ body }));
+
+      setLoading("pending");
+      const request = await Axios.post("/api/users/register", body, {
+        withCredentials: true,
+      });
+      if (request.success) return setLoading("fulfilled");
+      return console.log(request);
+
       // .then(testFunc());
       // if (!user.loading) {
       //   console.log('not Loading')

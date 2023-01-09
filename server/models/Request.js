@@ -11,17 +11,17 @@ const commentSchema = Schema({
 const requestSchema = Schema(
   {
     writer: {
-      // type: Schema.Types.ObjectId,
-      // ref: "User",
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      // type: String,
+      // required: true,
     },
     title: {
       type: String,
       required: true,
     },
     image: {
-      type: String,
+      type: Array,
     },
     state: {
       type: String,

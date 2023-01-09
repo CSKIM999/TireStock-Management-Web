@@ -8,10 +8,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import * as Axios from "axios";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCallbackPrompt } from "../../hooks/useCallbackPrompt";
-import { testData } from "../../store/dataSlice";
+import { revokeThumbNail, testData } from "../../store/dataSlice";
 import BreadCrumb from "../modules/BreadCrumb";
 import Upload from "./modules/Upload";
 
@@ -19,8 +20,8 @@ function PostPage() {
   const [Title, setTitle] = React.useState("");
   const [Contents, setContents] = React.useState("");
   const [Images, setImages] = React.useState([]);
-  const [ThumbNails, setThumbNails] = React.useState([]);
   const dispatch = useDispatch();
+  const userID = useSelector((state) => state.user.userID);
   // usePrompt("Detected");
   // const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
   //   Title || Contents || Images.length > 0
@@ -40,6 +41,16 @@ function PostPage() {
     }
     console.log("TITLE >> ", Title);
     console.log("Contents >> ", Contents);
+    console.log("Images >> ", Images);
+    const body = {
+      writer: userID,
+      title: Title,
+      detail: Contents,
+      image: Images,
+    };
+    Axios.post("/api/requests/", body).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -130,11 +141,20 @@ function PostPage() {
           <Button
             size="large"
             onClick={() => {
-              dispatch(testData());
+              console.log("userID>", userID);
             }}
             variant="outlined"
           >
             STATE TEST
+          </Button>
+          <Button
+            size="large"
+            onClick={() => {
+              dispatch(revokeThumbNail());
+            }}
+            variant="outlined"
+          >
+            REVOKE TEST
           </Button>
         </Stack>
       </Grid>

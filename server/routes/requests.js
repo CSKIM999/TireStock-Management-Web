@@ -56,10 +56,12 @@ router.get("/", (req, res) => {
 
 router.get("/:_id", (req, res) => {
   const _id = req.params._id;
-  Request.findById(_id).exec((err, body) => {
-    if (err) return res.status(400).send(err);
-    return res.status(200).json({ success: true, payload: body });
-  });
+  Request.findById(_id)
+    .populate("writer")
+    .exec((err, body) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).json({ success: true, payload: body });
+    });
 });
 router.delete("/:_id", (req, res) => {
   const _id = req.params._id;

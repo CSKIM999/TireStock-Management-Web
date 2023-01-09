@@ -33,7 +33,7 @@ function UserAccount(props) {
 
   const ItemSX = (map) => {
     return {
-      display: user.userId && user.userId.length > 0 ? map.alpha : map.beta,
+      display: user.userID && user.userID.length > 0 ? map.alpha : map.beta,
       p: 0,
     };
   };

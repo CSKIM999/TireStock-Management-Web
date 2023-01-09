@@ -21,11 +21,11 @@ const ItemComment = (props, captureComment) => {
   const [Comment, setComment] = React.useState("");
 
   const commentHandler = () => {
-    if (user.nickname.length === 0) return alert("로그인이 필요합니다");
+    if (user.userID.length === 0) return alert("로그인이 필요합니다");
     if (Comment.trim().length === 0) return alert("댓글 내용을 작성해주세요");
     Axios.post(`/api/requests/${RequestId}`, {
       writer: user.nickname,
-      w_id: user.userId,
+      w_id: user.userID,
       comment: Comment.trim(),
     }).then((response) => {
       captureComment();
@@ -88,7 +88,7 @@ const ItemComment = (props, captureComment) => {
               <Typography>{item.comment}</Typography>
             </Grid>
             {/* BUTTONBOX */}
-            {item.w_id === user.userId && (
+            {item.w_id === user.userID && (
               <Grid item xs={1}>
                 <IconButton onClick={() => onDelete(item._id)} sx={{ p: 0 }}>
                   <HighlightOff color="error" />

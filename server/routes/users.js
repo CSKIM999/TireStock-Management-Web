@@ -39,10 +39,10 @@ router.post("/login", (req, res) => {
           .status(200)
           .json({
             loginSuccess: true,
-            userId: user._id,
-            token: user.token,
+            userID: user._id,
+            // token: user.token,
             nickname: user.nickname,
-            role: user.role,
+            // role: user.role,
           });
       });
     });

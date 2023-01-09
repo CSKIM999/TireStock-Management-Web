@@ -20,7 +20,6 @@ const Upload = (props) => {
   // 글을 쓰는건 전부 post 로 통일하자!
   const path = useLocation().pathname;
   const [Images, setImages] = props.images;
-  const data = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
   const mappingArr = [0, 1, 2, 3, 4];
@@ -46,20 +45,21 @@ const Upload = (props) => {
     // 더 찾아보지 말고 redux 사용하는 방법 고민.
     // 이미지 URL 을 redux에서 관리하고, 페이지 이동시에만 호출되는 auth 에서 해당 리스트가 비어있는지를 확인하는 방법.
 
-    let formData = new FormData();
-    const config = {
-      header: {
-        "content-type": "multipart/form-data",
-      },
-    };
+    // let formData = new FormData();
+    // const config = {
+    //   header: {
+    //     "content-type": "multipart/form-data",
+    //   },
+    // };
+    // formData.append("file", files[0]);
+
     const compressOption = {
       maxSizeMB: 1,
-      maxWidthOrHeight: 50,
+      maxWidthOrHeight: 100,
     };
-    formData.append("file", files[0]);
-    setImages([...Images, files[0]]);
     const compressedFile = await imageCompression(files[0], compressOption);
     const compressedURL = window.URL.createObjectURL(compressedFile);
+    setImages([...Images, files[0]]);
     dispatch(pushThumbNail({ url: compressedURL, path: path }));
   };
   return (
@@ -104,13 +104,17 @@ const Upload = (props) => {
             bgcolor: "primary.main",
           }}
         >
-          <Stack direction="row" sx={{ height: "100%" }}>
+          <Stack
+            direction="row"
+            sx={{ height: "100%", justifyContent: "space-around" }}
+          >
             {Thumbnails[0] &&
               mappingArr.map((item) => (
                 <Badge
                   badgeContent="1"
                   key={`thumbNail${item}`}
                   invisible={true}
+                  sx={{ aspectRatio: "1" }}
                 >
                   <Container
                     sx={{
@@ -119,13 +123,13 @@ const Upload = (props) => {
                       backgroundImage: Thumbnails[item]
                         ? `url(${Thumbnails[item]})`
                         : "",
+                      backgroundSize: "cover",
                     }}
                   />
                 </Badge>
               ))}
           </Stack>
         </Paper>
-        <Button onClick={() => console.log(Thumbnails)}>TEST</Button>
       </Stack>
     </Grid>
   );
