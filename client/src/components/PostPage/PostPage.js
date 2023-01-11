@@ -11,29 +11,50 @@ import {
 import * as Axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCallbackPrompt } from "../../hooks/useCallbackPrompt";
 import { revokeThumbNail, testData } from "../../store/dataSlice";
 import BreadCrumb from "../modules/BreadCrumb";
+import ProductOption from "./modules/ProductOption";
 import Upload from "./modules/Upload";
+const itemCheck = { requests: 1, wheels: 1, tires: 1 };
 
-function PostPage() {
+function PostPage(props) {
   const [Title, setTitle] = React.useState("");
   const [Contents, setContents] = React.useState("");
   const [Images, setImages] = React.useState([]);
-  const dispatch = useDispatch();
+  const [Loading, setLoading] = React.useState(true);
   const userID = useSelector((state) => state.user.userID);
-  // usePrompt("Detected");
-  // const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
-  //   Title || Contents || Images.length > 0
-  // );
+  const POST_OR_UPDATE = props.adjust ? true : false;
+  const { item, id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // const authUser =  << 관리자 확인
 
   const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
     Title || Contents || Images.length > 0
   );
 
   React.useEffect(() => {
-    console.log("propmt", showPrompt);
-  }, [showPrompt]);
+    if (!itemCheck[item]) {
+      alert("잘못된 주소입니다");
+      navigate("/");
+    }
+    if (!POST_OR_UPDATE) return;
+    // console.log(id, POST_OR_UPDATE);
+    async function SetInitial() {
+      await Axios.get(`/api/${item}/${id}`).then((response) => {
+        if (response.data.success) {
+          const payload = response.data.payload;
+          setTitle(payload.title);
+          setContents(payload.detail);
+          setImages([...payload.image]);
+        }
+      });
+    }
+    SetInitial();
+  }, []);
 
   const submit = () => {
     if (!Title.trim() || !Contents.trim()) {
@@ -62,13 +83,15 @@ function PostPage() {
         pt: 5,
         height: "70%",
         minHeight: "450px",
-        maxHeight: "800px",
+        maxHeight: "1000px",
         flexWrap: "nowrap",
       }}
     >
       <Grid item xs={0.5}>
-        {BreadCrumb("REGIST")}
+        {BreadCrumb("POSTING")}
       </Grid>
+
+      <ProductOption />
 
       {/* ADMIN POSTING PAGE 에서 OPTIONAL MODULE 자리 */}
 

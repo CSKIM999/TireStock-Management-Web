@@ -72,10 +72,15 @@ function ItemDetailPage(props) {
   });
 
   const AxiosBody = async () => {
-    Axios.get(`/api/${item}/${id}`)
+    await Axios.get(`/api/${item}/${id}`)
       .then((response) => {
-        if (response) {
-          if (response.data.payload.writer._id === userID) setControlFlag(true);
+        if (response.data.success) {
+          const authenticID =
+            item === "requests"
+              ? response.data.payload.writer._id
+              : response.data.payload._id;
+          if (authenticID === userID) setControlFlag(true);
+          console.log(response);
           return setBody(handleItem(item, response.data.payload));
         }
         return console.log("Axios error");
@@ -92,7 +97,7 @@ function ItemDetailPage(props) {
       return;
     }
     AxiosBody();
-  }, []);
+  }, [userID]);
 
   if (Body.title) {
     return (

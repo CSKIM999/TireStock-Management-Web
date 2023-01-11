@@ -42,7 +42,7 @@ router.post("/login", (req, res) => {
             userID: user._id,
             // token: user.token,
             nickname: user.nickname,
-            // role: user.role,
+            isAdmin: user.role ? true : false,
           });
       });
     });

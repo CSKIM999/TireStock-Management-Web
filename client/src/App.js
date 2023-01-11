@@ -52,7 +52,11 @@ function App() {
                 path="/requests/:id"
                 element={<ItemDetailPage type="request" />}
               />
-              <Route path="/post" element={<PostPage />} />
+              <Route path="/posts/:item/" element={<PostPage />} />
+              <Route
+                path="/posts/:item/:id"
+                element={<PostPage adjust={true} />}
+              />
 
               {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
               <Route path="*" element={<LandingPage reset={true} />} />

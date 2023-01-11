@@ -19,7 +19,6 @@ function UserAccount(props) {
   const userState = useSelector((state) => state.user);
   React.useEffect(() => {
     setUser(userState);
-    console.log("USER STATE CHANGE DETECTED", user);
   }, [userState]);
 
   const handleClick = (event) => {

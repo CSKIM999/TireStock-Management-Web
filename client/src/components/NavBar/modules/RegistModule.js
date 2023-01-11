@@ -35,35 +35,42 @@ const RegistModule = (CloseMenu) => {
   const [Compare, setCompare] = React.useState("");
   const [NickName, setNickName] = React.useState("");
   const [Loading, setLoading] = React.useState(undefined);
+  const [ErrorCode, setErrorCode] = React.useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // TODO
   // pending => loading 창 돌아가게
   // reject => 리덕스에서 state.data 로 중복부분 추출 후 스낵바
   // fulfilled => 회원가입 성공 (red-dot 부분 참고해서 다시구현)
+  const stateReset = () => {
+    setEmail("");
+    setPassword("");
+    setCompare("");
+    setNickName("");
+  };
+
   React.useEffect(() => {
     const rejectMap = {
       email: "이메일",
       nickname: "닉네임",
     };
     // console.log(user.state?.type);
-    switch (user.state?.type) {
+    switch (Loading) {
       case undefined:
-        console.log("undifined");
         return;
       case "pending":
-        console.log("pending");
         return;
       case "rejected":
-        console.log("rejected", user);
+        if (ErrorCode === "email") setEmailValidate(false);
+        if (ErrorCode === "nickname") setNicknameValidate(false);
         setSnackbar({
           ...snackbar,
           open: true,
-          content: rejectMap[user.state.data],
+          content: rejectMap[ErrorCode],
         });
         return;
       case "fulfilled":
-        console.log("fulfilled");
+        stateReset();
         return;
       default:
         return;
@@ -74,12 +81,6 @@ const RegistModule = (CloseMenu) => {
   const typeSwitch = (target) => {
     const [opt1, opt2, str1, str2, empty] = Object.values(target);
     return opt1 ? str1 : opt2 ? str2 : str1;
-  };
-  const stateReset = () => {
-    setEmail("");
-    setPassword("");
-    setCompare("");
-    setNickName("");
   };
   const dict = {
     Email: {
@@ -161,8 +162,15 @@ const RegistModule = (CloseMenu) => {
       const request = await Axios.post("/api/users/register", body, {
         withCredentials: true,
       });
-      if (request.success) return setLoading("fulfilled");
-      return console.log(request);
+      if (request.data.success) return setLoading("fulfilled") && CloseMenu();
+      console.log(
+        "HERE >>>>",
+        request,
+        Object.keys(request.data.err.keyValue)[0]
+      );
+      setErrorCode(Object.keys(request.data.err.keyValue)[0]);
+      setLoading("rejected");
+      return;
 
       // .then(testFunc());
       // if (!user.loading) {

@@ -12,6 +12,7 @@ router.post("/", (req, res) => {
     return res.status(200).json({ success: true });
   });
 });
+
 router.get("/", (req, res) => {
   const tire_type = req.query.type;
   const tire_keyword = req.query.keyword;

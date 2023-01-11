@@ -100,6 +100,7 @@ const Upload = (props) => {
           square
           sx={{
             width: "100%",
+            minHeight: "50px",
             aspectRatio: "5",
             bgcolor: "primary.main",
           }}
