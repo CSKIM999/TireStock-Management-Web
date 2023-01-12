@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { textAlign } from "@mui/system";
 const bgColor = "#242424";
 const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#b3b3b3" }; //main-light-dark
 const CardBgColor = "#333333";
@@ -85,6 +86,9 @@ export const globalTheme = createTheme({
           },
           ".success label": {
             color: successColor,
+          },
+          ".postingOption *": {
+            textAlign: "center",
           },
         },
       },

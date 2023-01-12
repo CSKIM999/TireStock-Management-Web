@@ -17,7 +17,7 @@ import { revokeThumbNail, testData } from "../../store/dataSlice";
 import BreadCrumb from "../modules/BreadCrumb";
 import ProductOption from "./modules/ProductOption";
 import Upload from "./modules/Upload";
-const itemCheck = { requests: 1, wheels: 1, tires: 1 };
+const itemCheck = { requests: 1, admin: 1 };
 
 function PostPage(props) {
   const [Title, setTitle] = React.useState("");
@@ -30,7 +30,7 @@ function PostPage(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const authUser =  << 관리자 확인
+  const authUser = useSelector((state) => state.user.isAdmin);
 
   const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
     Title || Contents || Images.length > 0
@@ -91,7 +91,11 @@ function PostPage(props) {
         {BreadCrumb("POSTING")}
       </Grid>
 
-      <ProductOption />
+      {authUser && item === "admin" ? (
+        <ProductOption />
+      ) : (
+        <React.Fragment></React.Fragment>
+      )}
 
       {/* ADMIN POSTING PAGE 에서 OPTIONAL MODULE 자리 */}
 
