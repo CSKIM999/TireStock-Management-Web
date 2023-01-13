@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 
 const ItemDetailTitle = (props) => {
+  console.log("DETAIL TITLE PROPS : ", props);
   const ControlerRender = () => {
     if (props.ControlFlag)
       return (

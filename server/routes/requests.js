@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
   });
 });
 
-router.post("/:_id", (req, res) => {
+router.post("/:_id/comment", (req, res) => {
   const _id = req.params._id;
   const newComment = {
     date: new Date(),
@@ -27,6 +27,19 @@ router.post("/:_id", (req, res) => {
         .json({ success: true, payload: body.comment, test: req.body });
     }
   );
+});
+
+router.put("/:_id", (req, res) => {
+  const _id = req.params._id;
+  const { title, detail, image } = req.body;
+  Request.findByIdAndUpdate(_id, {
+    title: title,
+    detail: detail,
+    image: image,
+  }).exec((err, body) => {
+    if (err) return res.status(400).json({ success: false, errorcode: err });
+    return res.status(200).json({ success: true, checkBody: body });
+  });
 });
 
 router.get("/", (req, res) => {

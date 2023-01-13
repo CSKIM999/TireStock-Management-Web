@@ -20,7 +20,6 @@ export const useCallbackPrompt = (when) => {
 
   const blocker = useCallback(
     (tx) => {
-      console.log("in blocker", tx);
       if (tx.location.pathname !== location.pathname) {
         setBlockedLocation(tx);
         setShowPrompt(true);

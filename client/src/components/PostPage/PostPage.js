@@ -19,11 +19,15 @@ import ProductOption from "./modules/ProductOption";
 import Upload from "./modules/Upload";
 const itemCheck = { requests: 1, admin: 1 };
 
+// props.adjust 를 통해 수정인지 생성인지 확인
+
 function PostPage(props) {
   const [Title, setTitle] = React.useState("");
   const [Contents, setContents] = React.useState("");
   const [Images, setImages] = React.useState([]);
   const [Loading, setLoading] = React.useState(true);
+  const [InitialState, setInitialState] = React.useState(null);
+  const [Modify, setModify] = React.useState(false);
   const userID = useSelector((state) => state.user.userID);
   const POST_OR_UPDATE = props.adjust ? true : false;
   const { item, id } = useParams();
@@ -32,9 +36,7 @@ function PostPage(props) {
 
   const authUser = useSelector((state) => state.user.isAdmin);
 
-  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(
-    Title || Contents || Images.length > 0
-  );
+  useCallbackPrompt(Modify);
 
   React.useEffect(() => {
     if (!itemCheck[item]) {
@@ -54,24 +56,56 @@ function PostPage(props) {
       });
     }
     SetInitial();
+    // setInitialState([Title, Contents, Images]);
   }, []);
+
+  React.useEffect(() => {
+    // 1. 생성 POU = false
+    // 2. 수정
+    if (POST_OR_UPDATE && InitialState === null && Title.length > 0)
+      return setInitialState([Title, Contents, Images]);
+    if (!POST_OR_UPDATE) return setInitialState([Title, Contents, Images]);
+    if (
+      !Modify &&
+      InitialState !== [Title, Contents, Images] &&
+      InitialState !== null
+    ) {
+      console.log("go false");
+      setModify(true);
+    }
+  }, [Title, Contents, Images]);
 
   const submit = () => {
     if (!Title.trim() || !Contents.trim()) {
       return alert("문의 내용을 작성해주세요!");
     }
-    console.log("TITLE >> ", Title);
-    console.log("Contents >> ", Contents);
-    console.log("Images >> ", Images);
+    setModify(false);
     const body = {
       writer: userID,
       title: Title,
       detail: Contents,
       image: Images,
     };
-    Axios.post("/api/requests/", body).then((response) => {
-      console.log(response);
-    });
+    if (!POST_OR_UPDATE) {
+      Axios.post("/api/requests/", body).then((response) => {
+        if (response.data.succes) {
+          alert("문의가 정상적으로 등록되었습니다.");
+          navigate("/requests");
+        }
+      });
+    } else {
+      const body = {
+        title: Title,
+        detail: Contents,
+        image: Images,
+      };
+      Axios.put(`/api/requests/${id}`, body).then((response) => {
+        if (response.data.success) {
+          alert("문의가 정상적으로 수정되었습니다.");
+          navigate(`/requests/${id}`);
+        }
+      });
+    }
   };
 
   return (
@@ -91,11 +125,7 @@ function PostPage(props) {
         {BreadCrumb("POSTING")}
       </Grid>
 
-      {authUser && item === "admin" ? (
-        <ProductOption />
-      ) : (
-        <React.Fragment></React.Fragment>
-      )}
+      {authUser && item === "admin" && <ProductOption />}
 
       {/* ADMIN POSTING PAGE 에서 OPTIONAL MODULE 자리 */}
 
@@ -168,7 +198,7 @@ function PostPage(props) {
           <Button
             size="large"
             onClick={() => {
-              console.log("userID>", userID);
+              console.log("POST OR UPDATE>", POST_OR_UPDATE);
             }}
             variant="outlined"
           >
@@ -176,9 +206,7 @@ function PostPage(props) {
           </Button>
           <Button
             size="large"
-            onClick={() => {
-              dispatch(revokeThumbNail());
-            }}
+            onClick={() => console.log(InitialState)}
             variant="outlined"
           >
             REVOKE TEST

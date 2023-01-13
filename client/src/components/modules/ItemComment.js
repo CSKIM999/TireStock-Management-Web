@@ -23,7 +23,7 @@ const ItemComment = (props, captureComment) => {
   const commentHandler = () => {
     if (user.userID.length === 0) return alert("로그인이 필요합니다");
     if (Comment.trim().length === 0) return alert("댓글 내용을 작성해주세요");
-    Axios.post(`/api/requests/${RequestId}`, {
+    Axios.post(`/api/requests/${RequestId}/comment`, {
       writer: user.nickname,
       w_id: user.userID,
       comment: Comment.trim(),

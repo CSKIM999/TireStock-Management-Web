@@ -2,12 +2,12 @@ import { useContext, useEffect } from "react";
 import { UNSAFE_NavigationContext } from "react-router-dom";
 
 export const useBlocker = (blocker, when = true) => {
-  console.log("useBlocker CALL");
   const { navigator } = useContext(UNSAFE_NavigationContext);
 
   useEffect(() => {
     if (!when) return;
 
+    console.log("USEBLOCKER");
     const unblock = navigator.block((tx) => {
       const autoUnblockingTx = {
         ...tx,

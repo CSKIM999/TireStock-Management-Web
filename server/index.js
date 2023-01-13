@@ -31,5 +31,5 @@ app.use("/api/requests", require("./routes/requests"));
 app.get("/", (req, res) => {
   return res.send("hello~~ cskim speaking");
 });
-
+app.put("/", (req, res) => {});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
