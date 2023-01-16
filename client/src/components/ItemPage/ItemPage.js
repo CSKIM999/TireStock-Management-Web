@@ -24,12 +24,14 @@ function ItemPage(props) {
   React.useEffect(() => {
     // TODO : Axios 사용해서 재고정보 가져오기 OptionValue : [전체]
     // 내가 원하는 중복제거 distinct
-    var keywordURL = `/api/${props.item}/?type=${type}`;
-    OptionValue.map((item, index) => {
+    let keywordURL = `/api/${props.item}/?type=${type}`;
+    keywordURL = OptionValue.reduce((query, item, index) => {
       if (item !== "전체") {
-        keywordURL += `&${tireKeys[index]}=${item}`;
+        query += `&${tireKeys[index]}=${item}`;
       }
-    });
+      return query;
+    }, keywordURL);
+
     Axios.get(keywordURL).then((response) => {
       if (response) {
         setSearchedItem(response.data.payload);

@@ -1,13 +1,29 @@
 import React from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import * as Axios from "axios";
 
 const ItemDetailTitle = (props) => {
-  console.log("DETAIL TITLE PROPS : ", props);
+  const itemID = useParams().id;
+  const navigate = useNavigate();
+  console.log(
+    "🚀 ~ file: DetailTitle.js:7 ~ ItemDetailTitle ~ props",
+    props,
+    itemID
+  );
+
+  async function handleRemove() {
+    await Axios.delete(`/api/${props.item}/${itemID}`).then((response) => {
+      if (response.status === 200) return navigate("/requests");
+      return alert("삭제에 실패했습니다. 관리자에게 문의해주세요!");
+    });
+  }
+
   const ControlerRender = () => {
     if (props.ControlFlag)
       return (
         <Box>
-          <Button>REMOVE</Button>
+          <Button onClick={handleRemove}>REMOVE</Button>
           <Button>ADJ</Button>
         </Box>
       );

@@ -80,7 +80,6 @@ function ItemDetailPage(props) {
               ? response.data.payload.writer._id
               : response.data.payload._id;
           if (authenticID === userID) setControlFlag(true);
-          console.log(response);
           return setBody(handleItem(item, response.data.payload));
         }
         return console.log("Axios error");
@@ -105,7 +104,11 @@ function ItemDetailPage(props) {
         <Grid container flexWrap="nowrap" direction="column" height="100%">
           <Grid item xs={1}>
             {BreadCrumb(item, Body.type)}
-            <ItemDetailTitle title={Body.title} ControlFlag={ControlFlag} />
+            <ItemDetailTitle
+              title={Body.title}
+              item={item}
+              ControlFlag={ControlFlag}
+            />
           </Grid>
           <Divider />
           <Grid

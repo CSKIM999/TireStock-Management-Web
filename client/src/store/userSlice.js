@@ -5,9 +5,9 @@ const initialState = {
   userID: "",
   token: "",
   nickname: "",
-  role: "", //true
-  loading: false,
-  state: { type: undefined, data: undefined },
+  isAdmin: false, //true
+  // loading: false,
+  // state: { type: undefined, data: undefined },
 };
 
 // 이렇게 loading state를 통해서 skeleton 이나 progress 사용하는것도 좋아보임.

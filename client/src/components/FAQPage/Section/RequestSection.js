@@ -3,9 +3,8 @@ import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import FAQItem from "../util/FAQItem";
 
 function RequestSection(props) {
-  console.log(props);
   return (
-    <Stack display={props.tab === 0 ? "block" : "none"}>
+    <Stack>
       <Box
         sx={{
           display: "flex",

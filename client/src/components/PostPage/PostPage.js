@@ -21,22 +21,21 @@ const itemCheck = { requests: 1, admin: 1 };
 
 // props.adjust 를 통해 수정인지 생성인지 확인
 
-function PostPage(props) {
-  const [Title, setTitle] = React.useState("");
-  const [Contents, setContents] = React.useState("");
-  const [Images, setImages] = React.useState([]);
-  const [Loading, setLoading] = React.useState(true);
-  const [InitialState, setInitialState] = React.useState(null);
-  const [Modify, setModify] = React.useState(false);
-  const userID = useSelector((state) => state.user.userID);
-  const POST_OR_UPDATE = props.adjust ? true : false;
+function PostPage({ adjust }) {
+  const POST_OR_UPDATE = adjust;
   const { item, id } = useParams();
+  const [title, setTitle] = React.useState("");
+  const [contents, setContents] = React.useState("");
+  const [images, setImages] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [initialState, setInitialState] = React.useState(null);
+  const [modify, setModify] = React.useState(false);
+  const userID = useSelector((state) => state.user.userID);
+  const authUser = useSelector((state) => state.user.isAdmin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const authUser = useSelector((state) => state.user.isAdmin);
-
-  useCallbackPrompt(Modify);
+  useCallbackPrompt(modify);
 
   React.useEffect(() => {
     if (!itemCheck[item]) {
@@ -45,7 +44,7 @@ function PostPage(props) {
     }
     if (!POST_OR_UPDATE) return;
     // console.log(id, POST_OR_UPDATE);
-    async function SetInitial() {
+    async function setInitial() {
       await Axios.get(`/api/${item}/${id}`).then((response) => {
         if (response.data.success) {
           const payload = response.data.payload;
@@ -55,49 +54,55 @@ function PostPage(props) {
         }
       });
     }
-    SetInitial();
+    setInitial();
     // setInitialState([Title, Contents, Images]);
   }, []);
 
   React.useEffect(() => {
     // 1. 생성 POU = false
     // 2. 수정
-    if (POST_OR_UPDATE && InitialState === null && Title.length > 0)
-      return setInitialState([Title, Contents, Images]);
-    if (!POST_OR_UPDATE) return setInitialState([Title, Contents, Images]);
+    if (POST_OR_UPDATE && initialState === null && title.length > 0)
+      return setInitialState([title, contents, images]);
+    if (!POST_OR_UPDATE) return setInitialState([title, contents, images]);
     if (
-      !Modify &&
-      InitialState !== [Title, Contents, Images] &&
-      InitialState !== null
+      !modify &&
+      initialState !== [title, contents, images] &&
+      initialState !== null
     ) {
       console.log("go false");
       setModify(true);
     }
-  }, [Title, Contents, Images]);
+  }, [title, contents, images]);
 
-  const submit = () => {
-    if (!Title.trim() || !Contents.trim()) {
+  const handleSubmit = () => {
+    if (!title.trim() || !contents.trim()) {
       return alert("문의 내용을 작성해주세요!");
     }
     setModify(false);
     const body = {
       writer: userID,
-      title: Title,
-      detail: Contents,
-      image: Images,
+      title: title,
+      detail: contents,
+      image: images,
     };
     if (!POST_OR_UPDATE) {
-      Axios.post("/api/requests/", body).then((response) => {
-        if (response.data.succes) {
-          alert("문의가 정상적으로 등록되었습니다.");
-          navigate("/requests");
-        }
-      });
+      try {
+        Axios.post("/api/requests/", body).then((response) => {
+          if (response.data.succes) {
+            alert("문의가 정상적으로 등록되었습니다.");
+            navigate("/requests");
+          } else {
+            alert("문의 등록에 실패했습니다");
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       const body = {
-        title: Title,
-        detail: Contents,
-        image: Images,
+        title: title,
+        detail: contents,
+        image: images,
       };
       Axios.put(`/api/requests/${id}`, body).then((response) => {
         if (response.data.success) {
@@ -145,15 +150,15 @@ function PostPage(props) {
           flexWrap="nowrap"
         >
           <Grid item container xs={1} alignItems="center">
-            <Grid item xs={MapTable.left.left} sx={MapTable.left.sx}>
+            <Grid item xs={mapTable.left.left} sx={mapTable.left.sx}>
               <Typography>Title</Typography>
             </Grid>
-            <Grid item xs={MapTable.left.right}>
-              <Paper elevation={5} sx={Paper_SX}>
+            <Grid item xs={mapTable.left.right}>
+              <Paper elevation={5} sx={paperStyle}>
                 <InputBase
                   placeholder="문의 제목을 작성해주세요"
-                  sx={InputBase_SX}
-                  value={Title}
+                  sx={inputBaseStyle}
+                  value={title}
                   onChange={(event) => {
                     setTitle(event.target.value);
                   }}
@@ -163,16 +168,16 @@ function PostPage(props) {
           </Grid>
           <Divider sx={{ my: 2 }} />
           <Grid item container xs={9}>
-            <Grid item xs={MapTable.left.left} sx={MapTable.left.sx}>
+            <Grid item xs={mapTable.left.left} sx={mapTable.left.sx}>
               <Typography>Contents</Typography>
             </Grid>
-            <Grid item xs={MapTable.left.right}>
-              <Paper elevation={5} sx={Paper_SX}>
+            <Grid item xs={mapTable.left.right}>
+              <Paper elevation={5} sx={paperStyle}>
                 <InputBase
                   placeholder="문의 내용을 작성해주세요"
                   multiline
-                  sx={InputBase_SX}
-                  value={Contents}
+                  sx={inputBaseStyle}
+                  value={contents}
                   onChange={(event) => {
                     setContents(event.target.value);
                   }}
@@ -184,7 +189,7 @@ function PostPage(props) {
 
         <Divider orientation="vertical" sx={{ height: "100%" }} />
 
-        <Upload images={[Images, setImages]} />
+        <Upload images={[images, setImages]} />
       </Grid>
       <Divider sx={{ my: 2 }} />
       <Grid item display="flex" justifyContent="center">
@@ -192,7 +197,11 @@ function PostPage(props) {
           <Button size="large" variant="outlined">
             CANCEL
           </Button>
-          <Button size="large" onClick={() => submit()} variant="outlined">
+          <Button
+            size="large"
+            onClick={() => handleSubmit()}
+            variant="outlined"
+          >
             REGIST
           </Button>
           <Button
@@ -206,7 +215,7 @@ function PostPage(props) {
           </Button>
           <Button
             size="large"
-            onClick={() => console.log(InitialState)}
+            onClick={() => console.log(initialState)}
             variant="outlined"
           >
             REVOKE TEST
@@ -217,7 +226,7 @@ function PostPage(props) {
   );
 }
 
-const MapTable = {
+const mapTable = {
   left: {
     sx: { display: "flex", justifyContent: "center", alignItems: "center" },
     left: 2,
@@ -225,7 +234,7 @@ const MapTable = {
     bottom: "400px",
   },
 };
-const InputBase_SX = {
+const inputBaseStyle = {
   py: 1,
   px: 2,
   minHeight: "100%",
@@ -233,7 +242,7 @@ const InputBase_SX = {
   width: "100%",
 };
 
-const Paper_SX = {
+const paperStyle = {
   width: "100%",
   height: "100%",
   overflow: "auto",

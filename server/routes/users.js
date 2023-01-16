@@ -40,7 +40,7 @@ router.post("/login", (req, res) => {
           .json({
             loginSuccess: true,
             userID: user._id,
-            // token: user.token,
+            token: user.token,
             nickname: user.nickname,
             isAdmin: user.role ? true : false,
           });
