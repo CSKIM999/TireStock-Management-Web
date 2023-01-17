@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
+  FormControlLabel,
   Grid,
   InputBase,
   Paper,
@@ -23,6 +25,8 @@ const itemCheck = { requests: 1, admin: 1 };
 
 function PostPage({ adjust }) {
   const POST_OR_UPDATE = adjust;
+  const userID = useSelector((state) => state.user.userID);
+  const admin = useSelector((state) => state.user.isAdmin);
   const { item, id } = useParams();
   const [title, setTitle] = React.useState("");
   const [contents, setContents] = React.useState("");
@@ -30,8 +34,7 @@ function PostPage({ adjust }) {
   const [loading, setLoading] = React.useState(true);
   const [initialState, setInitialState] = React.useState(null);
   const [modify, setModify] = React.useState(false);
-  const userID = useSelector((state) => state.user.userID);
-  const authUser = useSelector((state) => state.user.isAdmin);
+  const [notice, setNotice] = React.useState(admin ? false : true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -85,10 +88,15 @@ function PostPage({ adjust }) {
       detail: contents,
       image: images,
     };
+    if (notice) body.state = "notice";
     if (!POST_OR_UPDATE) {
       try {
         Axios.post("/api/requests/", body).then((response) => {
-          if (response.data.succes) {
+          console.log(
+            "🚀 ~ file: PostPage.js:96 ~ Axios.post ~ response",
+            response
+          );
+          if (response.data.success) {
             alert("문의가 정상적으로 등록되었습니다.");
             navigate("/requests");
           } else {
@@ -104,6 +112,7 @@ function PostPage({ adjust }) {
         detail: contents,
         image: images,
       };
+      if (notice) body.state = "notice";
       Axios.put(`/api/requests/${id}`, body).then((response) => {
         if (response.data.success) {
           alert("문의가 정상적으로 수정되었습니다.");
@@ -130,7 +139,7 @@ function PostPage({ adjust }) {
         {BreadCrumb("POSTING")}
       </Grid>
 
-      {authUser && item === "admin" && <ProductOption />}
+      {admin && item === "admin" && <ProductOption />}
 
       {/* ADMIN POSTING PAGE 에서 OPTIONAL MODULE 자리 */}
 
@@ -157,8 +166,19 @@ function PostPage({ adjust }) {
               <Paper elevation={5} sx={paperStyle}>
                 <InputBase
                   placeholder="문의 제목을 작성해주세요"
-                  sx={inputBaseStyle}
+                  sx={{
+                    flexDirection: "row",
+                    ...inputBaseStyle,
+                  }}
                   value={title}
+                  endAdornment={
+                    <FormControlLabel
+                      value={notice}
+                      control={<Checkbox onChange={() => setNotice(!notice)} />}
+                      label="공지여부"
+                      labelPlacement="start"
+                    />
+                  }
                   onChange={(event) => {
                     setTitle(event.target.value);
                   }}
@@ -176,7 +196,10 @@ function PostPage({ adjust }) {
                 <InputBase
                   placeholder="문의 내용을 작성해주세요"
                   multiline
-                  sx={inputBaseStyle}
+                  sx={{
+                    flexDirection: "column",
+                    ...inputBaseStyle,
+                  }}
                   value={contents}
                   onChange={(event) => {
                     setContents(event.target.value);
@@ -213,11 +236,7 @@ function PostPage({ adjust }) {
           >
             STATE TEST
           </Button>
-          <Button
-            size="large"
-            onClick={() => console.log(initialState)}
-            variant="outlined"
-          >
+          <Button size="large" onClick={() => console.log()} variant="outlined">
             REVOKE TEST
           </Button>
         </Stack>
@@ -238,7 +257,6 @@ const inputBaseStyle = {
   py: 1,
   px: 2,
   minHeight: "100%",
-  flexDirection: "column",
   width: "100%",
 };
 

@@ -9,11 +9,10 @@ function RequestSection(props) {
         sx={{
           display: "flex",
           borderBottom: "2px solid white",
-          justifyContent: "space-between",
+          flexDirection: "row-reverse",
           py: 2,
         }}
       >
-        <Button>문의하기</Button>
         <Button>문의하기</Button>
       </Box>
       {/* 1page = 10개 */}
