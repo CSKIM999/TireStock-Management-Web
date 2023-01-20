@@ -37,6 +37,7 @@ const handleItem = (item, response) => {
       temp.data.size = response.size ? response.size : "";
       temp.data.condition = response.condition ? response.condition : "";
       temp.data.detail = response.detail ? response.detail : "";
+      temp.data.image = response.image ? response.image : "";
       return temp;
     case "wheels":
       temp.title = response.title;
@@ -44,6 +45,7 @@ const handleItem = (item, response) => {
       temp.data.region = response.region ? response.region : "";
       temp.data.size = response.size ? response.size : "";
       temp.data.design = response.design ? response.design : "";
+      temp.data.image = response.image ? response.image : "";
       return temp;
     case "requests":
       temp.title = response.title;
@@ -51,6 +53,7 @@ const handleItem = (item, response) => {
       temp.data.userID = response.writer._id;
       temp.data.detail = response.detail;
       temp.data.comment = response.comment;
+      temp.data.image = response.image ? response.image : "";
       return temp;
     default:
       return false;
@@ -74,6 +77,10 @@ function ItemDetailPage(props) {
   const AxiosBody = async () => {
     await Axios.get(`/api/${item}/${id}`)
       .then((response) => {
+        console.log(
+          "🚀 ~ file: ItemDetailPage.js:77 ~ .then ~ response",
+          response
+        );
         if (response.data.success) {
           const authenticID =
             item === "requests"
@@ -96,6 +103,10 @@ function ItemDetailPage(props) {
       return;
     }
     AxiosBody();
+    console.log(
+      "🚀 ~ file: ItemDetailPage.js:73 ~ ItemDetailPage ~ Body",
+      Body
+    );
   }, [userID]);
 
   if (Body.title) {
@@ -127,7 +138,14 @@ function ItemDetailPage(props) {
               <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
             </Grid>
           </Grid>
-          <Button onClick={() => console.log(Body, ControlFlag)}>!!</Button>
+          <Button
+            onClick={() => {
+              console.log(Body, ControlFlag);
+              debugger;
+            }}
+          >
+            !!
+          </Button>
         </Grid>
       </Box>
     );

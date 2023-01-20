@@ -1,8 +1,18 @@
 const express = require("express");
+const multer = require("multer");
 const { auth } = require("../middleware/auth");
 const router = express.Router();
 
 const { Request } = require("../models/Request");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  },
+});
 
 router.post("/", (req, res) => {
   const request = new Request(req.body);
@@ -50,9 +60,15 @@ router.get("/", (req, res) => {
   const state = req.query.state;
   let limit = page ? page * 10 : 10;
   let skip = page ? (page - 1) * 10 : 0;
-  let total = 0;
+  const withOutNotice = { $nin: "notice" };
 
-  Request.find(state ? { state: state } : userID ? { writer: userID } : {})
+  Request.find(
+    state
+      ? { state: "notice" }
+      : userID
+      ? { writer: userID, state: withOutNotice }
+      : { state: withOutNotice }
+  )
     .skip(skip)
     .limit(limit)
     .exec((err, data) => {

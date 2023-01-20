@@ -5,7 +5,9 @@ import * as Axios from "axios";
 
 const ItemDetailTitle = (props) => {
   const itemID = useParams().id;
+  const item = props.item;
   const navigate = useNavigate();
+
   console.log(
     "🚀 ~ file: DetailTitle.js:7 ~ ItemDetailTitle ~ props",
     props,
@@ -24,7 +26,9 @@ const ItemDetailTitle = (props) => {
       return (
         <Box>
           <Button onClick={handleRemove}>REMOVE</Button>
-          <Button>ADJ</Button>
+          <Button onClick={() => navigate(`/posts/${item}/${itemID}`)}>
+            ADJ
+          </Button>
         </Box>
       );
     return <Box></Box>;

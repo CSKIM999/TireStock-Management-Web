@@ -46,7 +46,6 @@ function PostPage({ adjust }) {
       navigate("/");
     }
     if (!POST_OR_UPDATE) return;
-    // console.log(id, POST_OR_UPDATE);
     async function setInitial() {
       await Axios.get(`/api/${item}/${id}`).then((response) => {
         if (response.data.success) {
@@ -58,12 +57,9 @@ function PostPage({ adjust }) {
       });
     }
     setInitial();
-    // setInitialState([Title, Contents, Images]);
   }, []);
 
   React.useEffect(() => {
-    // 1. 생성 POU = false
-    // 2. 수정
     if (POST_OR_UPDATE && initialState === null && title.length > 0)
       return setInitialState([title, contents, images]);
     if (!POST_OR_UPDATE) return setInitialState([title, contents, images]);
@@ -122,6 +118,19 @@ function PostPage({ adjust }) {
     }
   };
 
+  const ButtonSet = (
+    <Grid item display="flex" justifyContent="center">
+      <Stack direction="row" spacing={2}>
+        <Button size="large" variant="outlined">
+          CANCEL
+        </Button>
+        <Button size="large" onClick={() => handleSubmit()} variant="outlined">
+          REGIST
+        </Button>
+      </Stack>
+    </Grid>
+  );
+
   return (
     <Grid
       container
@@ -174,9 +183,10 @@ function PostPage({ adjust }) {
                   endAdornment={
                     <FormControlLabel
                       value={notice}
+                      sx={{ whiteSpace: "nowrap" }}
                       control={<Checkbox onChange={() => setNotice(!notice)} />}
                       label="공지여부"
-                      labelPlacement="start"
+                      labelPlacement="end"
                     />
                   }
                   onChange={(event) => {
@@ -215,32 +225,7 @@ function PostPage({ adjust }) {
         <Upload images={[images, setImages]} />
       </Grid>
       <Divider sx={{ my: 2 }} />
-      <Grid item display="flex" justifyContent="center">
-        <Stack direction="row" spacing={2}>
-          <Button size="large" variant="outlined">
-            CANCEL
-          </Button>
-          <Button
-            size="large"
-            onClick={() => handleSubmit()}
-            variant="outlined"
-          >
-            REGIST
-          </Button>
-          <Button
-            size="large"
-            onClick={() => {
-              console.log("POST OR UPDATE>", POST_OR_UPDATE);
-            }}
-            variant="outlined"
-          >
-            STATE TEST
-          </Button>
-          <Button size="large" onClick={() => console.log()} variant="outlined">
-            REVOKE TEST
-          </Button>
-        </Stack>
-      </Grid>
+      {ButtonSet}
     </Grid>
   );
 }
