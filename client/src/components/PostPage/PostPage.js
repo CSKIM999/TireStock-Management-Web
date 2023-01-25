@@ -31,6 +31,7 @@ function PostPage({ adjust }) {
   const [title, setTitle] = React.useState("");
   const [contents, setContents] = React.useState("");
   const [images, setImages] = React.useState([]);
+  const [form, setForm] = React.useState(new FormData());
   const [loading, setLoading] = React.useState(true);
   const [initialState, setInitialState] = React.useState(null);
   const [modify, setModify] = React.useState(false);
@@ -72,6 +73,14 @@ function PostPage({ adjust }) {
       setModify(true);
     }
   }, [title, contents, images]);
+
+  const handleTestSubmit = () => {
+    Axios.post("/api/requests/imageUploadTest", form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((response) => {
+      console.log(response.data);
+    });
+  };
 
   const handleSubmit = () => {
     if (!title.trim() || !contents.trim()) {
@@ -126,6 +135,13 @@ function PostPage({ adjust }) {
         </Button>
         <Button size="large" onClick={() => handleSubmit()} variant="outlined">
           REGIST
+        </Button>
+        <Button
+          size="large"
+          onClick={() => handleTestSubmit()}
+          variant="outlined"
+        >
+          IMAGE
         </Button>
       </Stack>
     </Grid>
@@ -222,7 +238,7 @@ function PostPage({ adjust }) {
 
         <Divider orientation="vertical" sx={{ height: "100%" }} />
 
-        <Upload images={[images, setImages]} />
+        <Upload images={[images, setImages]} form={[form, setForm]} />
       </Grid>
       <Divider sx={{ my: 2 }} />
       {ButtonSet}

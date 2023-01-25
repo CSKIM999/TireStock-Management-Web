@@ -20,10 +20,19 @@ const Upload = (props) => {
   // 글을 쓰는건 전부 post 로 통일하자!
   const path = useLocation().pathname;
   const [Images, setImages] = props.images;
+  const [form, setForm] = props.form;
   const dispatch = useDispatch();
 
   const mappingArr = [0, 1, 2, 3, 4];
   const Thumbnails = useSelector((state) => state.data.thumbNail.items);
+
+  const formHandler = (newFile) => {
+    setForm((prevForm) => {
+      prevForm.append("image", newFile);
+      return prevForm;
+    });
+    console.log("🚀 ~ file: Upload.js:30 ~ formHandler ~ newFile", newFile);
+  };
 
   const UploadHandler = async (files) => {
     if (files[0].size > 1000000)
@@ -52,6 +61,8 @@ const Upload = (props) => {
     //   },
     // };
     // formData.append("file", files[0]);
+
+    formHandler(files[0]);
 
     const compressOption = {
       maxSizeMB: 1,
