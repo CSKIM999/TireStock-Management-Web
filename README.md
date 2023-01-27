@@ -83,10 +83,27 @@
 >   젠장.
 >   액세스키를 받아서 서버에서 사용하면 배포시에도 문제없이 클라우드에 이미지업로드 가능.
 >   업로드 된 이미지 URL은 도메인 위에서 모두 접근 가능할 것.
->   TODO )
+>   DONE )
 >   OCI 버킷에 이미지 업로드하기
->   업로드 한 이미지 URL을 생성해서 MongoDB에 저장하기
+>       >> 완성은 했지만 배포단계를 위해 업로드만 가능한 IAM 계정을 설정해주어야함. (현재는 admin)
 >   오라클은 다 좋다. 성능, 구조적 추가비용 지출 없음.
 >   근데 자료가 진짜 징그러울정도로 없다.
 >   돌고 돌아 공식문서와 ORACLE 깃허브에서 예제를 찾아서 해결하는 중.
+>   TODO )
+>   url에 접속하면 render 대신 download 가 진행됨. 같은 문제를 s3로 검색해보니 contentType 때문이라고 함.
+>   분명 FE에서 전달할때 컨텐츠타입 image로 변환해서 던지기도 해보고 결과적으로 OCI버킷에서 객체 세부정보에서 확인해도
+>   image/jpeg 로 나오는디 그래도 여전히 download 진행. 개같은거. 그냥 uploadManager 정의 타고 올라가서 확인해보기로 함.
+>   Axios 의 컨텐츠타입 설정 헤더는 Content-type인데 어찌저찌 타고 올라가서 확인해보니 여기선 다음과 같다
+>   uploadManager
+>       >upload Method ( req , cb ) params
+>           > uploadRequest ( content , singleUpload , requestDetail ) params
+>               > requestDetail ~= putObjectRequest ((TS 의 Omit 을 사용해서 아직 잘은 모르겠음.))
+>                   > putObjectRequest ( namespaceName . . . ★★★ contentType ★★★ . . . )
+>   여태 뻘짓했는데 결과적으론 컨텐츠 타입은 requestDetail 의 arg 로 "contentType:'image/jpeg'" 를 넣어주어야 했던 것.
+>   이젠 url 접혹하면 render 가 정상적으로 진행 됨.
+>   도대체가 정보가 없어서 s3로 검색
+>   업로드 한 이미지 URL을 생성해서 MongoDB에 저장하기
+>
+>
+>
 >   ```

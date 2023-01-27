@@ -36,7 +36,6 @@ function PostPage({ adjust }) {
   const [initialState, setInitialState] = React.useState(null);
   const [modify, setModify] = React.useState(false);
   const [notice, setNotice] = React.useState(admin ? false : true);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useCallbackPrompt(modify);
@@ -48,6 +47,7 @@ function PostPage({ adjust }) {
     }
     if (!POST_OR_UPDATE) return;
     async function setInitial() {
+      // adjust === true 일 경우 => 수정하기 위한 data get해오기
       await Axios.get(`/api/${item}/${id}`).then((response) => {
         if (response.data.success) {
           const payload = response.data.payload;
@@ -76,7 +76,7 @@ function PostPage({ adjust }) {
 
   const handleTestSubmit = () => {
     Axios.post("/api/requests/imageUploadTest", form, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { "Content-type": `multipart/form-data` },
     }).then((response) => {
       console.log(response.data);
     });
@@ -95,10 +95,28 @@ function PostPage({ adjust }) {
     };
     if (notice) body.state = "notice";
     if (!POST_OR_UPDATE) {
+      // 생성
       try {
-        Axios.post("/api/requests/", body).then((response) => {
+        for (const [key, value] of Object.entries(body)) {
+          if (key !== "image") {
+            setForm((prevForm) => {
+              prevForm.append(`${key}`, value);
+              return prevForm;
+            });
+          } else {
+            setForm((prevForm) => {
+              prevForm.append(`imageUpload`, value);
+              return prevForm;
+            });
+          }
+        }
+        Axios.post("/api/requests/", form, {
+          headers: {
+            "Content-type": `multipart/form-data`,
+          },
+        }).then((response) => {
           console.log(
-            "🚀 ~ file: PostPage.js:96 ~ Axios.post ~ response",
+            "🚀 ~ file: PostPage.js:112 ~ handleSubmit ~ response",
             response
           );
           if (response.data.success) {
@@ -112,6 +130,7 @@ function PostPage({ adjust }) {
         console.log(err);
       }
     } else {
+      //수정
       const body = {
         title: title,
         detail: contents,
