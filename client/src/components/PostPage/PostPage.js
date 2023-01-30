@@ -75,11 +75,7 @@ function PostPage({ adjust }) {
   }, [title, contents, images]);
 
   const handleTestSubmit = () => {
-    Axios.post("/api/requests/imageUploadTest", form, {
-      headers: { "Content-type": `multipart/form-data` },
-    }).then((response) => {
-      console.log(response.data);
-    });
+    console.log(form.getAll("image"));
   };
 
   const handleSubmit = () => {

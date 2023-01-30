@@ -5,15 +5,30 @@ const { uploadItemsInDirectory } = require("../modules/oci_sdk");
 const router = express.Router();
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-
-// const path = require("path");
-
 const { Request } = require("../models/Request");
 
 const directoryPath = process.env.UPLOAD_DIR_PATH;
 const namespaceName = process.env.NAME_SPACE_NAME;
 const bucketName = process.env.BUCKET_NAME;
 const cloudURL = "https://objectstorage.ap-seoul-1.oraclecloud.com";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, directoryPath);
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname +
+        "-" +
+        Math.floor(Math.random() * 1e9) +
+        Date.now() +
+        ".jpg"
+    );
+  },
+});
+const upload = multer({ storage: storage });
+
 const convertURL = (itemName) => {
   return `${cloudURL}/n/${namespaceName}/b/${bucketName}/o/${itemName}`;
 };
@@ -24,16 +39,7 @@ try {
   fs.mkdirSync(directoryPath);
 }
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, directoryPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + ".jpg");
-  },
-});
 // https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnylck3cahga/b/bucket-20230124-0355/o/
-const upload = multer({ storage: storage });
 
 router.post("/", upload.array("image", 5), async (req, res) => {
   const IMAGE_FLAG = req.body.imageUpload === [] ? false : true;
@@ -48,36 +54,28 @@ router.post("/", upload.array("image", 5), async (req, res) => {
       );
       if (!uploadResponse) return res.status(404).json({ success: false });
       const getFileURL = fs.readdirSync(directoryPath);
-      console.log(
-        "🚀 ~ file: requests.js:49 ~ handleFiles ~ getFileURL",
-        getFileURL
-      );
       getFileURL.forEach((fileName) => {
         const URL = convertURL(fileName);
         imageURL = [...imageURL, URL];
       });
-      console.log(
-        "🚀 ~ file: requests.js:56 ~ getFileURL.forEach ~ imageURL",
-        imageURL
-      );
       return imageURL;
     }
     getURL = await handleFiles();
-    console.log("🚀 ~ file: requests.js:65 ~ router.post ~ getURL", getURL);
     // fs.rmdir(directoryPath, { recursive: true }, (err) => {})
     fsExtra.emptyDir(directoryPath);
-
-    return res
-      .status(200)
-      .json({ success: true, images: getURL, body: req.body });
   }
-  const convertedBody = {};
-  const request = new Request(req.body);
+  const Body = {
+    writer: req.body.writer,
+    title: req.body.title,
+    detail: req.body.detail,
+    image: getURL,
+  };
 
-  // request.save((err) => {
-  //   if (err) return res.status(400).json({ success: false, err });
-  //   return res.status(200).json({ success: true });
-  // });
+  const request = new Request(Body);
+  request.save((err) => {
+    if (err) return res.status(400).json({ success: false, err });
+    return res.status(200).json({ success: true });
+  });
 });
 
 router.post("/imageUploadTest", (req, res) => {

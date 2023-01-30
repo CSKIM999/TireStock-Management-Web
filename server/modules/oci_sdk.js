@@ -11,12 +11,6 @@ const client = new os.ObjectStorageClient({
 
 const uploadItemsInDirectory = (dirPath, nameSpace, bucketName) => {
   return new Promise((resolve, reject) => {
-    console.log(
-      "🚀 ~ file: oci_sdk.js:13 ~ uploadItemsInDirectory ~ dirPath, nameSpace, bucketName",
-      dirPath,
-      nameSpace,
-      bucketName
-    );
     const uploadManager = new os.UploadManager(client, {
       enforceMD5: true,
     });
@@ -24,14 +18,9 @@ const uploadItemsInDirectory = (dirPath, nameSpace, bucketName) => {
     (async () => {
       // Read files from the directory
       readdir(dirPath, (err, files) => {
-        console.log("🚀 ~ file: oci_sdk.js:26 ~ readdir ~ dirPath", dirPath);
         if (err) return console.log("Unable to scan directory: " + err);
 
         files.forEach(async (filename) => {
-          console.log(
-            "🚀 ~ file: oci_sdk.js:30 ~ files.forEach ~ filename",
-            filename
-          );
           const objectName = `${basename(filename)}`;
           try {
             console.time("Upload Time");
@@ -56,10 +45,10 @@ const uploadItemsInDirectory = (dirPath, nameSpace, bucketName) => {
             console.timeEnd("Upload Time");
           } catch (ex) {
             console.error(`Failed due to ${ex}`);
-            console.log("🚀 ~ file: oci_sdk.js:45 ~ files.forEach ~ ex", ex);
-            return reject(false);
+            return reject(true);
           }
         });
+
         return resolve(true);
       });
     })();

@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 import React from "react";
 import * as Axios from "axios";
 import {
@@ -14,13 +15,9 @@ import ItemDetailTitle from "./Section/DetailTitle";
 import BreadCrumb from "../modules/BreadCrumb";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ImageSlider from "./Section/ImageSlider";
 
 const itemBoxSX = "1px solid black";
-const itemPaperSX = {
-  width: "100%",
-  height: "100%",
-  bgcolor: "secondary.main",
-};
 
 const handleItem = (item, response) => {
   let temp = {
@@ -30,33 +27,38 @@ const handleItem = (item, response) => {
   };
   switch (item) {
     case "tires":
-      temp.title = response.title;
-      temp.type = response.type;
+      // temp.title = response.title;
+      // temp.type = response.type;
       temp.data.width = response.width ? response.width : "";
       temp.data.profile = response.profile ? response.profile : "";
       temp.data.size = response.size ? response.size : "";
       temp.data.condition = response.condition ? response.condition : "";
-      temp.data.detail = response.detail ? response.detail : "";
-      temp.data.image = response.image ? response.image : "";
-      return temp;
+    // temp.data.detail = response.detail ? response.detail : "";
+    // temp.data.image = response.image ? response.image : "";
+    // return temp;
     case "wheels":
-      temp.title = response.title;
-      temp.type = response.type;
+      // temp.title = response.title;
+      // temp.type = response.type;
       temp.data.region = response.region ? response.region : "";
       temp.data.size = response.size ? response.size : "";
       temp.data.design = response.design ? response.design : "";
-      temp.data.image = response.image ? response.image : "";
-      return temp;
+    // temp.data.detail = response.detail ? response.detail : "";
+    // temp.data.image = response.image ? response.image : "";
+    // return temp;
     case "requests":
-      temp.title = response.title;
-      temp.type = response.state;
+      // temp.title = response.title;
+      // temp.type = response.state;
       temp.data.userID = response.writer._id;
-      temp.data.detail = response.detail;
       temp.data.comment = response.comment;
+    // temp.data.detail = response.detail;
+    // temp.data.image = response.image ? response.image : "";
+    // return temp;
+    default:
+      temp.title = response.title;
+      temp.type = response.type;
+      temp.data.detail = response.detail ? response.detail : "";
       temp.data.image = response.image ? response.image : "";
       return temp;
-    default:
-      return false;
   }
 };
 
@@ -130,9 +132,7 @@ function ItemDetailPage(props) {
             sx={{ py: 3, borderTop: itemBoxSX, borderBottom: itemBoxSX }}
           >
             {/* Image Section */}
-            <Grid item xs={12} md={5.5} sx={{ pr: 2 }}>
-              <Paper sx={itemPaperSX}></Paper>
-            </Grid>
+            <ImageSlider images={Body.data.image} />
             {/* Detail Section */}
             <Grid item xs={12} md={6.5} minWidth={500}>
               <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
@@ -141,7 +141,6 @@ function ItemDetailPage(props) {
           <Button
             onClick={() => {
               console.log(Body, ControlFlag);
-              debugger;
             }}
           >
             !!
