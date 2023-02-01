@@ -12,7 +12,6 @@ const tireKeys = Object.keys(itemOptionTable.tire);
 function ItemPage(props) {
   // tdz
   const dispatch = useDispatch();
-  //
 
   const [OptionValue, setOptionValue] = React.useState(
     props.item === "tires"
@@ -22,8 +21,6 @@ function ItemPage(props) {
   const [SearchedItem, setSearchedItem] = React.useState([]);
   let { type } = useParams();
   React.useEffect(() => {
-    // TODO : Axios 사용해서 재고정보 가져오기 OptionValue : [전체]
-    // 내가 원하는 중복제거 distinct
     let keywordURL = `/api/${props.item}/?type=${type}`;
     keywordURL = OptionValue.reduce((query, item, index) => {
       if (item !== "전체") {

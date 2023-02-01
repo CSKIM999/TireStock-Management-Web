@@ -11,10 +11,18 @@ const tireSchema = Schema({
   //   type: Date,
   //   required: true,
   // },
-
   title: {
     type: String,
     required: true,
+  },
+  image: {
+    type: Array,
+  },
+  thumbNail: {
+    type: String,
+  },
+  detail: {
+    type: String,
   },
   type: {
     type: String,
@@ -35,12 +43,6 @@ const tireSchema = Schema({
   condition: {
     type: Number,
     required: true,
-  },
-  image: {
-    type: String,
-  },
-  detail: {
-    type: String,
   },
   brand: {
     type: String,

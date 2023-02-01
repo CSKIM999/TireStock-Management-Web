@@ -61,7 +61,6 @@ router.post("/", upload.array("image", 5), async (req, res) => {
       return imageURL;
     }
     getURL = await handleFiles();
-    // fs.rmdir(directoryPath, { recursive: true }, (err) => {})
     fsExtra.emptyDir(directoryPath);
   }
   const Body = {

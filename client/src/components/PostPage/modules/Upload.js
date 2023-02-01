@@ -10,30 +10,46 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import Dropzone from "react-dropzone";
-import { CloudUploadOutlined } from "@mui/icons-material";
+import { Clear, CloudUploadOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import imageCompression from "browser-image-compression";
 import { useLocation } from "react-router-dom";
-import { pushThumbNail } from "../../../store/dataSlice";
+import { pushThumbNail, revokeThumbNail } from "../../../store/dataSlice";
 
 const Upload = (props) => {
   // 글을 쓰는건 전부 post 로 통일하자!
   const path = useLocation().pathname;
-  const [Images, setImages] = props.images;
-  const [form, setForm] = props.form;
+  const [Images, setImages, handleImages] = props.images;
   const dispatch = useDispatch();
+
+  const compressOption = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 100,
+  };
+
+  React.useEffect(() => {
+    dispatch(revokeThumbNail());
+    Images.forEach(async (image, index) => {
+      console.log("🚀 ~ file: Upload.js:38 ~ Images.forEach ~ image", image);
+
+      const compressedImage = await imageCompression(image, compressOption);
+      const compressedURL = window.URL.createObjectURL(compressedImage);
+      console.log(
+        "🚀 ~ file: Upload.js:37 ~ Images.forEach ~ compressedURL",
+        compressedURL
+      );
+      dispatch(
+        pushThumbNail({
+          url: compressedURL,
+          index: index + compressedURL,
+          path: path,
+        })
+      );
+    });
+  }, []);
 
   const mappingArr = [0, 1, 2, 3, 4];
   const Thumbnails = useSelector((state) => state.data.thumbNail.items);
-
-  const formHandler = (newFile) => {
-    setForm((prevForm) => {
-      prevForm.append("image", newFile);
-      return prevForm;
-    });
-    console.log("🚀 ~ file: Upload.js:30 ~ formHandler ~ newFile", newFile);
-  };
-
   const UploadHandler = async (files) => {
     if (files[0].size > 1000000)
       return alert("파일을 업로드 할 수 없습니다 크기를 확인해주세요!");
@@ -62,20 +78,18 @@ const Upload = (props) => {
     // };
     // formData.append("file", files[0]);
 
-    formHandler(files[0]);
+    // formHandler(files[0]);
 
-    const compressOption = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 100,
-    };
     const compressedFile = await imageCompression(files[0], compressOption);
     const compressedURL = window.URL.createObjectURL(compressedFile);
     setImages([...Images, files[0]]);
-    dispatch(pushThumbNail({ url: compressedURL, path: path }));
+    dispatch(
+      pushThumbNail({ url: compressedURL, index: Images.length, path: path })
+    );
   };
   return (
     <Grid item container direction="column" xs={3}>
-      <Stack spacing={2} sx={{ height: "100%" }}>
+      <Stack spacing={4} sx={{ height: "100%" }}>
         <Stack spacing={1} direction="row" alignItems="flex-end">
           <Typography>사진 첨부</Typography>
           <Typography variant="caption">최대 5장</Typography>
@@ -113,7 +127,6 @@ const Upload = (props) => {
             width: "100%",
             minHeight: "50px",
             aspectRatio: "5",
-            bgcolor: "primary.main",
           }}
         >
           <Stack
@@ -123,17 +136,24 @@ const Upload = (props) => {
             {Thumbnails[0] &&
               mappingArr.map((item) => (
                 <Badge
-                  badgeContent="1"
+                  className="thumbNail"
+                  badgeContent={
+                    <Clear
+                      fontSize="small"
+                      onClick={(e) => handleImages(Thumbnails[item][1])}
+                    />
+                  }
+                  color="primary"
                   key={`thumbNail${item}`}
-                  invisible={true}
-                  sx={{ aspectRatio: "1" }}
+                  invisible={Thumbnails[item] ? false : true}
+                  sx={{ borderBottomLeftRadius: "0px" }}
                 >
                   <Container
                     sx={{
                       p: 0,
                       height: "100%",
                       backgroundImage: Thumbnails[item]
-                        ? `url(${Thumbnails[item]})`
+                        ? `url(${Thumbnails[item][0]})`
                         : "",
                       backgroundSize: "cover",
                     }}
@@ -147,4 +167,4 @@ const Upload = (props) => {
   );
 };
 
-export default Upload;
+export default React.memo(Upload);

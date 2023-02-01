@@ -28,15 +28,16 @@ const dataSlice = createSlice({
       return { ...initialState };
     },
     pushThumbNail: (state, action) => {
-      const { path, url } = action.payload;
+      const { path, index, url } = action.payload;
       const statePath = state.thumbNail.path;
       const pushState = (url, path = null, overwrite = false) => {
         if (overwrite) {
           state.thumbNail.path = path;
-          state.thumbNail.items = [url];
+          state.thumbNail.items = [url, index];
         } else {
           if (path) state.thumbNail.path = path;
-          state.thumbNail.items.push(url);
+          state.thumbNail.index = index;
+          state.thumbNail.items.push([url, index]);
         }
       };
       if (statePath === "") {

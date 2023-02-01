@@ -33,6 +33,15 @@ export const globalTheme = createTheme({
         root: {},
       },
     },
+    MuiBadge: {
+      styleOverrides: {
+        badge: {
+          padding: 0,
+          borderBottomLeftRadius: "0px",
+          cursor: "pointer",
+        },
+      },
+    },
     MuiGrid: {
       styleOverrides: {
         root: {
@@ -167,6 +176,7 @@ export const globalTheme = createTheme({
       info: complementaryColor,
     },
     primary: {
+      default: pointColor,
       main: pointColor,
     },
     secondary: {

@@ -1,4 +1,3 @@
-/* eslint-disable no-fallthrough */
 import React from "react";
 import * as Axios from "axios";
 import {
@@ -25,46 +24,30 @@ const handleItem = (item, response) => {
     type: "",
     data: {},
   };
-  switch (item) {
-    case "tires":
-      // temp.title = response.title;
-      // temp.type = response.type;
-      temp.data.width = response.width ? response.width : "";
-      temp.data.profile = response.profile ? response.profile : "";
-      temp.data.size = response.size ? response.size : "";
-      temp.data.condition = response.condition ? response.condition : "";
-    // temp.data.detail = response.detail ? response.detail : "";
-    // temp.data.image = response.image ? response.image : "";
-    // return temp;
-    case "wheels":
-      // temp.title = response.title;
-      // temp.type = response.type;
-      temp.data.region = response.region ? response.region : "";
-      temp.data.size = response.size ? response.size : "";
-      temp.data.design = response.design ? response.design : "";
-    // temp.data.detail = response.detail ? response.detail : "";
-    // temp.data.image = response.image ? response.image : "";
-    // return temp;
-    case "requests":
-      // temp.title = response.title;
-      // temp.type = response.state;
-      temp.data.userID = response.writer._id;
-      temp.data.comment = response.comment;
-    // temp.data.detail = response.detail;
-    // temp.data.image = response.image ? response.image : "";
-    // return temp;
-    default:
-      temp.title = response.title;
-      temp.type = response.type;
-      temp.data.detail = response.detail ? response.detail : "";
-      temp.data.image = response.image ? response.image : "";
-      return temp;
+  if (item === "tires") {
+    temp.data.width = response.width ? response.width : "";
+    temp.data.profile = response.profile ? response.profile : "";
+    temp.data.size = response.size ? response.size : "";
+    temp.data.condition = response.condition ? response.condition : "";
+  } else if (item === "wheels") {
+    temp.data.region = response.region ? response.region : "";
+    temp.data.size = response.size ? response.size : "";
+    temp.data.design = response.design ? response.design : "";
+  } else if (item === "requests") {
+    temp.data.userID = response.writer._id;
+    temp.data.comment = response.comment;
   }
+  temp.title = response.title;
+  temp.type = response.type;
+  temp.data.detail = response.detail ? response.detail : "";
+  temp.data.image = response.image ? response.image : [];
+  return temp;
 };
 
 function ItemDetailPage(props) {
   const navigate = useNavigate();
   const userID = useSelector((state) => state.user.userID);
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   const [ControlFlag, setControlFlag] = React.useState(false);
   let { item, type, id } = useParams();
   if (props.type === "request") {
@@ -88,7 +71,7 @@ function ItemDetailPage(props) {
             item === "requests"
               ? response.data.payload.writer._id
               : response.data.payload._id;
-          if (authenticID === userID) setControlFlag(true);
+          if (authenticID === userID || isAdmin) setControlFlag(true);
           return setBody(handleItem(item, response.data.payload));
         }
         return console.log("Axios error");

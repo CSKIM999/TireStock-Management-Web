@@ -19,27 +19,31 @@ const FullWH = { width: "100%", height: "100%" };
 
 const mapping = {
   type: ["TIRE", "WHEEL"],
-  TIRE: {
+  TIRES: {
     size: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i + 13}`)],
     width: ["NONE", ...Array.from({ length: 22 }, (_, i) => `${i * 5 + 200}`)],
     profile: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i * 5 + 30}`)],
+    condition: [
+      "NONE",
+      ...Array.from({ length: 10 }, (_, i) => `${100 - i * 10}`),
+    ],
     brand: ["NONE", "금호", "한국", "미쉐린", "컨티넨탈", "피렐리"],
   },
-  WHEEL: {
+  WHEELS: {
     size: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i + 13}`)],
     region: ["NONE", "국산", "수입"],
     design: ["NONE", "일반", "커팅"],
   },
 };
-function ProductOption() {
+function ProductOption({ PO_Item, PO_Type, PO_Props }) {
   // TODO ... 만약 mapping 값에 없는 값이 입력되고, submit 되는 경우 입력된 값이 새로 추가하려는게 맞는지
   // 확인절차 추가 필요.
 
-  const [Type, setType] = React.useState("TIRE");
-  const [Props, setProps] = React.useState(["", "", "", ""]);
+  const Item = PO_Item.toUpperCase();
+  const [Type, setType] = PO_Type;
+  const [Props, setProps] = PO_Props;
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
+  const handleTypeChange = (event) => {
     setType(event.target.value);
   };
   const handleProps = (event, index) => {
@@ -56,65 +60,69 @@ function ProductOption() {
         direction="row"
         sx={{ justifyContent: "space-around", alignItems: "center", ...FullWH }}
       >
-        {keys.map((item, index) => (
-          <Stack
-            className="postingOption"
-            key={item + index}
-            spacing={2}
-            sx={{ maxWidth: "150px" }}
-          >
-            <Typography variant="caption">{item.toUpperCase()}</Typography>
-            <Select
-              value={
-                values[index].includes(Props[index]) ? Props[index] : "NONE"
-              }
-              // label={item} << label 을 넣으면 focus 시 border top 쪽에 lable 이 나타나서 border-line 이
-              // 지워지는 현상 발생 => 굳이 label 로 넣지 말고 Typography 로 넣어주자.
-              onChange={(event) => handleProps(event.target.value, index)}
-              MenuProps={{ style: { maxHeight: "300px" } }}
+        {keys.map((item, index) => {
+          // eslint-disable-next-line array-callback-return
+          if (item === "condition" && Type !== "USED") return;
+          return (
+            <Stack
+              className="postingOption"
+              key={item + index}
+              spacing={2}
+              sx={{ maxWidth: "150px" }}
             >
-              {values[index].map((v_item, v_index) => (
-                <MenuItem value={v_item} key={v_item + v_index}>
-                  {v_item}
-                </MenuItem>
-              ))}
-            </Select>
-            <TextField
-              onChange={(event) => handleProps(event.target.value, index)}
-              value={Props[index]}
-              placeholder={values[index][1]}
-              InputProps={
-                item === "size"
-                  ? {
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ mb: 0.1 }}>
-                          R
-                        </InputAdornment>
-                      ),
-                    }
-                  : {}
-              }
-            />
-          </Stack>
-        ))}
+              <Typography variant="caption">{item.toUpperCase()}</Typography>
+              <Select
+                value={
+                  values[index].includes(Props[index]) ? Props[index] : "NONE"
+                }
+                // label={item} << label 을 넣으면 focus 시 border top 쪽에 lable 이 나타나서 border-line 이
+                // 지워지는 현상 발생 => 굳이 label 로 넣지 말고 Typography 로 넣어주자.
+                onChange={(event) => handleProps(event.target.value, index)}
+                MenuProps={{ style: { maxHeight: "300px" } }}
+              >
+                {values[index].map((v_item, v_index) => (
+                  <MenuItem value={v_item} key={v_item + v_index}>
+                    {v_item}
+                  </MenuItem>
+                ))}
+              </Select>
+              <TextField
+                onChange={(event) => handleProps(event.target.value, index)}
+                value={Props[index]}
+                placeholder={values[index][1]}
+                InputProps={
+                  item === "size"
+                    ? {
+                        startAdornment: (
+                          <InputAdornment position="start" sx={{ mb: 0.1 }}>
+                            R
+                          </InputAdornment>
+                        ),
+                      }
+                    : {}
+                }
+              />
+            </Stack>
+          );
+        })}
       </Stack>
     );
   };
   return (
-    <Grid item xs="auto" sx={{ height: "200px", py: 2 }}>
-      <Paper sx={FullWH}>
+    <Grid item xs="auto" sx={{ height: "250px", py: 2 }}>
+      <Paper sx={{ ...FullWH }}>
         <Grid container sx={FullWH}>
           <Grid
             item
             xs={2}
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-around",
               alignItems: "center",
             }}
           >
-            <Box>
-              <RadioGroup value={Type} onChange={handleChange}>
+            {/* <Box>
+              <RadioGroup value={Item} onChange={handleItemChange}>
                 <FormControlLabel
                   value="TIRE"
                   control={<Radio />}
@@ -124,6 +132,20 @@ function ProductOption() {
                   value="WHEEL"
                   control={<Radio />}
                   label="휠"
+                />
+              </RadioGroup>
+            </Box> */}
+            <Box>
+              <RadioGroup value={Type} onChange={handleTypeChange}>
+                <FormControlLabel
+                  value="NEW"
+                  control={<Radio />}
+                  label="신품"
+                />
+                <FormControlLabel
+                  value="USED"
+                  control={<Radio />}
+                  label="중고"
                 />
               </RadioGroup>
             </Box>
@@ -137,7 +159,7 @@ function ProductOption() {
               alignItems: "center",
             }}
           >
-            {selectBox(Type)}
+            {selectBox(Item)}
           </Grid>
         </Grid>
       </Paper>
