@@ -35,13 +35,13 @@ const mapping = {
     design: ["NONE", "일반", "커팅"],
   },
 };
-function ProductOption({ PO_Item, PO_Type, PO_Props }) {
+function ProductOption({ PO_item, PO_type, PO_props }) {
   // TODO ... 만약 mapping 값에 없는 값이 입력되고, submit 되는 경우 입력된 값이 새로 추가하려는게 맞는지
   // 확인절차 추가 필요.
 
-  const Item = PO_Item.toUpperCase();
-  const [Type, setType] = PO_Type;
-  const [Props, setProps] = PO_Props;
+  const Item = PO_item.toUpperCase();
+  const [Type, setType] = PO_type;
+  const [Props, setProps] = PO_props;
 
   const handleTypeChange = (event) => {
     setType(event.target.value);

@@ -2,17 +2,14 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const { auth } = require("../middleware/auth");
-const { uploadItemsInDirectory } = require("../modules/oci_sdk");
+const { handleFiles } = require("../modules/oci_sdk");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Tire } = require("../models/Tire");
 
 const checkList = ["size", "width", "profile", "condition", "brand"];
-const directoryPath = process.env.UPLOAD_DIR_PATH;
-const namespaceName = process.env.NAME_SPACE_NAME;
-const bucketName = process.env.BUCKET_NAME;
-const cloudURL = "https://objectstorage.ap-seoul-1.oraclecloud.com";
 
+const directoryPath = process.env.UPLOAD_DIR_PATH;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, directoryPath);
@@ -29,10 +26,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-
-const convertURL = (itemName) => {
-  return `${cloudURL}/n/${namespaceName}/b/${bucketName}/o/${itemName}`;
-};
 
 try {
   fs.readdirSync(directoryPath);
@@ -51,31 +44,11 @@ router.post(
     let getURL = [];
     let thumbNail;
     if (IMAGE_FLAG) {
-      async function handleFiles() {
-        let imageURL = [];
-        let thumbnailURL;
-        const uploadResponse = await uploadItemsInDirectory(
-          directoryPath,
-          namespaceName,
-          bucketName
-        );
-        if (!uploadResponse) return res.status(404).json({ success: false });
-        const getFileURL = fs.readdirSync(directoryPath);
-        getFileURL.forEach((fileName) => {
-          const type = fileName.split("-")[0];
-          if (type === "image") {
-            const URL = convertURL(fileName);
-            imageURL = [...imageURL, URL];
-          } else if (type === "thumbnail") {
-            thumbNail = convertURL(fileName);
-          }
-        });
-        return imageURL;
-      }
-      getURL = await handleFiles();
+      const handledFiles = await handleFiles(true);
+      getURL = handledFiles[0];
+      thumbNail = handledFiles[1];
       fsExtra.emptyDir(directoryPath);
     }
-
     const tire = new Tire({ ...req.body, image: getURL, thumbNail: thumbNail });
     tire.save((err) => {
       if (err) return res.status(400).json({ success: false, err });

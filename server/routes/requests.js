@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const { auth } = require("../middleware/auth");
-const { uploadItemsInDirectory } = require("../modules/oci_sdk");
+const { handleFiles } = require("../modules/oci_sdk");
 const router = express.Router();
 const fs = require("fs");
 const fsExtra = require("fs-extra");
@@ -11,6 +11,9 @@ const directoryPath = process.env.UPLOAD_DIR_PATH;
 const namespaceName = process.env.NAME_SPACE_NAME;
 const bucketName = process.env.BUCKET_NAME;
 const cloudURL = "https://objectstorage.ap-seoul-1.oraclecloud.com";
+const convertURL = (itemName) => {
+  return `${cloudURL}/n/${namespaceName}/b/${bucketName}/o/${itemName}`;
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -29,10 +32,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const convertURL = (itemName) => {
-  return `${cloudURL}/n/${namespaceName}/b/${bucketName}/o/${itemName}`;
-};
-
 try {
   fs.readdirSync(directoryPath);
 } catch (error) {
@@ -42,24 +41,9 @@ try {
 // https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnylck3cahga/b/bucket-20230124-0355/o/
 
 router.post("/", upload.array("image", 5), async (req, res) => {
-  const IMAGE_FLAG = req.body.imageUpload === [] ? false : true;
+  const IMAGE_FLAG = req.body.imageUpload;
   let getURL = [];
   if (IMAGE_FLAG) {
-    async function handleFiles() {
-      let imageURL = [];
-      const uploadResponse = await uploadItemsInDirectory(
-        directoryPath,
-        namespaceName,
-        bucketName
-      );
-      if (!uploadResponse) return res.status(404).json({ success: false });
-      const getFileURL = fs.readdirSync(directoryPath);
-      getFileURL.forEach((fileName) => {
-        const URL = convertURL(fileName);
-        imageURL = [...imageURL, URL];
-      });
-      return imageURL;
-    }
     getURL = await handleFiles();
     fsExtra.emptyDir(directoryPath);
   }
@@ -69,16 +53,11 @@ router.post("/", upload.array("image", 5), async (req, res) => {
     detail: req.body.detail,
     image: getURL,
   };
-
   const request = new Request(Body);
   request.save((err) => {
     if (err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true });
   });
-});
-
-router.post("/imageUploadTest", (req, res) => {
-  return res.status(200).json({ err: getFileURL });
 });
 
 router.post("/:_id/comment", (req, res) => {
@@ -99,17 +78,22 @@ router.post("/:_id/comment", (req, res) => {
   );
 });
 
-router.put("/:_id", upload.array("image", 5), (req, res) => {
+router.put("/:_id", upload.array("newImage", 5), (req, res) => {
+  let getURL = [];
+  console.log(req.files, req.body);
   const _id = req.params._id;
   const { title, detail, image } = req.body;
-  Request.findByIdAndUpdate(_id, {
-    title: title,
-    detail: detail,
-    image: image,
-  }).exec((err, body) => {
-    if (err) return res.status(400).json({ success: false, errorcode: err });
-    return res.status(200).json({ success: true, checkBody: body });
-  });
+  return res
+    .status(400)
+    .json({ success: false, files: req.files, body: req.body });
+  // Request.findByIdAndUpdate(_id, {
+  //   title: title,
+  //   detail: detail,
+  //   image: image,
+  // }).exec((err, body) => {
+  // if (err) return res.status(400).json({ success: false, errorcode: err });
+  //   return res.status(200).json({ success: true, checkBody: body });
+  // });
 });
 
 router.get("/", (req, res) => {

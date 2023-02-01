@@ -75,6 +75,15 @@ function PostPage({ adjust }) {
           setContents(payload.detail);
           setImages([...payload.image]);
           resetThumbnails(payload.image);
+          if (item === "tires" || item === "wheels") {
+            setPO_type(payload.type.toUpperCase());
+            const keyword = item === "tires" ? "TIRE" : "WHEEL";
+            let temporaryArr = ["", "", "", "", ""];
+            PO_Mapping[keyword].forEach((item, index) => {
+              temporaryArr[index] = `${payload[item]}`;
+            });
+            setPO_props([...temporaryArr]);
+          }
         }
       });
     }
@@ -115,9 +124,16 @@ function PostPage({ adjust }) {
       });
     }
   }
+  const setFormHandler = (fieldName, value) => {
+    setForm((prevForm) => {
+      prevForm.append(`${fieldName}`, value);
+      return prevForm;
+    });
+  };
   const TEST = async () => {
     console.log(images);
   };
+
   const handleImages = (index) => {
     setImages((prev) => {
       let newArr = prev;
@@ -165,30 +181,38 @@ function PostPage({ adjust }) {
           body[`${key}`] = item;
         });
       }
-      const compressedFile = await imageCompression(images[0], compressOption);
-      setForm((prevForm) => {
-        prevForm.append("thumbnail", compressedFile);
-        return prevForm;
-      });
+      if (images.length > 0) {
+        const compressedFile = await imageCompression(
+          images[0],
+          compressOption
+        );
+        setForm((prevForm) => {
+          prevForm.append("thumbnail", compressedFile);
+          return prevForm;
+        });
+      }
     }
 
     // title, detail, writer 저장 <= writer 는 필요하지 않을 수 있음.
-    if (images.length > 0)
-      images.forEach((image) => {
-        setForm((prevForm) => {
-          prevForm.append("image", image);
-          return prevForm;
-        });
-      });
     for (const [key, value] of Object.entries(body)) {
-      setForm((prevForm) => {
-        prevForm.append(`${key}`, value);
-        return prevForm;
-      });
+      // setForm((prevForm) => {
+      //   prevForm.append(`${key}`, value);
+      //   return prevForm;
+      // });
+      setFormHandler(`${key}`, value);
     }
     // 통신
+    if (images.length > 0) setFormHandler("imageUpload", true);
     if (!POST_OR_UPDATE) {
       // POST
+      if (images.length > 0)
+        images.forEach((image) => {
+          setFormHandler("image", image);
+          // setForm((prevForm) => {
+          //   prevForm.append("image", image);
+          //   return prevForm;
+          // });
+        });
       Axios.post(`/api/${item}/`, form, {
         headers: {
           "Content-type": `multipart/form-data`,
@@ -205,14 +229,27 @@ function PostPage({ adjust }) {
       });
     } else {
       // PUT >> removed 파일은 삭제해주기.
-      images.forEach((image) => {
-        if (!initialState[2].indcludes(image)) {
-          setForm((prevForm) => {
-            prevForm.append("newImage", image);
-            return prevForm;
-          });
-        }
-      });
+      if (images.length > 0)
+        images.forEach((image) => {
+          if (initialState[2].includes(image)) {
+            // setForm((prevForm) => {
+            //   prevForm.append("origin", image);
+            //   return prevForm;
+            // })
+            setFormHandler("origin", image);
+          } else {
+            console.log("NEW!");
+            setFormHandler("newImage", image);
+            // setForm((prevForm) => {
+            //   prevForm.append("newImage", image);
+            //   return prevForm;
+            // })
+          }
+        });
+      if (removed.length > 0)
+        removed.forEach((item) => {
+          setFormHandler("removed", item);
+        });
       Axios.put(`/api/${item}/${id}`, form, {
         headers: {
           "Content-type": `multipart/form-data`,
@@ -297,9 +334,9 @@ function PostPage({ adjust }) {
 
       {admin && (item === "tires" || item === "wheels") && (
         <ProductOption
-          PO_Item={item}
-          PO_Type={[PO_type, setPO_type]}
-          PO_Props={[PO_props, setPO_props]}
+          PO_item={item}
+          PO_type={[PO_type, setPO_type]}
+          PO_props={[PO_props, setPO_props]}
         />
       )}
 
