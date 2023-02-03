@@ -72,6 +72,9 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
             >
               <Typography variant="caption">{item.toUpperCase()}</Typography>
               <Select
+                className={`${
+                  values[index].includes(Props[index]) ? "success PO" : ""
+                }`}
                 value={
                   values[index].includes(Props[index]) ? Props[index] : "NONE"
                 }

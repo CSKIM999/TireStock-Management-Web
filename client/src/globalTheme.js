@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { textAlign } from "@mui/system";
+
 const bgColor = "#242424";
 const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#b3b3b3" }; //main-light-dark
 const CardBgColor = "#333333";
@@ -63,11 +63,12 @@ export const globalTheme = createTheme({
             width: "0.4rem",
           },
           "& ::-webkit-scrollbar-track": {
-            backgroundColor: pointColor,
+            // backgroundColor: pointColor,
+            backgroundColor: "#FF82264d",
             borderRadius: "10px",
           },
           "& ::-webkit-scrollbar-thumb": {
-            backgroundColor: complementaryColor,
+            backgroundColor: pointColor,
             borderRadius: "10px",
           },
         },
@@ -98,6 +99,13 @@ export const globalTheme = createTheme({
           },
           ".postingOption *": {
             textAlign: "center",
+          },
+          "&.coverSearch": {
+            backgroundColor: "#242424CC",
+            padding: "10px",
+          },
+          "&.coverSearch .MuiGrid-container": {
+            alignItems: "center",
           },
         },
       },

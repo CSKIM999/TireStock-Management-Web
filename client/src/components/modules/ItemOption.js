@@ -1,6 +1,9 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
+import { useSearchParams } from "react-router-dom";
 function ItemOption(props) {
+  console.log("🚀 ~ file: ItemOption.js:5 ~ ItemOption ~ props", props);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = React.useState(0);
   const indicatorProp = {
     sx: {
@@ -10,7 +13,6 @@ function ItemOption(props) {
       mx: 1,
     },
   };
-
   const prop = props.prop;
   let options = [];
   if (Array.isArray(prop.option)) {
@@ -30,6 +32,17 @@ function ItemOption(props) {
       props.getState(props.index, event.target.id);
     }
   };
+  React.useEffect(() => {
+    const size = searchParams.get("size");
+    const profile = searchParams.get("profile");
+    const width = searchParams.get("width");
+    const region = searchParams.get("region");
+    const design = searchParams.get("design");
+    if (size ?? profile ?? width ?? region ?? design ?? false) {
+      if (props.item === "tires") {
+      }
+    }
+  }, []);
   return (
     <Box
       width="100%"

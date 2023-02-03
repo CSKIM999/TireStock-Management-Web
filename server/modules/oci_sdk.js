@@ -8,6 +8,9 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider();
 const client = new os.ObjectStorageClient({
   authenticationDetailsProvider: provider,
 });
+const directoryPath = process.env.UPLOAD_DIR_PATH;
+const namespaceName = process.env.NAME_SPACE_NAME;
+const bucketName = process.env.BUCKET_NAME;
 
 const uploadItemsInDirectory = (dirPath, nameSpace, bucketName) => {
   return new Promise((resolve, reject) => {
@@ -55,7 +58,8 @@ const uploadItemsInDirectory = (dirPath, nameSpace, bucketName) => {
   });
 };
 
-const deleteItem = async (fileName) => {
+const deleteItem = (URL) => {
+  const fileName = URL.split("/").pop();
   try {
     // build delete object request
     const deleteObjectRequest = {
@@ -64,18 +68,18 @@ const deleteItem = async (fileName) => {
       objectName: fileName,
     };
     // delete object
-    const resp = await client.deleteObject(deleteObjectRequest);
-    console.log(resp);
-    console.log(`Deleted ${fileName}.`);
+    client.deleteObject(deleteObjectRequest);
   } catch (ex) {
     console.error(`Failed due to ${ex}`);
   }
 };
 
+/**
+ *
+ * @param {boolean} thumbNailFlag
+ * @returns return [[...Array],URL_STRING] if you give true what thumbNailflag. or not, return Array
+ */
 const handleFiles = async (thumbNailFlag = false) => {
-  const directoryPath = process.env.UPLOAD_DIR_PATH;
-  const namespaceName = process.env.NAME_SPACE_NAME;
-  const bucketName = process.env.BUCKET_NAME;
   const cloudURL = "https://objectstorage.ap-seoul-1.oraclecloud.com";
   const convertURL = (itemName) => {
     return `${cloudURL}/n/${namespaceName}/b/${bucketName}/o/${itemName}`;

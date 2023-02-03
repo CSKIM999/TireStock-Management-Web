@@ -6,24 +6,15 @@ import { useNavigate } from "react-router-dom";
 
 function LandingPage(props) {
   const navigate = useNavigate();
-  console.log("landing", props);
+  const sectionPosition = [6, 6];
   if (props.reset) {
-    console.log("reset!");
     navigate("/");
   }
   return (
     <Box sx={{ height: "100%" }}>
       <Grid container direction="column" height="100%">
-        {/* COVER */}
-        <Grid item xs={6}>
-          <Cover />
-        </Grid>
-
-        <Grid item container xs={4} sx={{ px: 5 }}>
-          <Items />
-        </Grid>
-
-        {/* ITEMS */}
+        <Cover position={sectionPosition[0]} />
+        <Items position={sectionPosition[1]} />
       </Grid>
     </Box>
   );

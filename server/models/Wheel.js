@@ -20,6 +20,12 @@ const wheelSchema = Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: Array,
+  },
+  thumbNail: {
+    type: String,
+  },
   size: {
     type: Number,
     required: true,
@@ -28,8 +34,9 @@ const wheelSchema = Schema({
     type: String,
     required: true,
   },
-  image: {
+  region: {
     type: String,
+    required: true,
   },
   detail: {
     type: String,

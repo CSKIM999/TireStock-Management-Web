@@ -5,12 +5,13 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import NavBar from "./components/NavBar/NavBar";
 import ItemPage from "./components/ItemPage/ItemPage";
-import { Grid, Box, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
 import ServicePage from "./components/ServicePage/ServicePage";
 import FAQPage from "./components/FAQPage/FAQPage";
 import ItemDetailPage from "./components/DetailPage/ItemDetailPage";
 import PostPage from "./components/PostPage/PostPage";
+import CoverImage from "./components/modules/CoverImage";
 
 const appWidth = 1600;
 
@@ -23,6 +24,7 @@ function App() {
     <Router>
       <Stack height="100vh" sx={{ alignItems: "center" }}>
         <NavBar SX={BODY_SX} />
+        <CoverImage />
         <Grid
           container
           height="100%"

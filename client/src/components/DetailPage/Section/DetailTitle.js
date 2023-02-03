@@ -7,16 +7,12 @@ const ItemDetailTitle = (props) => {
   const itemID = useParams().id;
   const item = props.item;
   const navigate = useNavigate();
-
-  console.log(
-    "🚀 ~ file: DetailTitle.js:7 ~ ItemDetailTitle ~ props",
-    props,
-    itemID
-  );
-
   async function handleRemove() {
     await Axios.delete(`/api/${props.item}/${itemID}`).then((response) => {
-      if (response.status === 200) return navigate("/requests");
+      if (response.status === 200)
+        return navigate(
+          `/${props.item}/${props.item === "request" ? "" : "new"}`
+        );
       return alert("삭제에 실패했습니다. 관리자에게 문의해주세요!");
     });
   }

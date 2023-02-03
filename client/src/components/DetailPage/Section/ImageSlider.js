@@ -32,7 +32,12 @@ function ImageSlider({ images }) {
               }}
             >
               {images.map((image, index) => (
-                <Box component="img" src={image} key={index} sx={{ p: 3 }} />
+                <Box
+                  component="img"
+                  src={image}
+                  key={index}
+                  sx={{ p: 3, display: "block", overflow: "hidden" }}
+                />
               ))}
             </SwipeableViews>
           </Paper>

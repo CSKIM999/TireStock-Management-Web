@@ -62,10 +62,6 @@ function ItemDetailPage(props) {
   const AxiosBody = async () => {
     await Axios.get(`/api/${item}/${id}`)
       .then((response) => {
-        console.log(
-          "🚀 ~ file: ItemDetailPage.js:77 ~ .then ~ response",
-          response
-        );
         if (response.data.success) {
           const authenticID =
             item === "requests"
@@ -88,10 +84,6 @@ function ItemDetailPage(props) {
       return;
     }
     AxiosBody();
-    console.log(
-      "🚀 ~ file: ItemDetailPage.js:73 ~ ItemDetailPage ~ Body",
-      Body
-    );
   }, [userID]);
 
   if (Body.title) {

@@ -6,9 +6,8 @@ const tagDetail = {
   wheels: ["Size", "Region", "Design"],
 };
 const spacingTop = 6;
-
+const fontSX = { fontWeight: "bold" };
 const ProductInfo = (prop) => {
-  // let { type, item } = useParams();
   let { item } = useParams();
   let renderData = [];
   if (item === "tires") {
@@ -18,6 +17,11 @@ const ProductInfo = (prop) => {
       `${prop.condition ? `++${prop.condition}%` : "Condition 정보 없음"}`,
     ]);
   } else if (item === "wheels") {
+    renderData = renderData.concat([
+      `${prop.size} 인치`,
+      `${prop.region}휠`,
+      `${prop.design}`,
+    ]);
   } else {
     renderData = ["REQUEST", "REQUEST", "REQUEST"];
   }
@@ -26,10 +30,7 @@ const ProductInfo = (prop) => {
       {/* INFO - TAG */}
       <Grid item xs={4.5}>
         <Stack spacing={spacingTop} minWidth={150}>
-          <Typography
-            variant="h5"
-            sx={{ color: "primary.main", fontWeight: "bold" }}
-          >
+          <Typography variant="h5" sx={{ color: "primary.main", ...fontSX }}>
             Product Info
           </Typography>
           {tagDetail[item].map((item, index) => (
@@ -39,11 +40,13 @@ const ProductInfo = (prop) => {
       </Grid>
       <Grid item xs={5}>
         <Stack spacing={spacingTop}>
-          <Typography variant="caption" sx={{ fontWeight: "bold", pt: 1.5 }}>
+          <Typography variant="caption" sx={{ ...fontSX, pt: 1.5 }}>
             제품정보
           </Typography>
           {tagDetail[item].map((item, index) => (
-            <Typography key={index}>{renderData[index]}</Typography>
+            <Typography sx={fontSX} key={index}>
+              {renderData[index]}
+            </Typography>
           ))}
         </Stack>
       </Grid>

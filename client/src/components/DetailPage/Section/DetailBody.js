@@ -39,11 +39,11 @@ const ItemDetailBody = (props) => {
         justifyContent="space-between"
         sx={{ height: "100%", px: 4, pt: 4, pb: 2 }}
       >
-        {prop.width
+        {prop.size
           ? ProductInfo(prop)
           : DetailDescribe("문의내용", "FAQ", prop.detail)}
         <Divider sx={{ py: 1, mb: 2 }} />
-        {!prop.width
+        {!prop.size
           ? ItemComment(prop.comment, captureComment)
           : DetailDescribe("Detail", "제품상세", prop.detail)}
       </Grid>

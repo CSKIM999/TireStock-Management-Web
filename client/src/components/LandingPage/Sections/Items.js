@@ -1,26 +1,11 @@
 import { Divider, Grid, Stack, Typography } from "@mui/material";
 import * as React from "react";
-import { useDispatch } from "react-redux";
-import {
-  auth,
-  loginUser,
-  logoutUser,
-  testUser,
-} from "../../../store/userSlice";
 
-function Items() {
-  const dispatch = useDispatch();
-  return (
-    <React.Fragment>
-      <Grid
-        item
-        container
-        alignItems="center"
-        direction="column"
-        xs={12}
-        md={4}
-      >
-        <Grid item xs={1} sx={{ background: "red", width: "100%" }}>
+function Items({ postion }) {
+  const tireSection = () => {
+    return (
+      <>
+        <Grid item xs={4} sx={{ background: "red", width: "100%" }}>
           <Typography align="center">TIRES</Typography>
         </Grid>
         <Divider />
@@ -30,18 +15,36 @@ function Items() {
             <Typography>USED Item</Typography>
           </Stack>
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={5}>
+      </>
+    );
+  };
+
+  const wheelSection = () => {
+    return (
+      <>
         <Typography>WHEELS</Typography>
-      </Grid>
-      <Grid item xs={12} md={3}>
+      </>
+    );
+  };
+  const mapSection = () => {
+    return (
+      <>
         <Typography>MAPS</Typography>
-        {/* <button onClick={() => dispatch(loginUser({ item: "hi" }))}>
-          TEST
-        </button>
-        <button onClick={() => dispatch(logoutUser())}>LOGOUT</button> */}
+      </>
+    );
+  };
+  return (
+    <Grid item container xs={postion}>
+      <Grid item container alignItems="center" direction="column" xs={4}>
+        {tireSection()}
       </Grid>
-    </React.Fragment>
+      <Grid item xs={5}>
+        {wheelSection()}
+      </Grid>
+      <Grid item xs={3}>
+        {mapSection()}
+      </Grid>
+    </Grid>
   );
 }
 

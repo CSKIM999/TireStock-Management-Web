@@ -11,14 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
+import { useLocation } from "react-router-dom";
 
 function SideBar() {
   // TODO [redux 사용 현재탭관리]
+  const path = useLocation().pathname;
   const [expanded, setExpanded] = React.useState(null);
   const [mainpathNow, setMainpathNow] = React.useState("");
   const [detailpathNow, setDetailpathNow] = React.useState("");
   React.useEffect(() => {
-    const [blnk, mainPath, detailPath] = window.location.pathname.split("/");
+    const [_, mainPath, detailPath] = window.location.pathname.split("/");
     setMainpathNow(mainPath);
     setDetailpathNow(detailPath);
     if (mainPath) {
@@ -57,6 +59,8 @@ function SideBar() {
               variant="text"
               sx={{
                 p: 1,
+                borderTop: "1px solid primary.main",
+                borderRadius: "0px",
                 width: "100%",
                 color:
                   `/${prop}/${item}` === `/${mainpathNow}/${detailpathNow}`
@@ -95,9 +99,17 @@ function SideBar() {
     </React.Fragment>
   ));
   return (
-    <List className="sideBar" sx={{ mt: 5, pl: 3, minWidth: 120 }}>
+    <List
+      className="sideBar"
+      sx={{
+        display: `${path === "/" ? "None" : "block"}`,
+        mt: 5,
+        pl: 3,
+        minWidth: 120,
+      }}
+    >
       <Divider />
-      <ListItemButton sx={ListItemButtonSX}>
+      <ListItemButton href="/" sx={ListItemButtonSX}>
         <Typography>HOME</Typography>
       </ListItemButton>
       <Divider />

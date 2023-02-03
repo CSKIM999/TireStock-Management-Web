@@ -27,6 +27,9 @@ const Upload = (props) => {
     maxWidthOrHeight: 100,
   };
 
+  // TODO 수정할때 이미지를 업로드하고, 기존 사진을지우면 revokeAll되어서
+  // 기존 origin thumbnail은 유지가 되나, 새로 업로드하려는 이미지 thumbnail은 지우려는
+  // 사진과 함께 revoke 됨. 따라서 선택된 사진이 origin인지, newImage인지 체크필요
   React.useEffect(() => {
     dispatch(revokeThumbNail());
     Images.forEach(async (image, index) => {

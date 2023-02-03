@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const { auth } = require("../middleware/auth");
-const { handleFiles } = require("../modules/oci_sdk");
+const { handleFiles, deleteItem } = require("../modules/oci_sdk");
 const router = express.Router();
 const fs = require("fs");
 const fsExtra = require("fs-extra");
@@ -37,13 +37,9 @@ try {
 } catch (error) {
   fs.mkdirSync(directoryPath);
 }
-
-// https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnylck3cahga/b/bucket-20230124-0355/o/
-
 router.post("/", upload.array("image", 5), async (req, res) => {
-  const IMAGE_FLAG = req.body.imageUpload;
   let getURL = [];
-  if (IMAGE_FLAG) {
+  if (req.body.imageUpload) {
     getURL = await handleFiles();
     fsExtra.emptyDir(directoryPath);
   }
@@ -78,22 +74,40 @@ router.post("/:_id/comment", (req, res) => {
   );
 });
 
-router.put("/:_id", upload.array("newImage", 5), (req, res) => {
+router.put("/:_id", upload.array("image", 5), async (req, res) => {
   let getURL = [];
-  console.log(req.files, req.body);
+  if (req.body.imageUpload) {
+    getURL = await handleFiles();
+    fsExtra.emptyDir(directoryPath);
+    if (req.body.origin) {
+      if (typeof req.body.origin === "string") {
+        getURL.push(req.body.origin);
+      } else {
+        req.body.origin.forEach((item) => {
+          getURL.push(item);
+        });
+      }
+    }
+  }
   const _id = req.params._id;
-  const { title, detail, image } = req.body;
-  return res
-    .status(400)
-    .json({ success: false, files: req.files, body: req.body });
-  // Request.findByIdAndUpdate(_id, {
-  //   title: title,
-  //   detail: detail,
-  //   image: image,
-  // }).exec((err, body) => {
-  // if (err) return res.status(400).json({ success: false, errorcode: err });
-  //   return res.status(200).json({ success: true, checkBody: body });
-  // });
+  const { title, detail } = req.body;
+  if (req.body.removed) {
+    if (typeof req.body.removed === "string") {
+      deleteItem(req.body.removed);
+    } else {
+      req.body.removed.forEach((item) => {
+        deleteItem(item);
+      });
+    }
+  }
+  Request.findByIdAndUpdate(_id, {
+    title: title,
+    detail: detail,
+    image: getURL,
+  }).exec((err, body) => {
+    if (err) return res.status(400).json({ success: false, errorcode: err });
+    return res.status(200).json({ success: true, checkBody: body });
+  });
 });
 
 router.get("/", (req, res) => {

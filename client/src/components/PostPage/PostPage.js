@@ -31,6 +31,7 @@ const PO_Mapping = {
 };
 // props.adjust 를 통해 수정인지 생성인지 확인
 export const convertURLtoFile = async (url) => {
+  if (typeof url !== "string") return;
   const response = await fetch(url);
   const data = await response.blob();
   const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
@@ -54,7 +55,7 @@ function PostPage({ adjust }) {
   const [modify, setModify] = React.useState(false);
   const [notice, setNotice] = React.useState(admin ? false : true);
   const [PO_type, setPO_type] = React.useState("NEW");
-  const [PO_props, setPO_props] = React.useState(["", "", "", "", ""]);
+  const [PO_props, setPO_props] = React.useState(new Array(5).fill(""));
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let removed = [];
@@ -65,12 +66,14 @@ function PostPage({ adjust }) {
       alert("잘못된 주소입니다");
       navigate("/");
     }
+    if (item === "wheels") setPO_props(new Array(3).fill(""));
     if (!POST_OR_UPDATE) return;
     async function setInitial() {
       // adjust === true 일 경우 => 수정하기 위한 data get해오기
       await Axios.get(`/api/${item}/${id}`).then((response) => {
         if (response.data.success) {
           const payload = response.data.payload;
+          setForm(new FormData());
           setTitle(payload.title);
           setContents(payload.detail);
           setImages([...payload.image]);
@@ -78,7 +81,11 @@ function PostPage({ adjust }) {
           if (item === "tires" || item === "wheels") {
             setPO_type(payload.type.toUpperCase());
             const keyword = item === "tires" ? "TIRE" : "WHEEL";
-            let temporaryArr = ["", "", "", "", ""];
+            let temporaryArr = PO_props;
+            console.log(
+              "🚀 ~ file: PostPage.js:85 ~ awaitAxios.get ~ PO_props",
+              PO_props
+            );
             PO_Mapping[keyword].forEach((item, index) => {
               temporaryArr[index] = `${payload[item]}`;
             });
@@ -114,7 +121,7 @@ function PostPage({ adjust }) {
       arr.forEach(async (image, index) => {
         const data = await convertURLtoFile(image);
         const compressedImage = await imageCompression(
-          data,
+          data ?? image,
           compressThumbnailOption
         );
         const compressedURL = window.URL.createObjectURL(compressedImage);
@@ -124,14 +131,42 @@ function PostPage({ adjust }) {
       });
     }
   }
-  const setFormHandler = (fieldName, value) => {
+  const setFormHandler = async (fieldName, value) => {
     setForm((prevForm) => {
       prevForm.append(`${fieldName}`, value);
       return prevForm;
     });
   };
+  const appendAll = async (body) => {
+    console.log("🚀 ~ file: PostPage.js:136 ~ appendAll ~ body", body);
+
+    for (const [key, value] of Object.entries(body)) {
+      setFormHandler(`${key}`, value);
+    }
+    if (images.length > 0) {
+      setFormHandler("imageUpload", true);
+      if (!POST_OR_UPDATE) {
+        images.forEach((image) => {
+          setFormHandler("image", image);
+        });
+      } else {
+        images.forEach(async (image) => {
+          if (initialState[2].includes(image)) {
+            await setFormHandler("origin", image);
+          } else {
+            await setFormHandler("image", image);
+          }
+        });
+        if (removed.length > 0) {
+          removed.forEach((item) => {
+            setFormHandler("removed", item);
+          });
+        }
+      }
+    }
+  };
   const TEST = async () => {
-    console.log(images);
+    console.log(PO_props);
   };
 
   const handleImages = (index) => {
@@ -177,9 +212,18 @@ function PostPage({ adjust }) {
         });
       } else if (item === "wheels") {
         PO_props.forEach((item, index) => {
+          console.log(
+            "🚀 ~ file: PostPage.js:210 ~ PO_props.forEach ~ item",
+            item
+          );
+
           const key = PO_Mapping["WHEEL"][index];
           body[`${key}`] = item;
         });
+        console.log(
+          "🚀 ~ file: PostPage.js:219 ~ PO_props.forEach ~ PO_props",
+          PO_props
+        );
       }
       if (images.length > 0) {
         const compressedFile = await imageCompression(
@@ -194,25 +238,19 @@ function PostPage({ adjust }) {
     }
 
     // title, detail, writer 저장 <= writer 는 필요하지 않을 수 있음.
-    for (const [key, value] of Object.entries(body)) {
-      // setForm((prevForm) => {
-      //   prevForm.append(`${key}`, value);
-      //   return prevForm;
-      // });
-      setFormHandler(`${key}`, value);
-    }
+    // for (const [key, value] of Object.entries(body)) {
+    //   setFormHandler(`${key}`, value);
+    // }
     // 통신
-    if (images.length > 0) setFormHandler("imageUpload", true);
+    // if (images.length > 0) setFormHandler("imageUpload", true);
     if (!POST_OR_UPDATE) {
       // POST
-      if (images.length > 0)
-        images.forEach((image) => {
-          setFormHandler("image", image);
-          // setForm((prevForm) => {
-          //   prevForm.append("image", image);
-          //   return prevForm;
-          // });
-        });
+      // if (images.length > 0)
+      //   images.forEach((image) => {
+      //     setFormHandler("image", image);
+      //   });
+      await appendAll(body);
+
       Axios.post(`/api/${item}/`, form, {
         headers: {
           "Content-type": `multipart/form-data`,
@@ -228,75 +266,23 @@ function PostPage({ adjust }) {
         }
       });
     } else {
-      // PUT >> removed 파일은 삭제해주기.
-      if (images.length > 0)
-        images.forEach((image) => {
-          if (initialState[2].includes(image)) {
-            // setForm((prevForm) => {
-            //   prevForm.append("origin", image);
-            //   return prevForm;
-            // })
-            setFormHandler("origin", image);
-          } else {
-            console.log("NEW!");
-            setFormHandler("newImage", image);
-            // setForm((prevForm) => {
-            //   prevForm.append("newImage", image);
-            //   return prevForm;
-            // })
-          }
-        });
-      if (removed.length > 0)
-        removed.forEach((item) => {
-          setFormHandler("removed", item);
-        });
+      await appendAll(body);
       Axios.put(`/api/${item}/${id}`, form, {
         headers: {
           "Content-type": `multipart/form-data`,
         },
       }).then((response) => {
         if (response.data.success) {
-          console.log(" S U C C E S S >> ", response);
+          alert("문의가 정상적으로 수정되었습니다.");
+          navigate(
+            `/${item}/${item !== "requests" ? PO_type.toLowerCase() : id}`
+          );
         } else {
+          alert("문의 등록에 실패했습니다");
           console.log(" F___A___I___L >> ", response);
         }
       });
     }
-
-    // if (!POST_OR_UPDATE) {
-    //   // 생성
-    //   try {
-    //     for (const [key, value] of Object.entries(body)) {
-    //       if (key !== "image") {
-    //         setForm((prevForm) => {
-    //           prevForm.append(`${key}`, value);
-    //           return prevForm;
-    //         });
-    //       } else {
-    //         setForm((prevForm) => {
-    //           prevForm.append(`imageUpload`, value);
-    //           return prevForm;
-    //         });
-    //       }
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // } else {
-    //   //수정
-    //   const body = {
-    //     title: title,
-    //     detail: contents,
-    //     image: images,
-    //   };
-    //   if (notice) body.state = "notice";
-    //   Axios.put(`/api/requests/${id}`, body).then((response) => {
-    //     if (response.data.success) {
-    //       alert("문의가 정상적으로 수정되었습니다.");
-    //       navigate(`/requests/${id}`);
-    //     }
-    //   });
-    // }
   };
 
   const ButtonSet = (
@@ -442,7 +428,6 @@ const inputBaseStyle = {
   minHeight: "100%",
   width: "100%",
 };
-
 const paperStyle = {
   width: "100%",
   height: "100%",

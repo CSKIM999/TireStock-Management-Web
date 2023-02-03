@@ -5,7 +5,7 @@ import OptionBoard from "./Sections/OptionBoard";
 import ItemBoard from "./Sections/ItemBoard";
 import itemOptionTable from "./util/itemOptionTable";
 import BreadCrumb from "../modules/BreadCrumb";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../store/userSlice";
 const tireKeys = Object.keys(itemOptionTable.tire);
@@ -20,6 +20,7 @@ function ItemPage(props) {
   );
   const [SearchedItem, setSearchedItem] = React.useState([]);
   let { type } = useParams();
+
   React.useEffect(() => {
     let keywordURL = `/api/${props.item}/?type=${type}`;
     keywordURL = OptionValue.reduce((query, item, index) => {
@@ -39,6 +40,12 @@ function ItemPage(props) {
   }, [OptionValue]);
 
   const handleOption = (index, value) => {
+    console.log(
+      "🚀 ~ file: ItemPage.js:70 ~ handleOption ~ index, value",
+      index,
+      value
+    );
+
     let newValue = [...OptionValue];
     newValue[index] = value;
     setOptionValue([...newValue]);

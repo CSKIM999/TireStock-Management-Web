@@ -18,7 +18,6 @@ function ItemCard({ prop }) {
   const condition = prop.condition;
   const design = prop.design;
   const thumbNail = prop.thumbNail;
-  console.log("🚀 ~ file: ItemCard.js:22 ~ ItemCard ~ thumbNail", thumbNail);
   const headerContent = [
     title,
     width && size
