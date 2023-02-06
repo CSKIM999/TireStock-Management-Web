@@ -6,18 +6,19 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import ItemOption from "../../modules/ItemOption";
-import itemOptionTable from "./itemOptionTable";
+import ItemOption from "./ItemOption";
+import itemOptionTable from "../../modules/itemOptionTable";
 
 function OptionForWheel(props) {
-  const [region, setRegion] = React.useState("ALL");
-  const [design, setDesign] = React.useState("ALL");
-
+  const setStateFunction = props.getState;
+  const OptionValue = props.prop;
+  const region = OptionValue[0];
+  const [design, setDesign] = React.useState("전체");
   const regionChange = (event, newRegion) => {
-    setRegion(newRegion !== null ? newRegion : region);
+    setStateFunction(0, newRegion);
   };
   const designChange = (event, newDesign) => {
-    setDesign(newDesign !== null ? newDesign : design);
+    setStateFunction(1, newDesign);
   };
   return (
     <Stack>
@@ -40,11 +41,11 @@ function OptionForWheel(props) {
             <ToggleButtonGroup
               color="primary"
               exclusive
-              value={region}
+              value={OptionValue[0]}
               onChange={regionChange}
               fullWidth
             >
-              <ToggleButton value="ALL">ALL</ToggleButton>
+              <ToggleButton value="전체">ALL</ToggleButton>
               <ToggleButton value="국산">국산</ToggleButton>
               <ToggleButton value="수입">수입</ToggleButton>
             </ToggleButtonGroup>
@@ -54,13 +55,14 @@ function OptionForWheel(props) {
             <ToggleButtonGroup
               color="primary"
               exclusive
-              value={design}
+              key={1}
+              value={OptionValue[1]}
               onChange={designChange}
               fullWidth
             >
-              <ToggleButton value="ALL">ALL</ToggleButton>
-              <ToggleButton value="normal">일반</ToggleButton>
-              <ToggleButton value="cutting">커팅</ToggleButton>
+              <ToggleButton value="전체">ALL</ToggleButton>
+              <ToggleButton value="일반">일반</ToggleButton>
+              <ToggleButton value="커팅">커팅</ToggleButton>
             </ToggleButtonGroup>
           </Grid>
         </Grid>
@@ -71,7 +73,13 @@ function OptionForWheel(props) {
           md={2}
         >
           <ItemOption
-            prop={{ title: "인치", option: { ...itemOptionTable.wheel.인치 } }}
+            getState={setStateFunction}
+            index={2}
+            prop={{
+              title: "인치",
+              option: itemOptionTable.wheel.size.detail,
+              value: OptionValue[2],
+            }}
           />
         </Grid>
       </Grid>

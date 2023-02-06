@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
-import ItemOption from "../../modules/ItemOption";
-import itemOptionTable from "../util/itemOptionTable";
-import OptionForWheel from "../util/OptionForWheel";
+import ItemOption from "./ItemOption";
+import itemOptionTable from "../../modules/itemOptionTable";
+import OptionForWheel from "./OptionForWheel";
 
 const gridItemOptionSX = { display: { xs: "none", md: "flex" } };
-const OptionBoard = (type, setStateFunction) => {
+const OptionBoard = (type, setStateFunction, OptionValue) => {
   if (type === "tires") {
     return (
       <Grid container direction="row" justifyContent={"space-evenly"}>
@@ -15,7 +15,11 @@ const OptionBoard = (type, setStateFunction) => {
               <ItemOption
                 getState={setStateFunction}
                 index={index}
-                prop={{ title: data.title, option: data.detail }}
+                prop={{
+                  title: data.title,
+                  option: data.detail,
+                  value: OptionValue[index],
+                }}
               />
             </Grid>
           );
@@ -23,7 +27,7 @@ const OptionBoard = (type, setStateFunction) => {
       </Grid>
     );
   } else if (type === "wheels")
-    return <OptionForWheel getState={setStateFunction} />;
+    return <OptionForWheel getState={setStateFunction} prop={OptionValue} />;
 };
 
 export default OptionBoard;

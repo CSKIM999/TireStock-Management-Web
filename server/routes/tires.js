@@ -65,7 +65,6 @@ router.get("/", (req, res) => {
   const tire_profile = +req.query.profile;
   const tire_condition = +req.query.condition;
   const EMPTY = { $gt: 0 };
-
   Tire.find({
     type: tire_type,
     keyword: tire_keyword ? { $regex: tire_keyword } : EMPTY,

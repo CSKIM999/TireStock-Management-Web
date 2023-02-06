@@ -21,10 +21,10 @@ export const globalTheme = createTheme({
         }
       `,
     },
-    MuiAccordion: {
+    MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          borderRadius: "0 !important",
+          // pointerEvents: "none",
         },
       },
     },
@@ -102,7 +102,6 @@ export const globalTheme = createTheme({
           },
           "&.coverSearch": {
             backgroundColor: "#242424CC",
-            padding: "10px",
           },
           "&.coverSearch .MuiGrid-container": {
             alignItems: "center",
