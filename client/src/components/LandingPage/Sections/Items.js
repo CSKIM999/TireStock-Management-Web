@@ -1,29 +1,33 @@
-import { Divider, Grid, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
+import PreviewItems from "../utils/PreviewItems";
 
 function Items({ postion }) {
   const tireSection = () => {
     return (
-      <>
-        <Grid item xs={4} sx={{ background: "red", width: "100%" }}>
+      <Grid item sx={{ width: "100%" }}>
+        <Paper elevation={12}>
           <Typography align="center">TIRES</Typography>
-        </Grid>
-        <Divider />
-        <Grid item>
-          <Stack direction="row">
-            <Typography>NEW Item</Typography>
-            <Typography>USED Item</Typography>
+          <Stack direction="row" justifyContent="space-around" sx={{ p: 2 }}>
+            {PreviewItems("tires", "used")}
+            {PreviewItems("tires", "new")}
           </Stack>
-        </Grid>
-      </>
+        </Paper>
+      </Grid>
     );
   };
 
   const wheelSection = () => {
     return (
-      <>
-        <Typography>WHEELS</Typography>
-      </>
+      <Grid item sx={{ width: "100%" }}>
+        <Paper elevation={12}>
+          <Typography align="center">WHEELS</Typography>
+          <Stack direction="row" justifyContent="space-around" sx={{ p: 2 }}>
+            {PreviewItems("wheels", "used")}
+            {PreviewItems("wheels", "new")}
+          </Stack>
+        </Paper>
+      </Grid>
     );
   };
   const mapSection = () => {
@@ -35,13 +39,21 @@ function Items({ postion }) {
   };
   return (
     <Grid item container xs={postion}>
-      <Grid item container alignItems="center" direction="column" xs={4}>
+      <Grid
+        item
+        container
+        alignItems="center"
+        direction="column"
+        md={5}
+        lg={4}
+        sx={{ minWidth: "33rem" }}
+      >
         {tireSection()}
       </Grid>
-      <Grid item xs={5}>
+      <Grid item md={5} lg={5} sx={{ minWidth: "33rem" }}>
         {wheelSection()}
       </Grid>
-      <Grid item xs={3}>
+      <Grid item md="auto" lg="auto">
         {mapSection()}
       </Grid>
     </Grid>

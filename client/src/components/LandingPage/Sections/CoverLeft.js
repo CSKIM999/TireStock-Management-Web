@@ -7,11 +7,11 @@ const PaperSX = {
 function CoverLeft({ coverPosition }) {
   return (
     <Grid item xs={coverPosition[0]}>
-      <Paper sx={PaperSX}>
+      {/* <Paper sx={PaperSX}>
         <Stack>
           <Typography>BUTTON</Typography>
         </Stack>
-      </Paper>
+      </Paper> */}
     </Grid>
   );
 }

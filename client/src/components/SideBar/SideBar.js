@@ -35,7 +35,7 @@ function SideBar() {
           break;
       }
     }
-  }, [window.location.pathname]);
+  }, [path, window.location.pathname]);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);

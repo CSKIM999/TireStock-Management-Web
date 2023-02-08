@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
+import CoverImage from "../../modules/CoverImage";
 import CoverLeft from "./CoverLeft";
 import CoverRight from "./CoverRight";
 
@@ -10,6 +11,7 @@ function Cover({ position }) {
   return (
     <Grid item container xs={position}>
       <Grid item container justifyContent="center" alignItems="center">
+        <CoverImage />
         <CoverLeft coverPosition={coverPosition} />
         <CoverRight
           props={[searchToggle, setSearchToggle]}

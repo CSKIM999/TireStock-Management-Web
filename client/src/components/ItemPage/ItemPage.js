@@ -47,6 +47,8 @@ function ItemPage(props) {
             optionalItems.push([index, value]);
           }
         }
+      } else {
+        // Wheel 의 경우도 체크해야함.
       }
       let newValue = [...OptionValue];
       for (const [i, v] of optionalItems) {
@@ -81,6 +83,10 @@ function ItemPage(props) {
       }
       return query;
     }, keywordURL);
+    console.log(
+      "🚀 ~ file: ItemPage.js:86 ~ React.useEffect ~ keywordURL",
+      keywordURL
+    );
     Axios.get(keywordURL).then((response) => {
       if (response) {
         setSearchedItem(response.data.payload);

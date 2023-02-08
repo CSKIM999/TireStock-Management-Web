@@ -60,6 +60,9 @@ router.get("/", (req, res) => {
   const wheel_region = req.query.region;
   const wheel_design = req.query.design;
   const wheel_size = +req.query.size;
+  const page = req.query.page;
+  let limit = page ? page * 10 : 10;
+  let skip = page ? (page - 1) * 10 : 0;
   const EMPTY = { $gt: 0 };
   Wheel.find({
     type: wheel_type,
@@ -67,6 +70,8 @@ router.get("/", (req, res) => {
     design: wheel_design ? wheel_design : EMPTY,
     size: wheel_size ? wheel_size : EMPTY,
   })
+    .skip(skip ?? 0)
+    .limit(limit ?? 12)
     .select("title size type design region thumbNail")
     .exec((err, body) => {
       if (err) return res.status(400).send(err);

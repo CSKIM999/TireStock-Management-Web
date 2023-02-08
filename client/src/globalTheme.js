@@ -97,6 +97,9 @@ export const globalTheme = createTheme({
           ".success label": {
             color: successColor,
           },
+          ".PreviewItems *": {
+            // fontSize: "0.9rem",
+          },
           ".postingOption *": {
             textAlign: "center",
           },

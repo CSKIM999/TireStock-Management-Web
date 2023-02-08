@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 const PaperSX = {
   width: "100%",
   height: "100%",
@@ -15,6 +16,7 @@ const PaperSX = {
 const regex = /^[0-9\b]+$/;
 function CoverRight({ props, coverPosition }) {
   const [searchToggle, setSearchToggle] = props;
+  const navigate = useNavigate();
   const [width, setWidth] = React.useState("");
   const [profile, setProfile] = React.useState("");
   const [size, setSize] = React.useState("");
@@ -46,7 +48,7 @@ function CoverRight({ props, coverPosition }) {
     }
     url += !size ? "" : `&size=${size}`;
 
-    console.log("🚀 ~ file: CoverRight.js:49 ~ searchHandler ~ url", url);
+    navigate(url);
   };
   return (
     <Grid

@@ -12,7 +12,7 @@ function LandingPage(props) {
   }
   return (
     <Box sx={{ height: "100%" }}>
-      <Grid container direction="column" height="100%">
+      <Grid container direction="column" height="100%" flexWrap="nowrap">
         <Cover position={sectionPosition[0]} />
         <Items position={sectionPosition[1]} />
       </Grid>

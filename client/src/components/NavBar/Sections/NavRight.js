@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button, Stack } from "@mui/material";
 import UserAccount from "./UserAccount";
+import { useLocation } from "react-router-dom";
 
 const pages = ["HOME", "타이어", "휠", "복원 및 문의"];
 const pageURL = {
@@ -16,7 +17,15 @@ const pageMap = {
   "복원 및 문의": "requests",
 };
 function NavRight() {
-  const nowPath = window.location.pathname.split("/")[1];
+  const [nowPath, setNowPath] = React.useState("");
+  React.useEffect(() => {
+    const [_, mainPath, detailPath] = window.location.pathname.split("/");
+    if (mainPath) {
+      setNowPath(mainPath);
+    } else {
+      setNowPath("");
+    }
+  }, [window.location.pathname]);
   return (
     <Stack direction="row" alignItems="center" spacing={5} sx={{ pr: 3 }}>
       <Stack
@@ -34,7 +43,6 @@ function NavRight() {
               my: 2,
               px: 3,
               py: 1,
-              // background: "black",
               bgcolor:
                 nowPath === pageMap[page]
                   ? "background.info"

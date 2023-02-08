@@ -24,7 +24,7 @@ function App() {
     <Router>
       <Stack height="100vh" sx={{ alignItems: "center" }}>
         <NavBar SX={BODY_SX} />
-        <CoverImage />
+        {/* <CoverImage /> */}
         <Grid
           container
           height="100%"
@@ -39,7 +39,6 @@ function App() {
               <Route path="/" element={<LandingPage reset={false} />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/service" element={<ServicePage />} />
-
               <Route path="/tires/:type" element={<ItemPage item="tires" />} />
               <Route
                 path="/wheels/:type"
