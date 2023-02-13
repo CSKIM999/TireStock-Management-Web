@@ -11,9 +11,6 @@ import ServicePage from "./components/ServicePage/ServicePage";
 import FAQPage from "./components/FAQPage/FAQPage";
 import ItemDetailPage from "./components/DetailPage/ItemDetailPage";
 import PostPage from "./components/PostPage/PostPage";
-import CoverImage from "./components/modules/CoverImage";
-
-const appWidth = 1600;
 
 function App() {
   const BODY_SX = { width: "80vw", minWidth: "1000px", maxWidth: "1600px" };
@@ -24,12 +21,11 @@ function App() {
     <Router>
       <Stack height="100vh" sx={{ alignItems: "center" }}>
         <NavBar SX={BODY_SX} />
-        {/* <CoverImage /> */}
         <Grid
           container
           height="100%"
           justifyContent="center"
-          sx={{ maxWidth: `${appWidth}`, flexWrap: "nowrap" }}
+          sx={{ maxWidth: "100rem", flexWrap: "nowrap" }}
         >
           <Grid item>
             <SideBar />

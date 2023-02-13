@@ -109,6 +109,16 @@ router.put("/:_id", upload.array("image", 5), async (req, res) => {
     return res.status(200).json({ success: true, checkBody: body });
   });
 });
+router.put("/state/:_id", (req, res) => {
+  const _id = req.params._id;
+  const state = req.body.state;
+  Request.findByIdAndUpdate(_id, {
+    state: state,
+  }).exec((err) => {
+    if (err) return res.status(400).json({ success: false, errorcode: err });
+    return res.status(200).json({ success: true });
+  });
+});
 
 router.get("/", (req, res) => {
   // limit & skip 에 맞는 정보들과 find 해서 가져올거니

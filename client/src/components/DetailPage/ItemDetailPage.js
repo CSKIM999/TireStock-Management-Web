@@ -36,6 +36,7 @@ const handleItem = (item, response) => {
   } else if (item === "requests") {
     temp.data.userID = response.writer._id;
     temp.data.comment = response.comment;
+    temp.state = response.state;
   }
   temp.title = response.title;
   temp.type = response.type;
@@ -95,6 +96,7 @@ function ItemDetailPage(props) {
             <ItemDetailTitle
               title={Body.title}
               item={item}
+              state={Body.state}
               ControlFlag={ControlFlag}
             />
           </Grid>

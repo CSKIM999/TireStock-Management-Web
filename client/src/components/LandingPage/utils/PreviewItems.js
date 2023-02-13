@@ -18,6 +18,7 @@ import React from "react";
 const tireString = (item) => {
   return item.width + " - " + item.profile + " - " + item.size;
 };
+const EMPTY = process.env.REACT_APP_EMPTY;
 function PreviewItems(item, type) {
   // query page 정보에 limit 넣어주기
   const [body, setBody] = React.useState([]);
@@ -27,19 +28,29 @@ function PreviewItems(item, type) {
       setBody(response.data.payload);
     });
   }, []);
-  const convertToCard = (item) => {
+  const convertToCard = (props) => {
+    const size = props.size;
+    const thumbNail = props.thumbNail;
+    const type = props.type;
+    const _id = props._id;
     return (
-      <Card>
-        <CardActionArea>
-          <CardMedia component="div" sx={{ width: "100px", height: "100px" }} />
-          <CardContent>
-            <Typography variant="caption">19 INCH</Typography>
+      <Card sx={{ height: "auto" }}>
+        <CardActionArea href={`/wheels/${type}/${_id}`}>
+          <CardMedia
+            component="img"
+            sx={{ maxHeight: "80px" }}
+            image={thumbNail ?? EMPTY}
+          />
+          <CardContent sx={{ p: 0, display: "flex", justifyContent: "center" }}>
+            <Typography variant="caption">{size} INCH</Typography>
           </CardContent>
         </CardActionArea>
       </Card>
     );
   };
   const convertByItem = (data) => {
+    if (data.length === 0) return;
+    console.log("🚀 ~ file: previewItems.js:44 ~ convertByItem ~ data", data);
     const errorcode = "ERROR IN PREVIEW ITEMS";
     if (item === "tires") {
       return (
@@ -50,47 +61,50 @@ function PreviewItems(item, type) {
             </Typography>
           }
         >
-          {data &&
-            data.map((item, index) => {
-              const brand = item.brand ? item.brand : "Brand  ";
-              const size = tireString(item);
-              const condition = "++" + item.condition + "%";
-              return (
-                <ListItemButton
-                  key={"prev-" + index}
-                  sx={{ borderBottom: "1px solid", px: 0, pb: 0.5 }}
-                >
-                  <Typography variant="caption">{brand}</Typography>
-                  <Typography fontWeight="bold" sx={{ px: 2 }}>
-                    {size}
-                  </Typography>
-                  <Typography variant="caption">{condition}</Typography>
-                </ListItemButton>
-              );
-            })}{" "}
+          {data.map((item, index) => {
+            const brand = item.brand ? item.brand : "Brand  ";
+            const size = tireString(item);
+            const condition = "++" + item.condition + "%";
+            return (
+              <ListItemButton
+                key={"prev-" + index}
+                sx={{ borderBottom: "1px solid", px: 0, pb: 0.5 }}
+                href={`/tires/${item.type}/${item._id}`}
+              >
+                <Typography variant="caption">{brand}</Typography>
+                <Typography fontWeight="bold" sx={{ px: 2 }}>
+                  {size}
+                </Typography>
+                <Typography variant="caption">{condition}</Typography>
+              </ListItemButton>
+            );
+          })}{" "}
         </List>
       );
     } else if (item === "wheels") {
+      const type = data[0].type;
+
       return (
-        <Grid container direction="column">
-          <Grid item xs={1}>
-            <Typography>HI</Typography>
+        <Grid
+          container
+          direction="column"
+          sx={{
+            height: "100%",
+            maxWidth: "13rem",
+            justifyContent: "space-around",
+          }}
+        >
+          <Grid item xs={1} display="flex" justifyContent="center">
+            <Typography>{type.toUpperCase()}</Typography>
           </Grid>
-          <Grid item container xs={5}>
-            <Grid item xs={6} sx={{ width: "100%" }}>
-              {convertToCard()}
-            </Grid>
-            <Grid item xs={6}>
-              {convertToCard()}
-            </Grid>
-          </Grid>
-          <Grid item container xs={5}>
-            <Grid item xs={6}>
-              {convertToCard()}
-            </Grid>
-            <Grid item xs={6}>
-              {convertToCard()}
-            </Grid>
+          <Grid item container xs={11} sx={{ justifyContent: "space-around" }}>
+            {data.map((item, index) => {
+              return (
+                <Grid item key={"wheel-" + type + "-" + index} xs={5}>
+                  {convertToCard(item)}
+                </Grid>
+              );
+            })}
           </Grid>
         </Grid>
       );
@@ -102,15 +116,15 @@ function PreviewItems(item, type) {
     <Box>
       <Paper
         elevation={24}
-        className="PreviewItems"
+        className="full"
         sx={{
           p: 2,
           borderRadius: 3,
           backgroundColor: "primary.main",
           minWidth: "15rem",
+          minHeight: "25rem",
         }}
       >
-        {/* {body && body.map((item,index) => )} */}
         {convertByItem(body)}
       </Paper>
     </Box>

@@ -77,6 +77,10 @@ export const globalTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
+          ".full": {
+            width: "100%",
+            height: "100%",
+          },
           "& ::-webkit-scrollbar": {
             width: ".7rem",
           },
@@ -96,9 +100,6 @@ export const globalTheme = createTheme({
           },
           ".success label": {
             color: successColor,
-          },
-          ".PreviewItems *": {
-            // fontSize: "0.9rem",
           },
           ".postingOption *": {
             textAlign: "center",

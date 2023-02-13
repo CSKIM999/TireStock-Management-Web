@@ -9,7 +9,7 @@ function CoverImage() {
     <Box
       sx={{
         height: "50%",
-        position: "fixed",
+        position: "absolute",
         zIndex: "-1",
         overflow: "hidden",
         width: "100vw",
@@ -21,7 +21,6 @@ function CoverImage() {
         src={url}
         sx={{
           width: "100vw",
-          Height: "50vh",
           overflow: "hidden",
         }}
       />

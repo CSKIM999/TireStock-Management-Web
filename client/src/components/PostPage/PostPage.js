@@ -309,8 +309,8 @@ function PostPage({ adjust }) {
         px: 10,
         pt: 5,
         height: "70%",
-        minHeight: "450px",
-        maxHeight: "1000px",
+        minHeight: "28rem",
+        maxHeight: "60rem",
         flexWrap: "nowrap",
       }}
     >

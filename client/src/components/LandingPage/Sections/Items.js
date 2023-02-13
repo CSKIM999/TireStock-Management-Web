@@ -50,7 +50,7 @@ function Items({ postion }) {
       >
         {tireSection()}
       </Grid>
-      <Grid item md={5} lg={5} sx={{ minWidth: "33rem" }}>
+      <Grid item md={5} lg={4} sx={{ minWidth: "33rem" }}>
         {wheelSection()}
       </Grid>
       <Grid item md="auto" lg="auto">

@@ -48,6 +48,7 @@ const DetailDescribe = (title, caption, body) => {
           sx={{
             minHeight: 150,
             maxHeight: 250,
+            height: "auto",
             overflow: "auto",
             bgcolor: "background.paper",
           }}
