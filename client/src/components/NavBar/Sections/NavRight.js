@@ -38,15 +38,14 @@ function NavRight() {
         {pages.map((page) => (
           <Button
             href={pageURL[page]}
+            className={`nav-Button ${
+              nowPath === pageMap[page] ? "navSelected-Button" : ""
+            }`}
             key={page}
             sx={{
               my: 2,
               px: 3,
               py: 1,
-              bgcolor:
-                nowPath === pageMap[page]
-                  ? "background.info"
-                  : "background.paper",
               display: "block",
             }}
           >
@@ -54,7 +53,7 @@ function NavRight() {
           </Button>
         ))}
       </Stack>
-      <UserAccount />
+      <UserAccount sx={{ color: "primary.main" }} />
     </Stack>
   );
 }

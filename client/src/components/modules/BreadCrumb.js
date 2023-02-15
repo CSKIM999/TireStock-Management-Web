@@ -8,10 +8,10 @@ import { Box, Typography } from "@mui/material";
  */
 const BreadCrumb = (item, type = undefined) => {
   return (
-    <Box sx={{ py: 1 }}>
-      <Typography variant="caption">
+    <Box sx={{ pt: 2, pb: 3 }}>
+      <Typography className="crumb-Typo">
         {type
-          ? `${item.toUpperCase()} > ${type.toUpperCase()}`
+          ? `${item.toUpperCase()} / ${type.toUpperCase()}`
           : `${item.toUpperCase()}`}
       </Typography>
     </Box>

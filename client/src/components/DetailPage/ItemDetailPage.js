@@ -101,20 +101,16 @@ function ItemDetailPage(props) {
             />
           </Grid>
           <Divider />
-          <Grid
-            item
-            xs={8}
-            container
-            direction="row"
-            sx={{ py: 3, borderTop: itemBoxSX, borderBottom: itemBoxSX }}
-          >
+          <Grid item xs={8} container direction="row" sx={{ py: 3 }}>
             {/* Image Section */}
+
             <ImageSlider images={Body.data.image} />
             {/* Detail Section */}
             <Grid item xs={12} md={6.5} minWidth={500}>
               <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
             </Grid>
           </Grid>
+          <Divider />
           <Button
             onClick={() => {
               console.log(Body, ControlFlag);

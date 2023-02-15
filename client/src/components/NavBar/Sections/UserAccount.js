@@ -51,12 +51,17 @@ function UserAccount(props) {
       </IconButton>
       <Menu
         id="user"
+        className="useAccountMenu"
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
         }}
       >
         <MenuItem id="login" sx={ItemSX(itemMap.login)}>

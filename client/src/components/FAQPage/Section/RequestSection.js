@@ -4,7 +4,6 @@ import FAQItem from "../util/FAQItem";
 import { useNavigate } from "react-router-dom";
 
 function RequestSection(props) {
-  console.log("🚀 ~ file: RequestSection.js:7 ~ RequestSection ~ props", props);
   const navigate = useNavigate();
   return (
     <Stack>
@@ -17,7 +16,9 @@ function RequestSection(props) {
             py: 2,
           }}
         >
-          <Button onClick={() => navigate("/posts/requests")}>문의하기</Button>
+          <Button sx={{ mx: 5 }} onClick={() => navigate("/posts/requests")}>
+            문의하기
+          </Button>
         </Box>
       )}
       {/* 1page = 10개 */}

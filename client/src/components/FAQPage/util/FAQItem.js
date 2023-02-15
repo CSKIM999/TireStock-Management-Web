@@ -1,4 +1,10 @@
-import { BugReport, Check, CheckCircle, Help } from "@mui/icons-material";
+import {
+  BugReport,
+  Cancel,
+  CheckCircle,
+  Help,
+  Info,
+} from "@mui/icons-material";
 import { Box, Card, CardActionArea, Grid, Typography } from "@mui/material";
 import React from "react";
 
@@ -9,12 +15,14 @@ import React from "react";
  */
 const iconSet = (state) => {
   switch (state) {
-    case "success":
+    case "pending":
       return <CheckCircle color="success" />;
     case "fulfilled": //진행중
       return <Help color="primary" />;
-    case "pending": //보류
-      return <Help color="primary" />;
+    case "rejected": //보류
+      return <Cancel color="error" />;
+    case "notice":
+      return <Info color="info" />;
     default:
       return <BugReport color="error" />;
   }
@@ -29,7 +37,7 @@ const iconSet = (state) => {
  */
 function FAQItem(state, title, date, _id = undefined) {
   return (
-    <Card>
+    <Card elevation={0} className="bodyFAQ-Paper">
       <CardActionArea href={_id ? `/requests/${_id}` : ""}>
         <Grid
           container

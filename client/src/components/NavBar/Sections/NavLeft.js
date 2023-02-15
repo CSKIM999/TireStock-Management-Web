@@ -6,7 +6,7 @@ function NavLeft() {
   return (
     <Toolbar sx={{ p: 0 }}>
       <Typography component="a" href="/">
-        <Home sx={{ fontSize: 40 }} />
+        <Home sx={{ fontSize: 40, color: "primary.main" }} />
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
         <IconButton>MOBILE-MENU</IconButton>

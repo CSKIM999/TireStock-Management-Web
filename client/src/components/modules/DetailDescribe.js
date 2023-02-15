@@ -21,12 +21,7 @@ const DetailDescribe = (title, caption, body) => {
     <Grid item xs={5} container flexWrap="nowrap" direction="column">
       <Grid item xs={1} container direction={"row"} alignItems="flex-end">
         <Grid item>
-          <Typography
-            variant="h5"
-            sx={{ color: "primary.main", fontWeight: "bold" }}
-          >
-            {title}
-          </Typography>
+          <Typography className="detailTitle-Typo ls5">{title}</Typography>
         </Grid>
         <Typography variant="caption" sx={{ fontWeight: "bold", px: 3 }}>
           {caption}
@@ -50,7 +45,7 @@ const DetailDescribe = (title, caption, body) => {
             maxHeight: 250,
             height: "auto",
             overflow: "auto",
-            bgcolor: "background.paper",
+            bgcolor: "inherit",
           }}
         >
           <Typography>{body ? body : ""}</Typography>

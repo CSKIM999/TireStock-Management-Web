@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardActionArea,
+  Divider,
   Grid,
   Paper,
   Typography,
@@ -22,8 +23,8 @@ function ItemCard({ prop }) {
     title,
     width && size
       ? `${width} - ${profile} - R${size}`
-      : size && size.length === 3
-      ? `${size.slice(1)} Inch`
+      : size
+      ? `${size} Inch`
       : undefined,
   ];
   const bodyContent = [
@@ -32,9 +33,9 @@ function ItemCard({ prop }) {
   ];
 
   return (
-    <Card>
+    <Card elevation={0}>
       <CardActionArea href={`./${prop.type}/${prop._id}`}>
-        <Paper>
+        <Paper className="Plevel1">
           <Grid container direction="row">
             <Grid
               item
@@ -65,11 +66,16 @@ function ItemCard({ prop }) {
             <Grid item md={7} sx={{ p: 1 }}>
               {headerContent &&
                 headerContent.map((item, index) => (
-                  <Typography key={index}>{item}</Typography>
+                  <Typography variant="h6" fontWeight="bold" key={index}>
+                    {item}
+                  </Typography>
                 ))}
+              <Divider sx={{ border: 0, py: 1 }} />
               {bodyContent &&
                 bodyContent.map((item, index) => (
-                  <Typography key={index}>{item}</Typography>
+                  <Typography component="div" variant="caption" key={index}>
+                    {item}
+                  </Typography>
                 ))}
             </Grid>
           </Grid>

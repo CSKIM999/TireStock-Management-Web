@@ -5,7 +5,13 @@ import NavLeft from "./Sections/NavLeft";
 
 function NavBar(props) {
   return (
-    <AppBar position="static" sx={{ alignItems: "center", height: "auto" }}>
+    <AppBar
+      position="static"
+      sx={{
+        alignItems: "center",
+        height: "auto",
+      }}
+    >
       <Grid
         direction="row"
         justifyContent="space-between"

@@ -24,14 +24,7 @@ const ItemDetailBody = (props) => {
   const prop = props.prop;
   const captureComment = props.captureComment;
   return (
-    <Paper
-      elevation={5}
-      sx={{
-        width: "100%",
-        height: "100%",
-        bgcolor: "background.paper",
-      }}
-    >
+    <Paper elevation={0} className="full itemDetail-Paper">
       <Grid
         container
         flexWrap="nowrap"

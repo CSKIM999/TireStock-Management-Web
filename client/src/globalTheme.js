@@ -1,15 +1,58 @@
 import { createTheme } from "@mui/material/styles";
 
-const bgColor = "#242424";
+const bgColor = "#001C2D";
 const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#b3b3b3" }; //main-light-dark
-const CardBgColor = "#333333";
+const thirdColor = "#DBDAC1";
 const errorColor = "#ea605d";
 const successColor = "#6fbf73";
-const pointColor = "#FF8736";
-const complementaryColor = "#02A9B3";
+const pointColor = "#FEA800";
+const complementaryColor = "#0568A6";
+
+// #001C2D 남색
+// #F41F0D 주황
+// #FEA800 노랑
+// #FFFFFF 흰
+// #DBDAC1 오트밀
 
 export const globalTheme = createTheme({
   components: {
+    // root 밑에 바로 MuiStack-root 가 있어서 사실상의 root 처럼 사용 가능.
+    MuiStack: {
+      styleOverrides: {
+        root: {
+          ".full": {
+            width: "100%",
+            height: "100%",
+          },
+          ".pb2": {
+            paddingBottom: "1rem",
+          },
+          ".ls5": {
+            letterSpacing: 5,
+          },
+          ".Plevel1": {
+            backgroundColor: pointColor + "11",
+          },
+          ".Plevel2": {
+            backgroundColor: pointColor + "22",
+          },
+          ".br0": {
+            borderRadius: 0,
+          },
+          ".aic": {
+            alignItems: "center",
+          },
+          ".bp1": {
+            border: "1px solid" + pointColor,
+            borderRadius: 5,
+          },
+          ".fwb": {
+            fontWeight: "bold",
+          },
+        },
+      },
+    },
+
     MuiCssBaseline: {
       styleOverrides: `
         input:-webkit-autofill,
@@ -42,6 +85,22 @@ export const globalTheme = createTheme({
         },
       },
     },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          "&.coverSearch-Button": {
+            fontWeight: "bold",
+          },
+          "&.nav-Button": {
+            fontWeight: "bold",
+          },
+          "&.navSelected-Button": {
+            backgroundColor: pointColor + "DD!important",
+            color: bgColor,
+          },
+        },
+      },
+    },
     MuiGrid: {
       styleOverrides: {
         root: {
@@ -52,6 +111,10 @@ export const globalTheme = createTheme({
           ".mainContents": {
             maxWidth: "1600px !important",
           },
+          ".card-Grid:hover": {
+            transform: "scale(1.08)",
+            transition: "transform 150ms",
+          },
         },
       },
     },
@@ -59,6 +122,7 @@ export const globalTheme = createTheme({
       styleOverrides: {
         root: {
           borderRight: "0px !important",
+
           "& ::-webkit-scrollbar": {
             width: "0.4rem",
           },
@@ -77,21 +141,25 @@ export const globalTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          ".full": {
+          "&.full": {
             width: "100%",
             height: "100%",
           },
+          "&.preview": { backgroundColor: pointColor + "11" },
+          "&.itemBoard-Paper": {
+            backgroundColor: pointColor + "11",
+            borderRadius: 0,
+          },
           "& ::-webkit-scrollbar": {
-            width: ".7rem",
+            width: "0.4rem",
           },
           "& ::-webkit-scrollbar-track": {
-            backgroundColor: pointColor,
+            // backgroundColor: pointColor,
+            backgroundColor: pointColor + "33",
             borderRadius: "10px",
           },
           "& ::-webkit-scrollbar-thumb": {
-            backgroundColor: complementaryColor,
-            border: "2px solid",
-            borderColor: pointColor,
+            backgroundColor: pointColor + "DD",
             borderRadius: "10px",
           },
           ".success fieldset": {
@@ -104,11 +172,33 @@ export const globalTheme = createTheme({
           ".postingOption *": {
             textAlign: "center",
           },
-          "&.coverSearch": {
+          "&.coverSearch-Paper": {
             backgroundColor: "#242424CC",
           },
-          "&.coverSearch .MuiGrid-container": {
+          "&.coverSearch-Paper .MuiGrid-container": {
             alignItems: "center",
+          },
+          "&.navFAQ-Paper": {
+            backgroundColor: pointColor + "22",
+            justifyContent: "center",
+            borderRadius: 40,
+          },
+          "&.bodyFAQ-Paper": {
+            backgroundColor: pointColor + "11",
+            borderRadius: 0,
+            maxHeight: 650,
+          },
+          "&.emptyItem-Paper": {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "inherit",
+            fontSize: "3rem",
+            fontWeight: "bold",
+          },
+          "&.itemDetail-Paper": {
+            backgroundColor: pointColor + "11",
+            borderRadius: 10,
           },
         },
       },
@@ -116,37 +206,67 @@ export const globalTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         caption: {
-          color: ftColor.light + "!important",
+          color: ftColor.dark,
         },
         h5: {
           color: ftColor.light,
         },
+        h6: {
+          color: ftColor.light,
+        },
         subtitle1: {
-          color: ftColor.dark + "!important",
+          color: ftColor.dark,
         },
         subtitle2: {
-          color: bgColor + "!important",
+          color: bgColor,
         },
         body1: {
-          color: ftColor.light + "!important",
+          color: ftColor.light,
         },
         body2: {
-          color: ftColor.light + "!important",
+          color: ftColor.light,
         },
         button: {
           color: ftColor.main,
         },
+        root: {
+          "&.previewTitle": {
+            color: ftColor.light + "!important",
+            fontSize: "1.2rem",
+            fontWeight: "bold",
+            paddingTop: "10px",
+          },
+          "&.previewCard": {
+            color: ftColor.light + "!important",
+            fontWeight: "bold",
+          },
+          "&.crumb-Typo": {
+            color: pointColor,
+            fontWeight: "900",
+            letterSpacing: "5px",
+          },
+          "&.detailTitle-Typo": {
+            color: pointColor,
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+          },
+        },
       },
     },
-    MuiPickersArrowSwitcher: {
+    MuiAppBar: {
       styleOverrides: {
-        button: {
-          color: ftColor.main + "!important",
+        root: {
+          background: bgColor,
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: {
+          "&.comment *": {
+            borderColor: pointColor + "!important",
+          },
+        },
         notchedOutline: {
           borderColor: ftColor.dark,
         },
@@ -167,13 +287,13 @@ export const globalTheme = createTheme({
         },
       },
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          background: CardBgColor,
-        },
-      },
-    },
+    // MuiCard: {
+    //   styleOverrides: {
+    //     root: {
+    //       // background: CardBgColor,
+    //     },
+    //   },
+    // },
   },
   palette: {
     text: {
@@ -194,9 +314,6 @@ export const globalTheme = createTheme({
       main: complementaryColor,
       dark: "#ea605d !important",
     },
-    info: {
-      main: ftColor.dark,
-    },
     error: {
       main: errorColor,
     },
@@ -206,20 +323,6 @@ export const globalTheme = createTheme({
     divider: pointColor,
   },
   typography: {
-    fontFamily: [
-      "Noto Sans KR",
-      "Inter",
-      // "Inter",
-      // "-apple-system",
-      // "BlinkMacSystemFont",
-      // '"Segoe UI"',
-      // "Roboto",
-      // '"Helvetica Neue"',
-      // "Arial",
-      "sans-serif",
-      // '"Apple Color Emoji"',
-      // '"Segoe UI Emoji"',
-      // '"Segoe UI Symbol"',
-    ].join(","),
+    fontFamily: ["Noto Sans KR", "Inter", "sans-serif"].join(","),
   },
 });

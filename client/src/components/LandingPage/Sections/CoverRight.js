@@ -57,7 +57,7 @@ function CoverRight({ props, coverPosition }) {
       sx={{ display: "flex", justifyContent: "center" }}
     >
       <Paper
-        className="coverSearch"
+        className="coverSearch-Paper"
         sx={{ ...PaperSX, maxWidth: "350px", borderRadius: "15px" }}
       >
         <Stack sx={{ alignItems: "center", p: 3 }} spacing={2}>
@@ -145,10 +145,18 @@ function CoverRight({ props, coverPosition }) {
             </Grid>
           </Grid>
           <Stack direction="row" spacing={2}>
-            <Button variant="contained" onClick={() => searchHandler("used")}>
+            <Button
+              className="coverSearch-Button"
+              variant="contained"
+              onClick={() => searchHandler("used")}
+            >
               USED - SEARCH
             </Button>
-            <Button variant="contained" onClick={() => searchHandler("new")}>
+            <Button
+              className="coverSearch-Button"
+              variant="contained"
+              onClick={() => searchHandler("new")}
+            >
               NEW - SEARCH
             </Button>
           </Stack>

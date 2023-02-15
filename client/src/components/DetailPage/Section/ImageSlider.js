@@ -15,12 +15,12 @@ function ImageSlider({ images }) {
   };
   return (
     <Grid item xs={12} md={5.5} sx={{ pr: 2 }}>
-      {maxSteps > 0 && (
-        <Stack
-          sx={{ width: "100%", height: "100%", justifyContent: "center" }}
-          spacing={2}
-        >
-          <Paper elevation={12}>
+      <Paper elevation={0} className="full itemDetail-Paper">
+        {maxSteps > 0 && (
+          <Stack
+            sx={{ width: "100%", height: "100%", justifyContent: "center" }}
+            spacing={2}
+          >
             <SwipeableViews
               axis="x"
               index={activeStep}
@@ -40,41 +40,42 @@ function ImageSlider({ images }) {
                 />
               ))}
             </SwipeableViews>
-          </Paper>
-          <MobileStepper
-            steps={maxSteps}
-            position="static"
-            activeStep={activeStep}
-            nextButton={
-              <Button
-                size="large"
-                onClick={() => handleStep(true)}
-                disabled={activeStep === maxSteps - 1}
-                sx={{ mr: 5 }}
-              >
-                Next
-                <KeyboardArrowRight />
-              </Button>
-            }
-            backButton={
-              <Button
-                size="large"
-                onClick={() => handleStep(false)}
-                disabled={activeStep === 0}
-                sx={{ ml: 5 }}
-              >
-                <KeyboardArrowLeft />
-                Back
-              </Button>
-            }
+            <MobileStepper
+              steps={maxSteps}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="large"
+                  onClick={() => handleStep(true)}
+                  disabled={activeStep === maxSteps - 1}
+                  sx={{ mr: 5 }}
+                >
+                  Next
+                  <KeyboardArrowRight />
+                </Button>
+              }
+              backButton={
+                <Button
+                  size="large"
+                  onClick={() => handleStep(false)}
+                  disabled={activeStep === 0}
+                  sx={{ ml: 5 }}
+                >
+                  <KeyboardArrowLeft />
+                  Back
+                </Button>
+              }
+              sx={{ backgroundColor: "inherit" }}
+            />
+          </Stack>
+        )}
+        {maxSteps === 0 && (
+          <Paper
+            sx={{ width: "100%", height: "100%", bgcolor: "primary.main" }}
           />
-        </Stack>
-      )}
-      {maxSteps === 0 && (
-        <Paper
-          sx={{ width: "100%", height: "100%", bgcolor: "primary.main" }}
-        />
-      )}
+        )}
+      </Paper>
     </Grid>
   );
 }

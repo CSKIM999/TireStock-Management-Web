@@ -22,11 +22,23 @@ const ItemDetailTitle = (props) => {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const navigate = useNavigate();
   const handleState = (e) => {
-    if (!window.confirm("작업 상황을 변경하시겠습니까?")) return;
+    if (!window.confirm("작업상황을 변경하시겠습니까?")) return;
     // TODO >> axios.put REQUEST 로 현재 게시글 state 변경
-
-    setState(e.target.value);
+    if (AxiosState(e.target.value)) {
+      alert("정상적으로 변경되었습니다");
+      return setState(e.target.value);
+    }
+    return alert("오류로 인해 작업상황이 변경되지 않았습니다");
   };
+  async function AxiosState(value) {
+    const body = {
+      state: value,
+    };
+    await Axios.put(`/api/requests/state/${itemID}`, body).then((response) => {
+      if (response.data.success) return true;
+      return false;
+    });
+  }
   async function handleRemove() {
     await Axios.delete(`/api/${props.item}/${itemID}`).then((response) => {
       if (response.status === 200)
@@ -52,9 +64,7 @@ const ItemDetailTitle = (props) => {
   return (
     <Stack direction="row" justifyContent="space-between">
       <Box>
-        <Typography color="primary.main" variant="h5" fontWeight="bold">
-          {props.title}
-        </Typography>
+        <Typography className="detailTitle-Typo pb2">{props.title}</Typography>
       </Box>
       <Box>
         {isAdmin && (

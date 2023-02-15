@@ -27,7 +27,7 @@ function ServicePage() {
       >
         <Tab label="1 : 1 문의" />
         <Tab label="내 복원문의" />
-        <Tab label="공지사항" />
+        <Tab label="공지사" />
       </Tabs>
       <Grid container direction="column" sx={{ height: "100%", width: "100%" }}>
         <Grid item xs={1}>

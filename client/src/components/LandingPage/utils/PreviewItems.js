@@ -42,7 +42,9 @@ function PreviewItems(item, type) {
             image={thumbNail ?? EMPTY}
           />
           <CardContent sx={{ p: 0, display: "flex", justifyContent: "center" }}>
-            <Typography variant="caption">{size} INCH</Typography>
+            <Typography variant="caption" className="previewCard">
+              {size} 인치
+            </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
@@ -50,7 +52,6 @@ function PreviewItems(item, type) {
   };
   const convertByItem = (data) => {
     if (data.length === 0) return;
-    console.log("🚀 ~ file: previewItems.js:44 ~ convertByItem ~ data", data);
     const errorcode = "ERROR IN PREVIEW ITEMS";
     if (item === "tires") {
       return (
@@ -68,7 +69,12 @@ function PreviewItems(item, type) {
             return (
               <ListItemButton
                 key={"prev-" + index}
-                sx={{ borderBottom: "1px solid", px: 0, pb: 0.5 }}
+                sx={{
+                  borderBottom: "1px solid",
+                  px: 0,
+                  pb: 0.5,
+                  alignItems: "flex-end",
+                }}
                 href={`/tires/${item.type}/${item._id}`}
               >
                 <Typography variant="caption">{brand}</Typography>
@@ -116,11 +122,10 @@ function PreviewItems(item, type) {
     <Box>
       <Paper
         elevation={24}
-        className="full"
+        className="full preview"
         sx={{
           p: 2,
           borderRadius: 3,
-          backgroundColor: "primary.main",
           minWidth: "15rem",
           minHeight: "25rem",
         }}

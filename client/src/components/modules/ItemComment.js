@@ -7,6 +7,7 @@ import {
   Grid,
   IconButton,
   InputBase,
+  OutlinedInput,
   Paper,
   Typography,
 } from "@mui/material";
@@ -42,17 +43,19 @@ const ItemComment = (props, captureComment) => {
 
   const InputRender = (
     <Paper
-      elevation={2}
+      elevation={0}
       component="form"
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        bgcolor: "inherit",
       }}
     >
-      <InputBase
+      <OutlinedInput
+        className="comment"
         placeholder="원하시는 문의 댓글을 작성해주세요"
-        sx={{ width: "80%", p: 1 }}
+        sx={{ width: "80%" }}
         value={Comment}
         onChange={(event) => {
           setComment(event.target.value);
@@ -76,16 +79,26 @@ const ItemComment = (props, captureComment) => {
         width: "100%",
         maxHeight: 250,
         overflow: "auto",
+        bgcolor: "inherit",
       }}
     >
       {prop.length > 0 &&
         prop.map((item, index) => (
-          <Grid item container key={index} sx={{ py: 0.5 }}>
+          <Grid
+            item
+            container
+            key={index}
+            sx={{ py: 0.5, alignItems: "center" }}
+          >
             <Grid item xs={2}>
-              <Typography sx={{ pr: 2 }}>{item.writer}</Typography>
+              <Typography className="fwb" sx={{ pr: 2 }}>
+                {item.writer}
+              </Typography>
             </Grid>
-            <Grid item xs={8}>
-              <Typography>{item.comment}</Typography>
+            <Grid item xs={9.5}>
+              <Typography className="full Plevel1" sx={{ py: 1, pl: 1 }}>
+                {item.comment}
+              </Typography>
             </Grid>
             {/* BUTTONBOX */}
             {item.w_id === user.userID && (

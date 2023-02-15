@@ -1,6 +1,6 @@
 import React from "react";
 import * as Axios from "axios";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import OptionBoard from "./Sections/OptionBoard";
 import ItemBoard from "./Sections/ItemBoard";
 import itemOptionTable from "../modules/itemOptionTable";
@@ -83,10 +83,6 @@ function ItemPage(props) {
       }
       return query;
     }, keywordURL);
-    console.log(
-      "🚀 ~ file: ItemPage.js:86 ~ React.useEffect ~ keywordURL",
-      keywordURL
-    );
     Axios.get(keywordURL).then((response) => {
       if (response) {
         setSearchedItem(response.data.payload);
@@ -97,17 +93,8 @@ function ItemPage(props) {
   }, [OptionValue]);
 
   const handleOption = (index, value) => {
-    console.log(
-      "🚀 ~ file: ItemPage.js:92 ~ handleOption ~ index, value",
-      index,
-      value
-    );
     let newValue = [...OptionValue];
     newValue[index] = value;
-    console.log(
-      "🚀 ~ file: ItemPage.js:99 ~ handleOption ~ newValue",
-      newValue
-    );
     setOptionValue([...newValue]);
   };
 
@@ -117,19 +104,14 @@ function ItemPage(props) {
         {BreadCrumb(props.item, type)}
         {OptionBoard(props.item, handleOption, OptionValue)}
       </Grid>
-      <ItemBoard renderData={SearchedItem} />
+      <Paper className="full itemBoard-Paper">
+        <ItemBoard renderData={SearchedItem} />
+      </Paper>
       <Button
         onClick={() => {
           dispatch(
             loginUser({ body: { email: "test@te.st", password: "1234" } })
           );
-        }}
-      >
-        CHECK
-      </Button>
-      <Button
-        onClick={() => {
-          console.log(OptionValue);
         }}
       >
         CHECK

@@ -86,7 +86,7 @@ function FAQPage() {
     <Grid container sx={{ px: 10, py: 5 }} height="100%" direction="column">
       {BreadCrumb("repair & faq")}
       <Grid item xs={1}>
-        <Paper sx={{ justifyContent: "center", borderRadius: 10 }}>
+        <Paper className="navFAQ-Paper">
           <Tabs
             value={tabIndex}
             variant="fullWidth"
@@ -100,7 +100,7 @@ function FAQPage() {
         </Paper>
       </Grid>
       <Grid item xs="auto">
-        <Paper sx={{ maxHeight: 650 }}>
+        <Paper className="bodyFAQ-Paper">
           {renderView ? (
             <RequestSection RenderData={renderData} tab={tabIndex} />
           ) : (
