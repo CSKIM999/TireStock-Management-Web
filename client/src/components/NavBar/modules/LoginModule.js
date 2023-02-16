@@ -75,7 +75,10 @@ const LoginModule = (CloseMenu) => {
         로그인
       </Button>
       <Dialog open={DialogOpen} onKeyDown={KeydownEvent} onClose={handleDialog}>
-        <DialogTitle>로그인</DialogTitle>
+        <DialogTitle className="modalTitle-Typo">
+          로그인
+          <Login fontSize="large" sx={{ pl: 1 }} />
+        </DialogTitle>
         <Stack spacing={2} sx={{ px: 3, py: 2 }}>
           <TextField
             autoFocus

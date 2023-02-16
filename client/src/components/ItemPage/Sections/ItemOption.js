@@ -26,7 +26,9 @@ function ItemOption(props) {
       className="optionSet"
       sx={{ display: "flex", flexDirection: "column", height: "100%" }}
     >
-      <Typography sx={{ pl: 1, pb: 1 }}>{prop.title} &gt;</Typography>
+      <Typography className="fwb" sx={{ pl: 1, pb: 1 }}>
+        {prop.title} »
+      </Typography>
       <Tabs
         orientation="vertical"
         variant="scrollable"

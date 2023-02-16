@@ -40,14 +40,9 @@ function SideBar() {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
   const type = ["new", "used"];
   const sideItems = ["tires", "wheels"];
 
-  const ListItemButtonSX = {
-    justifyContent: "center",
-    color: "primary",
-  };
   const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
 
   const accordionProps = (prop) => {
@@ -56,20 +51,16 @@ function SideBar() {
         {type.map((item, index) => (
           <AccordionDetails key={index}>
             <Button
+              className={`nav-Button user-Button ${
+                prop === mainpathNow && item === detailpathNow
+                  ? "navSelected-Button"
+                  : ""
+              }`}
               variant="text"
               sx={{
                 p: 1,
-                borderTop: "1px solid primary.main",
                 borderRadius: "0px",
                 width: "100%",
-                color:
-                  `/${prop}/${item}` === `/${mainpathNow}/${detailpathNow}`
-                    ? "white"
-                    : "primary.main",
-                bgcolor:
-                  `/${prop}/${item}` === `/${mainpathNow}/${detailpathNow}`
-                    ? "primary.main"
-                    : "background.default",
               }}
               href={`/${prop}/${item}`}
             >
@@ -89,8 +80,11 @@ function SideBar() {
           expanded={expanded === item}
           sx={AccordionSX}
         >
-          <AccordionSummary expandIcon={<ArrowUpward />}>
-            <Typography>{item.toUpperCase()}</Typography>
+          <AccordionSummary
+            className="nav-Button"
+            expandIcon={<ArrowUpward sx={{ color: "text.primary" }} />}
+          >
+            {item.toUpperCase()}
           </AccordionSummary>
           {accordionProps(item)}
         </Accordion>
@@ -109,23 +103,18 @@ function SideBar() {
       }}
     >
       <Divider />
-      <ListItemButton href="/" sx={ListItemButtonSX}>
-        <Typography>HOME</Typography>
+      <ListItemButton className="nav-Button" href="/">
+        HOME
       </ListItemButton>
       <Divider />
       {accordionItem}
       <ListItemButton
         href="/requests"
-        sx={{
-          ...ListItemButtonSX,
-          bgcolor: `${
-            "/requests" === `/${mainpathNow}`
-              ? "primary.main"
-              : "background.default"
-          }`,
-        }}
+        className={`nav-Button ${
+          "requests" === mainpathNow ? "navSelected-Button" : ""
+        }`}
       >
-        <Typography>REPAIR</Typography>
+        REPAIR
       </ListItemButton>
     </List>
   );

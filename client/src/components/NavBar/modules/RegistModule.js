@@ -214,7 +214,9 @@ const RegistModule = (CloseMenu) => {
             이미 사용중인 {snackbar.content} 입니다!
           </Alert>
         </Snackbar>
-        <DialogTitle>회원가입</DialogTitle>
+        <DialogTitle className="modalTitle-Typo">
+          회원가입 <GroupAdd fontSize="large" sx={{ pl: 1 }} />
+        </DialogTitle>
         <Stack spacing={2} sx={{ px: 3, py: 2 }}>
           <TextField
             autoFocus

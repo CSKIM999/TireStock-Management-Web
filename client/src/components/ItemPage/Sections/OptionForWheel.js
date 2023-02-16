@@ -11,6 +11,10 @@ import ItemOption from "./ItemOption";
 import itemOptionTable from "../../modules/itemOptionTable";
 
 function OptionForWheel(props) {
+  console.log(
+    "🚀 ~ file: OptionForWheel.js:14 ~ OptionForWheel ~ props",
+    props
+  );
   const setStateFunction = props.getState;
   const OptionValue = props.prop;
   const region = OptionValue[0];
@@ -41,7 +45,7 @@ function OptionForWheel(props) {
             sx={{ mr: 10 }}
           >
             <Grid item>
-              <Typography>REGION</Typography>
+              <Typography className="pb2 fwb">REGION</Typography>
               <ToggleButtonGroup
                 color="primary"
                 exclusive
@@ -55,7 +59,7 @@ function OptionForWheel(props) {
               </ToggleButtonGroup>
             </Grid>
             <Grid item>
-              <Typography>REGION</Typography>
+              <Typography className="pb2 fwb">DESIGN</Typography>
               <ToggleButtonGroup
                 color="primary"
                 exclusive

@@ -27,8 +27,8 @@ export const globalTheme = createTheme({
           ".pb2": {
             paddingBottom: "1rem",
           },
-          ".ls5": {
-            letterSpacing: 5,
+          ".ls4": {
+            letterSpacing: 4,
           },
           ".Plevel1": {
             backgroundColor: pointColor + "11",
@@ -39,7 +39,11 @@ export const globalTheme = createTheme({
           ".br0": {
             borderRadius: 0,
           },
+          ".br3": {
+            borderRadius: 0,
+          },
           ".aic": {
+            display: "flex",
             alignItems: "center",
           },
           ".bp1": {
@@ -52,7 +56,20 @@ export const globalTheme = createTheme({
         },
       },
     },
-
+    MuiPopover: {
+      styleOverrides: {
+        root: {
+          "&.useAccountMenu *": {
+            color: bgColor,
+            fontWeight: "bold",
+          },
+          "&.useAccountMenu .MuiList-root": {
+            padding: 5,
+            backgroundColor: thirdColor,
+          },
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: `
         input:-webkit-autofill,
@@ -67,6 +84,9 @@ export const globalTheme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
+          "&.arrow-Button": {
+            color: ftColor.main,
+          },
           // pointerEvents: "none",
         },
       },
@@ -94,6 +114,12 @@ export const globalTheme = createTheme({
           "&.nav-Button": {
             fontWeight: "bold",
           },
+          "&.arrow-Button": {
+            color: ftColor.main + "!important",
+          },
+          "&.user-Button": {
+            color: thirdColor,
+          },
           "&.navSelected-Button": {
             backgroundColor: pointColor + "DD!important",
             color: bgColor,
@@ -114,6 +140,16 @@ export const globalTheme = createTheme({
           ".card-Grid:hover": {
             transform: "scale(1.08)",
             transition: "transform 150ms",
+          },
+          ".card-Grid": {
+            height: "11rem",
+            border: "1px solid",
+            borderColor: ftColor.main + "22",
+            padding: 5,
+            borderRadius: 10,
+          },
+          ".dummy": {
+            border: 0,
           },
         },
       },
@@ -249,6 +285,11 @@ export const globalTheme = createTheme({
             color: pointColor,
             fontSize: "1.5rem",
             fontWeight: "bold",
+          },
+          "&.modalTitle-Typo": {
+            display: "flex",
+            alignItems: "center",
+            paddingTop: "1.5rem",
           },
         },
       },

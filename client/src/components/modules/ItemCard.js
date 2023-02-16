@@ -51,15 +51,7 @@ function ItemCard({ prop }) {
                 }}
               >
                 {thumbNail && (
-                  <Box
-                    component="img"
-                    src={thumbNail}
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: 3,
-                    }}
-                  />
+                  <Box className="full br3" component="img" src={thumbNail} />
                 )}
               </Paper>
             </Grid>

@@ -21,7 +21,7 @@ const DetailDescribe = (title, caption, body) => {
     <Grid item xs={5} container flexWrap="nowrap" direction="column">
       <Grid item xs={1} container direction={"row"} alignItems="flex-end">
         <Grid item>
-          <Typography className="detailTitle-Typo ls5">{title}</Typography>
+          <Typography className="detailTitle-Typo ls4">{title}</Typography>
         </Grid>
         <Typography variant="caption" sx={{ fontWeight: "bold", px: 3 }}>
           {caption}

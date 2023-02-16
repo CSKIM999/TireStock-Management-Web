@@ -13,7 +13,7 @@ function MatchItem(props) {
           item
           xs={5.5}
           lg={3.5}
-          sx={{ height: "10.5rem" }}
+          // sx={{ height: "10.5rem" }}
         >
           <ItemCard prop={item} />
         </Grid>
@@ -44,11 +44,12 @@ const ItemBoard = (props) => {
         fill.map((v, index) => {
           return (
             <Grid
+              className="card-Grid dummy"
               key={index + v}
               item
               xs={5.5}
               lg={3.5}
-              sx={{ height: "10.5rem" }}
+              // sx={{ height: "11rem" }}
             ></Grid>
           );
         })}

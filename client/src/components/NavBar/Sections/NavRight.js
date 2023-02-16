@@ -17,7 +17,7 @@ const pageMap = {
   "복원 및 문의": "requests",
 };
 function NavRight() {
-  const [nowPath, setNowPath] = React.useState("");
+  const [nowPath, setNowPath] = React.useState(null);
   React.useEffect(() => {
     const [_, mainPath, detailPath] = window.location.pathname.split("/");
     if (mainPath) {
@@ -39,7 +39,7 @@ function NavRight() {
           <Button
             href={pageURL[page]}
             className={`nav-Button ${
-              nowPath === pageMap[page] ? "navSelected-Button" : ""
+              nowPath && nowPath === pageMap[page] ? "navSelected-Button" : ""
             }`}
             key={page}
             sx={{

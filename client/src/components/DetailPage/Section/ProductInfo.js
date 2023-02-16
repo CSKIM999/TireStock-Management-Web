@@ -30,7 +30,7 @@ const ProductInfo = (prop) => {
       {/* INFO - TAG */}
       <Grid item xs={4.5}>
         <Stack spacing={spacingTop} minWidth={150}>
-          <Typography className="detailTitle-Typo ls5">Product Info</Typography>
+          <Typography className="detailTitle-Typo ls4">Product Info</Typography>
           {tagDetail[item].map((item, index) => (
             <Typography key={index}>{item}</Typography>
           ))}

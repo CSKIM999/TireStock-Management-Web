@@ -7,7 +7,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { GroupAdd, Login, Logout } from "@mui/icons-material";
+import { GroupAdd, Login, Logout, AccountBox } from "@mui/icons-material";
 import LoginModule from "../modules/LoginModule";
 import RegistModule from "../modules/RegistModule";
 import LogoutModule from "../modules/LogoutModule";
@@ -43,11 +43,8 @@ function UserAccount(props) {
 
   return (
     <Box>
-      <IconButton
-        sx={{ color: "white", background: "background.info" }}
-        onClick={handleClick}
-      >
-        <GroupAdd />
+      <IconButton className="user-Button" onClick={handleClick}>
+        <AccountBox fontSize="large" />
       </IconButton>
       <Menu
         id="user"
@@ -65,22 +62,13 @@ function UserAccount(props) {
         }}
       >
         <MenuItem id="login" sx={ItemSX(itemMap.login)}>
-          {/* <Button sx={{ px: 2, py: 1 }} startIcon={<Login />}>
-            로그인
-          </Button> */}
           {LoginModule(handleClose)}
-          {/* <Login sx={{ pr: 0.5 }} />
-          <Typography>로그인</Typography> */}
         </MenuItem>
         <MenuItem sx={ItemSX(itemMap.login)}>
           {RegistModule(handleClose)}
-          {/* <GroupAdd sx={{ pr: 0.5 }} />
-          <Typography>회원가입</Typography> */}
         </MenuItem>
         <MenuItem sx={ItemSX(itemMap.logout)}>
           {LogoutModule(handleClose)}
-          {/* <Logout sx={{ pr: 0.5 }} />
-          <Typography>로그아웃</Typography> */}
         </MenuItem>
       </Menu>
     </Box>
