@@ -111,13 +111,6 @@ function ItemDetailPage(props) {
             </Grid>
           </Grid>
           <Divider />
-          <Button
-            onClick={() => {
-              console.log(Body, ControlFlag);
-            }}
-          >
-            !!
-          </Button>
         </Grid>
       </Box>
     );

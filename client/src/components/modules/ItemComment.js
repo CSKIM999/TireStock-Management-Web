@@ -20,18 +20,20 @@ const ItemComment = (props, captureComment) => {
   const user = useSelector((state) => state.user);
   const RequestId = useParams().id;
   const [Comment, setComment] = React.useState("");
-
-  const commentHandler = () => {
+  const commentHandler = (event) => {
+    setComment(event.target.value);
+  };
+  const inputHandler = () => {
     if (user.userID.length === 0) return alert("로그인이 필요합니다");
     if (Comment.trim().length === 0) return alert("댓글 내용을 작성해주세요");
+    if (!window.confirm("댓글을 등록하시겠어요?")) return;
     Axios.post(`/api/requests/${RequestId}/comment`, {
-      writer: user.nickname,
+      writer: user.isAdmin ? "관리자" : user.nickname,
       w_id: user.userID,
       comment: Comment.trim(),
     }).then((response) => {
       captureComment();
       setComment("");
-      console.log(response);
     });
   };
 
@@ -44,7 +46,6 @@ const ItemComment = (props, captureComment) => {
   const InputRender = (
     <Paper
       elevation={0}
-      component="form"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -57,62 +58,67 @@ const ItemComment = (props, captureComment) => {
         placeholder="원하시는 문의 댓글을 작성해주세요"
         sx={{ width: "80%" }}
         value={Comment}
-        onChange={(event) => {
-          setComment(event.target.value);
+        onKeyDown={(e) => {
+          if (e.key === "Enter") inputHandler();
         }}
+        onChange={commentHandler}
       />
       <Button
         variant="contained"
         endIcon={<MapsUgc />}
         color="primary"
-        onClick={commentHandler}
+        onClick={inputHandler}
       >
         ENTER
       </Button>
     </Paper>
   );
 
-  const commentRender = (prop) => (
-    <Paper
-      elevation={0}
-      sx={{
-        width: "100%",
-        maxHeight: 250,
-        overflow: "auto",
-        bgcolor: "inherit",
-      }}
-    >
-      {prop.length > 0 &&
-        prop.map((item, index) => (
-          <Grid
-            item
-            container
-            key={index}
-            sx={{ py: 0.5, alignItems: "center" }}
-          >
-            <Grid item xs={2}>
-              <Typography className="fwb" sx={{ pr: 2 }}>
-                {item.writer}
-              </Typography>
-            </Grid>
-            <Grid item xs={9.5}>
-              <Typography className="full Plevel1" sx={{ py: 1, pl: 1 }}>
-                {item.comment}
-              </Typography>
-            </Grid>
-            {/* BUTTONBOX */}
-            {item.w_id === user.userID && (
-              <Grid item xs={1}>
-                <IconButton onClick={() => onDelete(item._id)} sx={{ p: 0 }}>
-                  <HighlightOff color="error" />
-                </IconButton>
+  const commentRender = (prop) => {
+    console.log("🚀 ~ file: ItemComment.js:76 ~ ItemComment ~ prop", prop);
+    return (
+      <Paper
+        elevation={0}
+        sx={{
+          width: "100%",
+          maxHeight: 250,
+          overflow: "auto",
+          bgcolor: "inherit",
+        }}
+      >
+        {prop.length > 0 &&
+          prop.map((item, index) => (
+            <Grid
+              item
+              container
+              key={index}
+              sx={{ py: 0.5, alignItems: "center" }}
+            >
+              <Grid item xs={2}>
+                <Typography className="fwb" sx={{ pr: 2 }}>
+                  {item.writer}
+                </Typography>
               </Grid>
-            )}
-          </Grid>
-        ))}
-      {prop.length === 0 && <Typography></Typography>}
-    </Paper>
-  );
+              <Grid item xs={9.5}>
+                <Typography className="full jcsb Plevel1" sx={{ py: 1, pl: 1 }}>
+                  {item.comment}
+                  {(item.w_id === user.userID || user.isAdmin) && (
+                    <IconButton
+                      onClick={() => onDelete(item._id)}
+                      sx={{ py: 0 }}
+                    >
+                      <HighlightOff color="error" />
+                    </IconButton>
+                  )}
+                </Typography>
+              </Grid>
+              {/* BUTTONBOX */}
+            </Grid>
+          ))}
+        {prop.length === 0 && <Typography></Typography>}
+      </Paper>
+    );
+  };
 
   return (
     <Grid

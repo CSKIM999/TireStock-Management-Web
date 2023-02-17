@@ -48,12 +48,21 @@ export const registerUser = createAsyncThunk(
     const request = await Axios.post("/api/users/register", payload.body, {
       withCredentials: true,
     });
-    console.log(request);
     if (!request.data.success)
       return rejectWithValue(request.data.err.keyValue);
     return { success: true };
   }
 );
+export const auth = createAsyncThunk("ASYNC_AUTH", async (payload) => {
+  const nativeToken = payload.nativeToken;
+  const token = !nativeToken ? "" : nativeToken;
+  const request = await Axios.get("/api/users/auth", {
+    params: { token: token },
+    withCredentials: true,
+  });
+  if (request.error) return { success: false };
+  return { success: true, ...request };
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -65,7 +74,6 @@ const userSlice = createSlice({
     //     withCredentials: true,
     //   });
     // },
-
     // loginUser: async (state, action) => {
     //   console.log("dispatch Success ...", action.payload.body);
     //   const request = await Axios.post(
@@ -80,7 +88,6 @@ const userSlice = createSlice({
     //   console.log("REQ >> ", request);
     //   // return { ...testObject };
     // },
-
     // logoutUser: (state, action) => {
     //   Axios.get("/api/users/logout", {
     //     params: { token: action.token },
@@ -94,23 +101,14 @@ const userSlice = createSlice({
     //   });
     //   return { ...initialState };
     // },
-    testUser: (state, action) => {
-      Axios.post("/api/users/login", action.payload.body, {
-        withCredentials: true,
-      }).then((response) => {
-        console.log("testResponse", response);
-      });
-    },
-    auth: (state, action) => {
-      const nativeToken = action.payload.nativeToken;
-      const token = !nativeToken ? "" : nativeToken;
-      const request = Axios.get("/api/users/auth", {
-        params: { token: token },
-        withCredentials: true,
-      }).then((response) => response.data);
-
-      console.log(request);
-    },
+    // auth: (state, action) => {
+    //   const nativeToken = action.payload.nativeToken;
+    //   const token = !nativeToken ? "" : nativeToken;
+    //   const request = Axios.get("/api/users/auth", {
+    //     params: { token: token },
+    //     withCredentials: true,
+    //   }).then((response) => response.data);
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -142,9 +140,14 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         console.log("console in addCase", action);
+      })
+      .addCase(auth.fulfilled, (action) => {
+        //   action
+        // );
+        return { ...action };
       });
   },
 });
 
-export const { testUser, auth } = userSlice.actions;
+// export const { auth } = userSlice.actions;
 export default userSlice;

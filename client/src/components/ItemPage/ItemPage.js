@@ -107,15 +107,6 @@ function ItemPage(props) {
       <Paper className="full itemBoard-Paper">
         <ItemBoard renderData={SearchedItem} />
       </Paper>
-      <Button
-        onClick={() => {
-          dispatch(
-            loginUser({ body: { email: "test@te.st", password: "1234" } })
-          );
-        }}
-      >
-        CHECK
-      </Button>
     </Grid>
   );
 }

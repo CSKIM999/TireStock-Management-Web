@@ -27,6 +27,9 @@ export const globalTheme = createTheme({
           ".pb2": {
             paddingBottom: "1rem",
           },
+          ".pt2": {
+            paddingTop: "1rem",
+          },
           ".ls4": {
             letterSpacing: 4,
           },
@@ -46,12 +49,25 @@ export const globalTheme = createTheme({
             display: "flex",
             alignItems: "center",
           },
+          ".jcsb": {
+            display: "flex",
+            justifyContent: "space-between",
+          },
           ".bp1": {
             border: "1px solid" + pointColor,
             borderRadius: 5,
           },
           ".fwb": {
             fontWeight: "bold",
+          },
+          ".divPy1": {
+            paddingTop: "0.5rem",
+            marginBottom: "0.5rem",
+          },
+          ".optionSet-root": {
+            padding: "0.5rem",
+            borderRadius: "0.5rem",
+            backgroundColor: bgColor + "77",
           },
         },
       },
@@ -87,6 +103,12 @@ export const globalTheme = createTheme({
           "&.arrow-Button": {
             color: ftColor.main,
           },
+          "&.sidebar-Accordion": {
+            justifyContent: "space-between",
+          },
+          "&.sidebar-Accordion .MuiAccordionSummary-content": {
+            flexGrow: 0,
+          },
           // pointerEvents: "none",
         },
       },
@@ -121,8 +143,11 @@ export const globalTheme = createTheme({
             color: thirdColor,
           },
           "&.navSelected-Button": {
-            backgroundColor: pointColor + "DD!important",
+            backgroundColor: pointColor + "!important",
             color: bgColor,
+          },
+          "&.Mui-selected": {
+            fontWeight: "bold",
           },
         },
       },
@@ -171,6 +196,10 @@ export const globalTheme = createTheme({
             backgroundColor: pointColor,
             borderRadius: "10px",
           },
+          ".Mui-selected": {
+            fontSize: "1.1rem",
+            transition: "font-size 100ms",
+          },
         },
       },
     },
@@ -182,6 +211,10 @@ export const globalTheme = createTheme({
             height: "100%",
           },
           "&.preview": { backgroundColor: pointColor + "11" },
+          "&.preview a:hover": {
+            transform: "scale(1.03)",
+            transition: "transform 100ms",
+          },
           "&.itemBoard-Paper": {
             backgroundColor: pointColor + "11",
             borderRadius: 0,

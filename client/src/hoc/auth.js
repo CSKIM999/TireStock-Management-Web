@@ -20,18 +20,20 @@ export default function AUTH(SpecificComponent, option, adminRoute = null) {
     const dispatch = useDispatch();
     useEffect(() => {
       dispatch(auth(isNative)).then((response) => {
-        if (!response.payload.isAuth) {
+        const payload = response.payload.data;
+        console.log("🚀 ~ file: auth.js:24 ~ dispatch ~ payload", payload);
+        if (!payload.isAuth) {
           if (option) {
             navigate("/");
-            alert("잘못 된 접근입니다");
+            alert("🙅‍♂️로그인 먼저 해주세요🙏");
           }
         } else {
-          if (adminRoute && !response.payload.isAdmin) {
+          if (adminRoute && !payload.isAdmin) {
             navigate("/");
             alert("관리자 권한이 필요합니다");
           } else {
             if (option === false) {
-              navigate("/front");
+              navigate("/");
               alert("이미 로그인되어있습니다");
             }
           }

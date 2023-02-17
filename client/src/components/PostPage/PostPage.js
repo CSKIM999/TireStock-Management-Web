@@ -131,12 +131,14 @@ function PostPage({ adjust }) {
       });
     }
   }
+
   const setFormHandler = async (fieldName, value) => {
     setForm((prevForm) => {
       prevForm.append(`${fieldName}`, value);
       return prevForm;
     });
   };
+
   const appendAll = async (body) => {
     console.log("🚀 ~ file: PostPage.js:136 ~ appendAll ~ body", body);
 
@@ -164,9 +166,6 @@ function PostPage({ adjust }) {
         }
       }
     }
-  };
-  const TEST = async () => {
-    console.log(PO_props);
   };
 
   const handleImages = (index) => {
@@ -291,11 +290,8 @@ function PostPage({ adjust }) {
         <Button size="large" variant="outlined">
           CANCEL
         </Button>
-        <Button size="large" onClick={() => handleSubmit()} variant="outlined">
+        <Button size="large" onClick={() => handleSubmit()} variant="contained">
           REGIST
-        </Button>
-        <Button size="large" onClick={() => TEST()} variant="outlined">
-          IMAGE
         </Button>
       </Stack>
     </Grid>

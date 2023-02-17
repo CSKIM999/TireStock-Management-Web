@@ -11,9 +11,16 @@ import ServicePage from "./components/ServicePage/ServicePage";
 import FAQPage from "./components/FAQPage/FAQPage";
 import ItemDetailPage from "./components/DetailPage/ItemDetailPage";
 import PostPage from "./components/PostPage/PostPage";
+import Auth from "./hoc/auth";
 
 function App() {
   const BODY_SX = { width: "80vw", minWidth: "1000px", maxWidth: "1600px" };
+  // option : null/아무나 true/로그인한 자 false/로그인하지 않은 자
+  const AuthLandingPage = Auth(LandingPage, null);
+  const AuthItemPage = Auth(ItemPage, null);
+  const AuthItemDetailPage = Auth(ItemDetailPage, null);
+  const AuthPostPage = Auth(PostPage, true);
+  const AuthFAQPage = Auth(FAQPage, null);
   return (
     // github-page 에서 deploy 할 경우 browserRouter 은 작동하지 않을 수 있음.
     // BrouserRouter => HashRouter 로 대체가능.
@@ -32,31 +39,32 @@ function App() {
           </Grid>
           <Grid item className="mainContents" sx={BODY_SX}>
             <Routes>
-              <Route path="/" element={<LandingPage reset={false} />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/service" element={<ServicePage />} />
-              <Route path="/tires/:type" element={<ItemPage item="tires" />} />
+              <Route path="/" element={<AuthLandingPage reset={false} />} />
+              <Route
+                path="/tires/:type"
+                element={<AuthItemPage item="tires" />}
+              />
               <Route
                 path="/wheels/:type"
-                element={<ItemPage item="wheels" />}
+                element={<AuthItemPage item="wheels" />}
               />
               <Route
                 path="/:item/:type/:id"
-                element={<ItemDetailPage type="item" />}
+                element={<AuthItemDetailPage type="item" />}
               />
-              <Route path="/requests" element={<FAQPage />} />
+              <Route path="/requests" element={<AuthFAQPage />} />
               <Route
                 path="/requests/:id"
-                element={<ItemDetailPage type="request" />}
+                element={<AuthItemDetailPage type="request" />}
               />
-              <Route path="/posts/:item/" element={<PostPage />} />
+              <Route path="/posts/:item/" element={<AuthPostPage />} />
               <Route
                 path="/posts/:item/:id"
-                element={<PostPage adjust={true} />}
+                element={<AuthPostPage adjust={true} />}
               />
 
               {/* 잘못된 접근 시 reset 을 통해서 redux 상태 초기화여부 */}
-              <Route path="*" element={<LandingPage reset={true} />} />
+              <Route path="*" element={<AuthLandingPage reset={true} />} />
             </Routes>
           </Grid>
         </Grid>

@@ -43,8 +43,6 @@ function SideBar() {
   const type = ["new", "used"];
   const sideItems = ["tires", "wheels"];
 
-  const AccordionSX = { boxShadow: "none", m: 0, width: "100%" };
-
   const accordionProps = (prop) => {
     return (
       <React.Fragment>
@@ -76,12 +74,13 @@ function SideBar() {
       <ListItem disablePadding>
         <Accordion
           onChange={handleChange(item)}
+          className="full"
           disableGutters
           expanded={expanded === item}
-          sx={AccordionSX}
+          sx={{ boxShadow: "none" }}
         >
           <AccordionSummary
-            className="nav-Button"
+            className="nav-Button sidebar-Accordion"
             expandIcon={<ArrowUpward sx={{ color: "text.primary" }} />}
           >
             {item.toUpperCase()}
@@ -89,7 +88,7 @@ function SideBar() {
           {accordionProps(item)}
         </Accordion>
       </ListItem>
-      <Divider />
+      <Divider className="divPy1" />
     </React.Fragment>
   ));
   return (
@@ -102,11 +101,10 @@ function SideBar() {
         minWidth: 120,
       }}
     >
-      <Divider />
       <ListItemButton className="nav-Button" href="/">
         HOME
       </ListItemButton>
-      <Divider />
+      <Divider className="divPy1" />
       {accordionItem}
       <ListItemButton
         href="/requests"

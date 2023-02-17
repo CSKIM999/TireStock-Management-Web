@@ -46,7 +46,13 @@ const LoginModule = (CloseMenu) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (admin = null) => {
+    if (admin) {
+      dispatch(loginUser({ body: { email: "test@te.st", password: "1234" } }));
+      setDialog(false);
+      CloseMenu();
+      return;
+    }
     IsValid(Email);
     if (isEmail(Email)) {
       console.log(Email, Password);
@@ -55,8 +61,8 @@ const LoginModule = (CloseMenu) => {
         password: Password,
       };
       dispatch(loginUser({ body }));
-      CloseMenu();
       setDialog(false);
+      CloseMenu();
     } else {
     }
   };
@@ -101,6 +107,13 @@ const LoginModule = (CloseMenu) => {
           <Stack direction="row-reverse">
             <Button onClick={handleSubmit}>로그인</Button>
             <Button onClick={handleDialog}>취소</Button>
+            <Button
+              onClick={() => {
+                handleSubmit(true);
+              }}
+            >
+              Admin
+            </Button>
           </Stack>
         </Stack>
       </Dialog>

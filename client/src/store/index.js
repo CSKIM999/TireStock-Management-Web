@@ -21,7 +21,7 @@ const persistConfig = {
   key: "root",
   storage: storageSession,
   // persist 를 통해 유지하고자 하는 값을 배열로 전달. 반대로 blacklist 도 존재
-  whitelist: ["user"],
+  whitelist: ["user", "data"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -31,7 +31,15 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          "ASYNC_AUTH/fulfilled",
+        ],
       },
     }),
 });

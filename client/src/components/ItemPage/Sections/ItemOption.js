@@ -23,13 +23,13 @@ function ItemOption(props) {
   return (
     <Box
       width="100%"
-      className="optionSet"
       sx={{ display: "flex", flexDirection: "column", height: "100%" }}
     >
       <Typography className="fwb" sx={{ pl: 1, pb: 1 }}>
         {prop.title} »
       </Typography>
       <Tabs
+        className="optionSet-root"
         orientation="vertical"
         variant="scrollable"
         value={value}
