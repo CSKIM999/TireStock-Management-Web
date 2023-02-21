@@ -21,7 +21,6 @@ export default function AUTH(SpecificComponent, option, adminRoute = null) {
     useEffect(() => {
       dispatch(auth(isNative)).then((response) => {
         const payload = response.payload.data;
-        console.log("🚀 ~ file: auth.js:24 ~ dispatch ~ payload", payload);
         if (!payload.isAuth) {
           if (option) {
             navigate("/");

@@ -93,6 +93,7 @@ router.get("/items", (req, res) => {
         width: { $addToSet: "$width" },
         size: { $addToSet: "$size" },
         profile: { $addToSet: "$profile" },
+        brand: { $addToSet: "$brand" },
         condition: { $addToSet: "$condition" },
       },
     },

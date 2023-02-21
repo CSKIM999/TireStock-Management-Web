@@ -84,7 +84,11 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
                 MenuProps={{ style: { maxHeight: "300px" } }}
               >
                 {values[index].map((v_item, v_index) => (
-                  <MenuItem value={v_item} key={v_item + v_index}>
+                  <MenuItem
+                    sx={{ justifyContent: "center" }}
+                    value={v_item}
+                    key={v_item + v_index}
+                  >
                     {v_item}
                   </MenuItem>
                 ))}

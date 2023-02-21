@@ -83,10 +83,7 @@ router.get("/items", (req, res) => {
     {
       $group: {
         _id: null,
-        width: { $addToSet: "$width" },
         size: { $addToSet: "$size" },
-        profile: { $addToSet: "$profile" },
-        condition: { $addToSet: "$condition" },
       },
     },
   ]).exec((err, body) => {

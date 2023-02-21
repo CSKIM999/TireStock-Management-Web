@@ -3,15 +3,14 @@ import * as Axios from "axios";
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
 import OptionBoard from "./Sections/OptionBoard";
 import ItemBoard from "./Sections/ItemBoard";
-import itemOptionTable from "../modules/itemOptionTable";
+import itemOptionTable, { getItems } from "../modules/itemOptionTable";
 import BreadCrumb from "../modules/BreadCrumb";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/userSlice";
-const tireKeys = Object.keys(itemOptionTable.tire);
-const wheelKeys = Object.keys(itemOptionTable.wheel);
 function ItemPage(props) {
   // tdz
+
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [SearchedItem, setSearchedItem] = React.useState([]);
@@ -20,11 +19,14 @@ function ItemPage(props) {
       ? new Array(5).fill("전체")
       : new Array(3).fill("전체")
   );
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   let { type } = useParams();
+  let objectKeys;
+  const tireKeys = Object.keys(itemOptionTable.tire);
+  const wheelKeys = Object.keys(itemOptionTable.wheel);
 
   React.useEffect(() => {
     let optionalItems = [];
-    let optionalURL = "/?";
     const size = ["size", searchParams.get("size")];
     const profile = ["profile", searchParams.get("profile")];
     const width = ["width", searchParams.get("width")];
@@ -37,11 +39,12 @@ function ItemPage(props) {
           if (v) {
             const table = itemOptionTable.tire[item].detail;
             const index = tireKeys.indexOf(item);
+            // const index = objectKeys.indexOf(item);
             let value;
             if (table.includes(+v)) {
               value = table.findIndex((e) => e === +v) + 1;
             } else {
-              value = table.findIndex((e) => e >= v) + 1;
+              value = table.findIndex((e) => e >= +v) + 1;
               flag = true;
             }
             optionalItems.push([index, value]);
@@ -49,6 +52,19 @@ function ItemPage(props) {
         }
       } else {
         // Wheel 의 경우도 체크해야함.
+        if (size[1]) {
+          const table = itemOptionTable.wheel.size.detail;
+          const index = 2;
+          // const index = objectKeys.indexOf(item);
+          let value;
+          if (table.includes(+size[1])) {
+            value = table.findIndex((e) => e === +size[1]) + 1;
+          } else {
+            value = table.findIndex((e) => e >= +size[1]) + 1;
+            flag = true;
+          }
+          optionalItems.push([index, value]);
+        }
       }
       let newValue = [...OptionValue];
       for (const [i, v] of optionalItems) {
@@ -72,9 +88,11 @@ function ItemPage(props) {
       if (item !== "전체") {
         if (keyword === "tires") {
           const option = tireKeys[index];
+          // const option = objectKeys[index];
           const value = table.tire[option].detail[item - 1];
           query += `&${option}=${value}`;
         } else {
+          // const option = objectKeys[index];
           const option = wheelKeys[index];
           const value =
             item === 2 ? table.wheel[option].detail[item - 1] : item;
@@ -101,7 +119,16 @@ function ItemPage(props) {
   return (
     <Grid container direction="column" sx={{ px: 10, py: 5 }}>
       <Grid item xs={2}>
-        {BreadCrumb(props.item, type)}
+        <Box className="jcsb aic">
+          {BreadCrumb(props.item, type)}
+          {isAdmin ? (
+            <Button variant="outlined" href={`/posts/${props.item}`}>
+              재고등록
+            </Button>
+          ) : (
+            <></>
+          )}
+        </Box>
         {OptionBoard(props.item, handleOption, OptionValue)}
       </Grid>
       <Paper className="full itemBoard-Paper">

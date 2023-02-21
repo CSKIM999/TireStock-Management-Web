@@ -1,24 +1,39 @@
-const itemOptionTable = {
+import * as Axios from "axios";
+Axios.get(`/api/tires/items`).then((response) => {
+  delete response.data.data[0]._id;
+  const data = response.data.data[0];
+  Object.keys(data).forEach((item) => {
+    itemOptionTable.tire[item].detail = data[item].sort();
+  });
+});
+Axios.get(`/api/wheels/items`).then((response) => {
+  delete response.data.data[0]._id;
+  const data = response.data.data[0];
+  Object.keys(data).forEach((item) => {
+    itemOptionTable.wheel[item].detail = data[item].sort();
+  });
+});
+let itemOptionTable = {
   tire: {
     width: {
       title: "단면폭",
-      detail: Array.from({ length: 15 }, (_, i) => 155 + i * 10),
+      detail: [],
     },
     profile: {
       title: "편평비",
-      detail: Array.from({ length: 11 }, (_, i) => 30 + i * 5),
+      detail: [],
     },
     size: {
       title: "인치",
-      detail: Array.from({ length: 11 }, (_, i) => 13 + i * 1),
+      detail: [],
     },
     brand: {
       title: "브랜드",
-      detail: ["금호", "한국", "미쉐린", "컨티넨탈", "피렐리"],
+      detail: [],
     },
     condition: {
       title: "컨디션",
-      detail: Array.from({ length: 10 }, (_, i) => 100 - i * 5),
+      detail: [],
     },
   },
   wheel: {
@@ -32,8 +47,9 @@ const itemOptionTable = {
     },
     size: {
       title: "인치",
-      detail: Array.from({ length: 11 }, (_, i) => 13 + i * 1),
+      detail: [],
     },
   },
 };
+
 export default itemOptionTable;

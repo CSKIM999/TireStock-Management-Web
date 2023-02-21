@@ -108,16 +108,7 @@ const Upload = (props) => {
         >
           <Dropzone onDrop={UploadHandler}>
             {({ getRootProps, getInputProps }) => (
-              <Box
-                display="flex"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                {...getRootProps()}
-              >
+              <Box display="flex" className="full center" {...getRootProps()}>
                 <input {...getInputProps()} />
                 <CloudUploadOutlined sx={{ fontSize: "4em" }} />
               </Box>

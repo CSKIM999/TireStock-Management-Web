@@ -49,6 +49,11 @@ export const globalTheme = createTheme({
             display: "flex",
             alignItems: "center",
           },
+          ".center": {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
           ".jcsb": {
             display: "flex",
             justifyContent: "space-between",
@@ -82,6 +87,20 @@ export const globalTheme = createTheme({
           "&.useAccountMenu .MuiList-root": {
             padding: 5,
             backgroundColor: thirdColor,
+          },
+          "& ::-webkit-scrollbar": {
+            width: "0.5rem",
+          },
+          "& ::-webkit-scrollbar-track": {
+            backgroundColor: pointColor + "44",
+            borderRadius: "10px",
+            marginLeft: "2rem",
+            marginTop: ".5rem",
+            marginBottom: ".5rem",
+          },
+          "& ::-webkit-scrollbar-thumb": {
+            backgroundColor: pointColor,
+            borderRadius: "10px",
           },
         },
       },
@@ -188,8 +207,7 @@ export const globalTheme = createTheme({
             width: "0.4rem",
           },
           "& ::-webkit-scrollbar-track": {
-            // backgroundColor: pointColor,
-            backgroundColor: "#FF82264d",
+            backgroundColor: pointColor + "44",
             borderRadius: "10px",
           },
           "& ::-webkit-scrollbar-thumb": {
@@ -218,18 +236,6 @@ export const globalTheme = createTheme({
           "&.itemBoard-Paper": {
             backgroundColor: pointColor + "11",
             borderRadius: 0,
-          },
-          "& ::-webkit-scrollbar": {
-            width: "0.4rem",
-          },
-          "& ::-webkit-scrollbar-track": {
-            // backgroundColor: pointColor,
-            backgroundColor: pointColor + "33",
-            borderRadius: "10px",
-          },
-          "& ::-webkit-scrollbar-thumb": {
-            backgroundColor: pointColor + "DD",
-            borderRadius: "10px",
           },
           ".success fieldset": {
             border: "2px solid",
@@ -268,6 +274,17 @@ export const globalTheme = createTheme({
           "&.itemDetail-Paper": {
             backgroundColor: pointColor + "11",
             borderRadius: 10,
+          },
+          "& ::-webkit-scrollbar": {
+            width: "0.6rem",
+          },
+          "& ::-webkit-scrollbar-track": {
+            backgroundColor: pointColor + "44",
+            borderRadius: "10px",
+          },
+          "& ::-webkit-scrollbar-thumb": {
+            backgroundColor: pointColor,
+            borderRadius: "10px",
           },
         },
       },
