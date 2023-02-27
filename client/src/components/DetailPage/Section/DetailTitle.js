@@ -22,13 +22,13 @@ const ItemDetailTitle = (props) => {
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const navigate = useNavigate();
   const handleState = (e) => {
-    if (!window.confirm("작업상황을 변경하시겠습니까?")) return;
+    if (!window.confirm("상태를 변경하시겠습니까?")) return;
     // TODO >> axios.put REQUEST 로 현재 게시글 state 변경
     if (AxiosState(e.target.value)) {
       alert("정상적으로 변경되었습니다");
       return setState(e.target.value);
     }
-    return alert("오류로 인해 작업상황이 변경되지 않았습니다");
+    return alert("오류로 인해 상태가 변경되지 않았습니다");
   };
   async function AxiosState(value) {
     const body = {
@@ -61,6 +61,33 @@ const ItemDetailTitle = (props) => {
       );
     return <Box></Box>;
   };
+
+  const RadioGroupRender = () => {
+    if (isAdmin && ["notice", "FAQ"].includes(props.state))
+      return (
+        <>
+          <FormControlLabel
+            value="notice"
+            control={<Radio />}
+            label="공지사항"
+          />
+          <FormControlLabel value="FAQ" control={<Radio />} label="FAQ" />
+        </>
+      );
+    else
+      return (
+        <>
+          <FormControlLabel
+            value="fulfilled"
+            control={<Radio />}
+            label="대기"
+          />
+          <FormControlLabel value="pending" control={<Radio />} label="완료" />
+          <FormControlLabel value="rejected" control={<Radio />} label="실패" />
+        </>
+      );
+  };
+
   return (
     <Stack direction="row" justifyContent="space-between">
       <Box>
@@ -70,21 +97,7 @@ const ItemDetailTitle = (props) => {
         {isAdmin && (
           <FormControl>
             <RadioGroup row value={state} onChange={handleState}>
-              <FormControlLabel
-                value="fulfilled"
-                control={<Radio />}
-                label="대기"
-              />
-              <FormControlLabel
-                value="pending"
-                control={<Radio />}
-                label="완료"
-              />
-              <FormControlLabel
-                value="rejected"
-                control={<Radio />}
-                label="실패"
-              />
+              <RadioGroupRender />
             </RadioGroup>
           </FormControl>
         )}

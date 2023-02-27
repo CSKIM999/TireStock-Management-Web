@@ -107,7 +107,11 @@ function ItemDetailPage(props) {
             <ImageSlider images={Body.data.image} />
             {/* Detail Section */}
             <Grid item xs={12} md={6.5} minWidth={500}>
-              <ItemDetailBody prop={Body.data} captureComment={AxiosBody} />
+              <ItemDetailBody
+                state={Body.state}
+                prop={Body.data}
+                captureComment={AxiosBody}
+              />
             </Grid>
           </Grid>
           <Divider />

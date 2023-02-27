@@ -29,6 +29,10 @@ function PreviewItems(item, type) {
     });
   }, []);
   const convertToCard = (props) => {
+    console.log(
+      "🚀 ~ file: PreviewItems.js:32 ~ convertToCard ~ props:",
+      props
+    );
     const size = props.size;
     const thumbNail = props.thumbNail;
     const type = props.type;

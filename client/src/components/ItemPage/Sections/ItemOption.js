@@ -1,9 +1,16 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
+import GuidePopover from "../../PostPage/modules/GuidePopover";
+const guide = ["단면폭", "편평비", "인치"];
+const guideImage = {
+  단면폭: process.env.REACT_APP_GUIDE_WIDTH,
+  편평비: process.env.REACT_APP_GUIDE_PROFILE,
+  인치: process.env.REACT_APP_GUIDE_SIZE,
+};
 function ItemOption(props) {
   const indicatorProp = {
     sx: {
-      bgcolor: "white",
+      bgcolor: "text.secondary",
       width: "90%",
       borderRadius: "0.5rem",
       mx: 1,
@@ -21,12 +28,12 @@ function ItemOption(props) {
     }
   };
   return (
-    <Box
-      width="100%"
-      sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-    >
-      <Typography className="fwb" sx={{ pl: 1, pb: 1 }}>
-        {prop.title} »
+    <Box className="full" sx={{ display: "flex", flexDirection: "column" }}>
+      <Typography className="fwb aic" sx={{ pl: 1, pb: 1 }}>
+        {prop.title}{" "}
+        {guide.includes(prop.title) && (
+          <GuidePopover imageURL={guideImage[prop.title]} />
+        )}
       </Typography>
       <Tabs
         className="optionSet-root"

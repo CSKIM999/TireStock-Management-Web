@@ -16,7 +16,7 @@ import BreadCrumb from "../modules/BreadCrumb";
 import FAQItem from "./util/FAQItem";
 import RequestSection from "./Section/RequestSection";
 import { useSelector } from "react-redux";
-const TabLabels = ["문의사항", "내 문의", "공지사항"];
+const TabLabels = ["문의사항", "내 문의", "FAQ"];
 function FAQPage() {
   const [tabIndex, setTabIndex] = React.useState(0);
   const [page, setPage] = React.useState(1);
@@ -68,12 +68,11 @@ function FAQPage() {
       }
     } else if (tabIndex === 2) {
       optionURL = documentsCount[tabIndex]
-        ? `/?page=${page}&state="notice"`
-        : `/?state="notice"`;
+        ? `/?page=${page}&state="FAQ"`
+        : `/?state=FAQ`;
     } else {
       optionURL = documentsCount[tabIndex] ? `/?page=${page}` : "";
     }
-
     AxiosWithURL(optionURL);
   }, [page, tabIndex]);
   // React.useEffect(() => {
@@ -84,7 +83,7 @@ function FAQPage() {
 
   return (
     <Grid container sx={{ px: 10, py: 5 }} height="100%" direction="column">
-      {BreadCrumb("repair & faq")}
+      {BreadCrumb("request & faq")}
       <Grid item xs={1}>
         <Paper className="navFAQ-Paper">
           <Tabs

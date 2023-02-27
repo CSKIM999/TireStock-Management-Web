@@ -8,7 +8,7 @@ import { Button, Grid, Paper, Stack, Typography } from "@mui/material";
  */
 
 const DetailDescribe = (title, caption, body) => {
-  const FAQButton = (
+  const RequestButton = (
     <Grid item xs={"auto"} sx={{ py: 1 }}>
       <Stack direction="row" spacing={3} alignItems="center">
         <Button variant="contained">HELLO</Button>
@@ -46,11 +46,12 @@ const DetailDescribe = (title, caption, body) => {
             height: "auto",
             overflow: "auto",
             bgcolor: "inherit",
+            whiteSpace: "pre",
           }}
         >
           <Typography>{body ? body : ""}</Typography>
         </Paper>
-        {title === "문의내용" ? "" : FAQButton}
+        {title === "Detail" ? RequestButton : ""}
       </Grid>
     </Grid>
   );

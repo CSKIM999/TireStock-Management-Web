@@ -43,12 +43,13 @@ router.post("/", upload.array("image", 5), async (req, res) => {
     getURL = await handleFiles();
     fsExtra.emptyDir(directoryPath);
   }
-  const Body = {
+  let Body = {
     writer: req.body.writer,
     title: req.body.title,
     detail: req.body.detail,
     image: getURL,
   };
+  if (req.body.state) Body.state = req.body.state;
   const request = new Request(Body);
   request.save((err) => {
     if (err) return res.status(400).json({ success: false, err });
@@ -120,36 +121,50 @@ router.put("/state/:_id", (req, res) => {
   });
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   // limit & skip 에 맞는 정보들과 find 해서 가져올거니
   const page = req.query.page;
   const userID = req.query.userID;
   const state = req.query.state;
-  let limit = page ? page * 10 : 10;
-  let skip = page ? (page - 1) * 10 : 0;
-  const withOutNotice = { $nin: "notice" };
+  let limit;
+  let skip;
+  const withOutNotice = { $nin: ["notice", "FAQ"] };
+  const findOption = state
+    ? { state: "FAQ" }
+    : userID
+    ? { writer: userID, state: withOutNotice }
+    : { state: withOutNotice };
 
-  Request.find(
-    state
-      ? { state: "notice" }
-      : userID
-      ? { writer: userID, state: withOutNotice }
-      : { state: withOutNotice }
-  )
-    .skip(skip)
-    .limit(limit)
-    .exec((err, data) => {
+  Request.find({ state: "notice" })
+    .sort({ createdAt: -1 })
+    .exec((err, preData) => {
       if (err) return res.status(400).json({ success: false, err });
-      if (!page) {
-        Request.find().count((err, count) => {
-          if (!err && count)
+      state || userID ? (preData = []) : "";
+      pre = preData.length;
+      limit = page ? page * (10 - pre) : 10 - pre;
+      skip = page ? (page - 1) * (10 - pre) : 0;
+      Request.find(findOption)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .exec((err, data) => {
+          if (err) return res.status(400).json({ success: false, err });
+          if (!page) {
+            Request.find(findOption).count((err, count) => {
+              if (!err) {
+                return res.status(200).json({
+                  success: true,
+                  payload: [...preData, ...data],
+                  totalDocuments: count,
+                });
+              }
+            });
+          } else {
             return res
               .status(200)
-              .json({ success: true, payload: data, totalDocuments: count });
+              .json({ success: true, payload: [...preData, ...data] });
+          }
         });
-      } else {
-        return res.status(200).json({ success: true, payload: data });
-      }
     });
 });
 

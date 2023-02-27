@@ -37,17 +37,21 @@ router.post(
     { name: "thumbnail", maxCount: 1 },
   ]),
   async (req, res) => {
+    let getURL = [];
+    let thumbNail;
     if (req.body.imageUpload) {
       const handledFiles = await handleFiles(true);
-      getURL = handledFiles[0];
-      thumbNail = handledFiles[1];
+      getURL = handledFiles[0] ?? [];
+      thumbNail = handledFiles[1] ?? "";
       fsExtra.emptyDir(directoryPath);
     }
-    const wheel = new Wheel({
+    let wheel = new Wheel({
       ...req.body,
-      image: getURL,
-      thumbNail: thumbNail,
+      // image: getURL,
+      // thumbNail: thumbNail,
     });
+    if (getURL) wheel.image = getURL;
+    if (thumbNail) wheel.image = thumbNail;
     wheel.save((err) => {
       if (err) return res.status(400).json({ success: false, err });
       return res.status(200).json({ success: true });

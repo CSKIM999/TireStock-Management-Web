@@ -23,6 +23,8 @@ const iconSet = (state) => {
       return <Cancel color="error" />;
     case "notice":
       return <Info color="info" />;
+    case "FAQ":
+      return <Info color="info" />;
     default:
       return <BugReport color="error" />;
   }

@@ -101,7 +101,7 @@ function SideBar() {
         minWidth: 120,
       }}
     >
-      <ListItemButton className="nav-Button" href="/">
+      <ListItemButton className="nav-Button user-Button" href="/">
         HOME
       </ListItemButton>
       <Divider className="divPy1" />

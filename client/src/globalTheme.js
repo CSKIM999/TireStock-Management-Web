@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
 const bgColor = "#001C2D";
-const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#b3b3b3" }; //main-light-dark
+const ftColor = { main: "#cccccc", light: "#ffffff", dark: "#DBDAC1" }; //main-light-dark
 const thirdColor = "#DBDAC1";
 const errorColor = "#ea605d";
 const successColor = "#6fbf73";
@@ -57,6 +57,10 @@ export const globalTheme = createTheme({
           ".jcsb": {
             display: "flex",
             justifyContent: "space-between",
+          },
+          ".jcsa": {
+            display: "flex",
+            justifyContent: "space-around",
           },
           ".bp1": {
             border: "1px solid" + pointColor,
@@ -159,7 +163,7 @@ export const globalTheme = createTheme({
             color: ftColor.main + "!important",
           },
           "&.user-Button": {
-            color: thirdColor,
+            color: ftColor.main,
           },
           "&.navSelected-Button": {
             backgroundColor: pointColor + "!important",
@@ -182,7 +186,7 @@ export const globalTheme = createTheme({
             maxWidth: "1600px !important",
           },
           ".card-Grid:hover": {
-            transform: "scale(1.08)",
+            transform: "scale(1.02)",
             transition: "transform 150ms",
           },
           ".card-Grid": {
@@ -216,6 +220,7 @@ export const globalTheme = createTheme({
           },
           ".Mui-selected": {
             fontSize: "1.1rem",
+
             transition: "font-size 100ms",
           },
         },
@@ -390,7 +395,7 @@ export const globalTheme = createTheme({
     text: {
       primary: ftColor.main,
       secondary: ftColor.light,
-      dark: bgColor,
+      dark: ftColor.dark,
     },
     background: {
       default: bgColor,
@@ -403,7 +408,6 @@ export const globalTheme = createTheme({
     },
     secondary: {
       main: complementaryColor,
-      dark: "#ea605d !important",
     },
     error: {
       main: errorColor,

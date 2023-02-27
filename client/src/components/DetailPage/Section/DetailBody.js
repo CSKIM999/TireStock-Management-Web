@@ -19,10 +19,25 @@ import ItemComment from "../../modules/ItemComment";
 //  * @returns
 //  */
 const ItemDetailBody = (props) => {
-  // Deatil-Item => wheel 이라면 region, design, size 가 들어오고 tire 라면 size-3, brand, condition 이 들어옴
-  // Detail-Req => ????
   const prop = props.prop;
   const captureComment = props.captureComment;
+  let describeMain, descibeSub;
+  switch (props.state) {
+    case "notice":
+      describeMain = "공지사항";
+      descibeSub = "NOTICE";
+      break;
+    case "FAQ":
+      describeMain = "자주묻는질문";
+      descibeSub = "FAQ";
+      break;
+    default:
+      describeMain = "문의내용";
+      descibeSub = "REQUEST";
+      break;
+  }
+  if (["notice", "FAQ"].includes(props.state)) {
+  }
   return (
     <Paper elevation={0} className="full itemDetail-Paper">
       <Grid
@@ -34,7 +49,7 @@ const ItemDetailBody = (props) => {
       >
         {prop.size
           ? ProductInfo(prop)
-          : DetailDescribe("문의내용", "FAQ", prop.detail)}
+          : DetailDescribe(describeMain, descibeSub, prop.detail)}
         <Divider sx={{ py: 1, mb: 2 }} />
         {!prop.size
           ? ItemComment(prop.comment, captureComment)

@@ -44,7 +44,7 @@ function PostPage({ adjust }) {
   const POST_OR_UPDATE = adjust;
   const path = useLocation().pathname;
   const userID = useSelector((state) => state.user.userID);
-  const admin = useSelector((state) => state.user.isAdmin);
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   const { item, id } = useParams();
   const [title, setTitle] = React.useState("");
   const [contents, setContents] = React.useState("");
@@ -53,7 +53,7 @@ function PostPage({ adjust }) {
   const [loading, setLoading] = React.useState(true);
   const [initialState, setInitialState] = React.useState(null);
   const [modify, setModify] = React.useState(false);
-  const [notice, setNotice] = React.useState(admin ? false : true);
+  const [noticeOrFAQ, setNoticeOrFAQ] = React.useState(isAdmin ? true : false);
   const [PO_type, setPO_type] = React.useState("NEW");
   const [PO_props, setPO_props] = React.useState(new Array(5).fill(""));
   const navigate = useNavigate();
@@ -140,8 +140,6 @@ function PostPage({ adjust }) {
   };
 
   const appendAll = async (body) => {
-    console.log("🚀 ~ file: PostPage.js:136 ~ appendAll ~ body", body);
-
     for (const [key, value] of Object.entries(body)) {
       setFormHandler(`${key}`, value);
     }
@@ -198,7 +196,9 @@ function PostPage({ adjust }) {
 
     // 특수 data setting
     if (item === "requests") {
-      if (notice) body.state = "notice";
+      if (isAdmin && noticeOrFAQ) body.state = "notice";
+      if (isAdmin && !noticeOrFAQ) body.state = "FAQ";
+      console.log(body);
     } else {
       body["type"] = PO_type.toLowerCase();
       if (item === "tires") {
@@ -211,18 +211,9 @@ function PostPage({ adjust }) {
         });
       } else if (item === "wheels") {
         PO_props.forEach((item, index) => {
-          console.log(
-            "🚀 ~ file: PostPage.js:210 ~ PO_props.forEach ~ item",
-            item
-          );
-
           const key = PO_Mapping["WHEEL"][index];
           body[`${key}`] = item;
         });
-        console.log(
-          "🚀 ~ file: PostPage.js:219 ~ PO_props.forEach ~ PO_props",
-          PO_props
-        );
       }
       if (images.length > 0) {
         const compressedFile = await imageCompression(
@@ -236,20 +227,8 @@ function PostPage({ adjust }) {
       }
     }
 
-    // title, detail, writer 저장 <= writer 는 필요하지 않을 수 있음.
-    // for (const [key, value] of Object.entries(body)) {
-    //   setFormHandler(`${key}`, value);
-    // }
-    // 통신
-    // if (images.length > 0) setFormHandler("imageUpload", true);
     if (!POST_OR_UPDATE) {
-      // POST
-      // if (images.length > 0)
-      //   images.forEach((image) => {
-      //     setFormHandler("image", image);
-      //   });
       await appendAll(body);
-
       Axios.post(`/api/${item}/`, form, {
         headers: {
           "Content-type": `multipart/form-data`,
@@ -304,7 +283,7 @@ function PostPage({ adjust }) {
       sx={{
         px: 10,
         pt: 5,
-        height: "70%",
+        height: `${isAdmin && item !== "requests" ? "90%" : "70%"}`,
         minHeight: "28rem",
         maxHeight: "60rem",
         flexWrap: "nowrap",
@@ -314,7 +293,7 @@ function PostPage({ adjust }) {
         {BreadCrumb("POSTING")}
       </Grid>
 
-      {admin && (item === "tires" || item === "wheels") && (
+      {isAdmin && (item === "tires" || item === "wheels") && (
         <ProductOption
           PO_item={item}
           PO_type={[PO_type, setPO_type]}
@@ -353,15 +332,17 @@ function PostPage({ adjust }) {
                   }}
                   value={title}
                   endAdornment={
-                    admin &&
+                    isAdmin &&
                     item === "requests" && (
                       <FormControlLabel
-                        value={notice}
+                        value={noticeOrFAQ}
                         sx={{ whiteSpace: "nowrap" }}
                         control={
-                          <Checkbox onChange={() => setNotice(!notice)} />
+                          <Checkbox
+                            onChange={() => setNoticeOrFAQ(!noticeOrFAQ)}
+                          />
                         }
-                        label="공지여부"
+                        label={`${noticeOrFAQ ? "공지" : "FAQ"}`}
                         labelPlacement="end"
                       />
                     )

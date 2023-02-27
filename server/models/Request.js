@@ -13,8 +13,6 @@ const requestSchema = Schema(
     writer: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      // type: String,
-      // required: true,
     },
     title: {
       type: String,
@@ -26,6 +24,7 @@ const requestSchema = Schema(
     state: {
       type: String,
       default: "fulfilled",
+      required: true,
     },
     detail: {
       type: String,

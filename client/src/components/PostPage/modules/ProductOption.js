@@ -38,7 +38,6 @@ const mapping = {
 function ProductOption({ PO_item, PO_type, PO_props }) {
   // TODO ... 만약 mapping 값에 없는 값이 입력되고, submit 되는 경우 입력된 값이 새로 추가하려는게 맞는지
   // 확인절차 추가 필요.
-
   const Item = PO_item.toUpperCase();
   const [Type, setType] = PO_type;
   const [Props, setProps] = PO_props;
@@ -56,10 +55,7 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
     const keys = Object.keys(mapping[props]);
     const values = Object.values(mapping[props]);
     return (
-      <Stack
-        direction="row"
-        sx={{ justifyContent: "space-around", alignItems: "center", ...FullWH }}
-      >
+      <Stack direction="row" className="aic jcsa full">
         {keys.map((item, index) => {
           // eslint-disable-next-line array-callback-return
           if (item === "condition" && Type !== "USED") return;
@@ -117,8 +113,8 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
   };
   return (
     <Grid item xs="auto" sx={{ height: "250px", py: 2 }}>
-      <Paper sx={{ ...FullWH }}>
-        <Grid container sx={FullWH}>
+      <Paper className="full">
+        <Grid container className="full">
           <Grid
             item
             xs={2}
@@ -128,20 +124,6 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
               alignItems: "center",
             }}
           >
-            {/* <Box>
-              <RadioGroup value={Item} onChange={handleItemChange}>
-                <FormControlLabel
-                  value="TIRE"
-                  control={<Radio />}
-                  label="타이어"
-                />
-                <FormControlLabel
-                  value="WHEEL"
-                  control={<Radio />}
-                  label="휠"
-                />
-              </RadioGroup>
-            </Box> */}
             <Box>
               <RadioGroup value={Type} onChange={handleTypeChange}>
                 <FormControlLabel

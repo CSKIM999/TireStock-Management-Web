@@ -38,6 +38,7 @@ const ItemComment = (props, captureComment) => {
   };
 
   const onDelete = (_id) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
     Axios.delete(`/api/requests/${RequestId}/${_id}`).then(() => {
       captureComment();
     });
@@ -75,7 +76,6 @@ const ItemComment = (props, captureComment) => {
   );
 
   const commentRender = (prop) => {
-    console.log("🚀 ~ file: ItemComment.js:76 ~ ItemComment ~ prop", prop);
     return (
       <Paper
         elevation={0}
@@ -112,7 +112,6 @@ const ItemComment = (props, captureComment) => {
                   )}
                 </Typography>
               </Grid>
-              {/* BUTTONBOX */}
             </Grid>
           ))}
         {prop.length === 0 && <Typography></Typography>}
