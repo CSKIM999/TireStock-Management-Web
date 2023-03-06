@@ -16,9 +16,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ImageSlider from "./Section/ImageSlider";
 
-const itemBoxSX = "1px solid black";
-
 const handleItem = (item, response) => {
+  console.log(
+    "🚀 ~ file: ItemDetailPage.js:20 ~ handleItem ~ response:",
+    response
+  );
   let temp = {
     title: "",
     type: "",
@@ -34,7 +36,8 @@ const handleItem = (item, response) => {
     temp.data.size = response.size ? response.size : "";
     temp.data.design = response.design ? response.design : "";
   } else if (item === "requests") {
-    temp.data.userID = response.writer._id;
+    temp.data.nickname = response.writer.nickname;
+    temp.data.writerRole = response.writer.role;
     temp.data.comment = response.comment;
     temp.state = response.state;
   }
@@ -92,11 +95,12 @@ function ItemDetailPage(props) {
       <Box sx={{ px: 10, pt: 5, height: "100%" }}>
         <Grid container flexWrap="nowrap" direction="column" height="100%">
           <Grid item xs={1}>
-            {BreadCrumb(item, Body.type)}
+            {BreadCrumb(item, Body.type ?? Body.state)}
             <ItemDetailTitle
               title={Body.title}
               item={item}
               state={Body.state}
+              data={Body.data}
               ControlFlag={ControlFlag}
             />
           </Grid>

@@ -1,13 +1,14 @@
 import React from "react";
 import * as Axios from "axios";
-import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper } from "@mui/material";
 import OptionBoard from "./Sections/OptionBoard";
 import ItemBoard from "./Sections/ItemBoard";
-import itemOptionTable, { getItems } from "../modules/itemOptionTable";
+import itemOptionTable from "../modules/itemOptionTable";
 import BreadCrumb from "../modules/BreadCrumb";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../store/userSlice";
+import { setLoadging } from "../../store/dataSlice";
+
 function ItemPage(props) {
   // tdz
 
@@ -20,10 +21,13 @@ function ItemPage(props) {
       : new Array(3).fill("전체")
   );
   const isAdmin = useSelector((state) => state.user.isAdmin);
+  const loading = useSelector((state) => state.user.Loading);
   let { type } = useParams();
-  let objectKeys;
   const tireKeys = Object.keys(itemOptionTable.tire);
   const wheelKeys = Object.keys(itemOptionTable.wheel);
+  const dispatchLoading = (bool) => {
+    dispatch(setLoadging(bool));
+  };
 
   React.useEffect(() => {
     let optionalItems = [];
@@ -39,7 +43,6 @@ function ItemPage(props) {
           if (v) {
             const table = itemOptionTable.tire[item].detail;
             const index = tireKeys.indexOf(item);
-            // const index = objectKeys.indexOf(item);
             let value;
             if (table.includes(+v)) {
               value = table.findIndex((e) => e === +v) + 1;
@@ -55,7 +58,6 @@ function ItemPage(props) {
         if (size[1]) {
           const table = itemOptionTable.wheel.size.detail;
           const index = 2;
-          // const index = objectKeys.indexOf(item);
           let value;
           if (table.includes(+size[1])) {
             value = table.findIndex((e) => e === +size[1]) + 1;
@@ -80,6 +82,12 @@ function ItemPage(props) {
 
   React.useEffect(() => {
     let keywordURL = `/api/${props.item}/?type=${type}`;
+    let flag = false;
+    dispatchLoading(true);
+    setTimeout(() => {
+      if (flag) dispatchLoading(false);
+      flag = true;
+    }, 500);
 
     keywordURL = OptionValue.reduce((query, item, index) => {
       const keyword = props.item;
@@ -107,6 +115,8 @@ function ItemPage(props) {
       } else {
         console.log("axios error in ITEMPAGE");
       }
+      if (flag) dispatchLoading(false);
+      flag = true;
     });
   }, [OptionValue]);
 

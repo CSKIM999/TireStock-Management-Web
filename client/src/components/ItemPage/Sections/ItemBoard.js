@@ -1,31 +1,45 @@
 import React from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Skeleton } from "@mui/material";
 import ItemCard from "../../modules/ItemCard";
 import EmptyBoard from "./EmptyBoard";
+import { useSelector } from "react-redux";
 
 function MatchItem(props) {
-  if (props.renderData) {
-    if (props.renderData.length > 0) {
-      return props.renderData.map((item, index) => (
+  const fill = new Array(6 - props.renderData.length);
+  const renderData = [...props.renderData, ...fill];
+  if (renderData[0]) {
+    return renderData.map((item, index) => {
+      if (item)
+        return (
+          <Grid
+            key={index}
+            className="card-Grid"
+            item
+            xs={5.5}
+            lg={3.5}
+            // sx={{ height: "10.5rem" }}
+          >
+            <ItemCard prop={item} />
+          </Grid>
+        );
+      return (
         <Grid
-          key={index}
-          className="card-Grid"
+          className="card-Grid dummy"
+          key={"dummy" + index}
           item
           xs={5.5}
           lg={3.5}
-          // sx={{ height: "10.5rem" }}
-        >
-          <ItemCard prop={item} />
-        </Grid>
-      ));
-    } else {
-      return <EmptyBoard />;
-    }
+        ></Grid>
+      );
+    });
+  } else {
+    return <EmptyBoard />;
   }
 }
 
 const ItemBoard = (props) => {
-  const fill = new Array(6 - props.renderData.length).fill(0);
+  const dummy = [...new Array(6)].map((_, i) => i + 1);
+  const loading = useSelector((state) => state.data.Loading);
   return (
     <Grid
       item
@@ -38,21 +52,17 @@ const ItemBoard = (props) => {
         alignItems: "center",
       }}
     >
-      {MatchItem(props)}
-      {fill.length > 0 &&
-        fill.length < 6 &&
-        fill.map((v, index) => {
-          return (
-            <Grid
-              className="card-Grid dummy"
-              key={index + v}
-              item
-              xs={5.5}
-              lg={3.5}
-              // sx={{ height: "11rem" }}
-            ></Grid>
-          );
-        })}
+      {!loading && MatchItem(props)}
+      {loading &&
+        dummy.map((_, i) => (
+          <Grid key={"dummy" + i} item xs={5.5} lg={3.5}>
+            <Skeleton
+              className="itemCard-Skeleton"
+              variant="rounded"
+              height="11rem"
+            />
+          </Grid>
+        ))}
     </Grid>
   );
 };

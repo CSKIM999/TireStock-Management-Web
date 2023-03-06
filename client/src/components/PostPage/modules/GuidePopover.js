@@ -3,7 +3,6 @@ import { Box, Popover, Typography } from "@mui/material";
 import React from "react";
 
 function GuidePopover(props) {
-  console.log("🚀 ~ file: GuidePopover.js:6 ~ GuidePopover ~ props:", props);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);

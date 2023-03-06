@@ -7,6 +7,7 @@ import {
   Grid,
   Pagination,
   Paper,
+  Skeleton,
   Stack,
   Tab,
   Tabs,
@@ -15,7 +16,8 @@ import {
 import BreadCrumb from "../modules/BreadCrumb";
 import FAQItem from "./util/FAQItem";
 import RequestSection from "./Section/RequestSection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadging } from "../../store/dataSlice";
 const TabLabels = ["문의사항", "내 문의", "FAQ"];
 function FAQPage() {
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -27,7 +29,10 @@ function FAQPage() {
   ]);
   const [renderData, setRenderData] = React.useState([]);
   const [renderView, setRenderView] = React.useState(true);
-
+  const dispatch = useDispatch();
+  const dispatchLoading = (bool) => {
+    dispatch(setLoadging(bool));
+  };
   const userID = useSelector((state) => state.user.userID);
   const handleChange = (event, newValue) => {
     setPage(1);
@@ -37,6 +42,11 @@ function FAQPage() {
     setPage(newValue);
   };
   async function AxiosWithURL(optionURL) {
+    let flag = false;
+    setTimeout(() => {
+      if (flag) dispatchLoading(false);
+      flag = true;
+    }, 300);
     if (optionURL !== null) {
       await Axios.get("/api/requests" + optionURL).then((response) => {
         if (response) {
@@ -51,12 +61,16 @@ function FAQPage() {
         }
       });
     }
+    if (flag) dispatchLoading(false);
+    flag = true;
+
     if (!userID) {
       if (renderView && tabIndex === 1) return setRenderView(false);
       return setRenderView(true);
     }
   }
   React.useEffect(() => {
+    dispatchLoading(true);
     let optionURL = null;
     if (tabIndex === 1) {
       if (userID) {
@@ -83,7 +97,7 @@ function FAQPage() {
 
   return (
     <Grid container sx={{ px: 10, py: 5 }} height="100%" direction="column">
-      {BreadCrumb("request & faq")}
+      {BreadCrumb("request & faq", "", "문의사항 & 자주묻는 질문")}
       <Grid item xs={1}>
         <Paper className="navFAQ-Paper">
           <Tabs
@@ -104,10 +118,8 @@ function FAQPage() {
             <RequestSection RenderData={renderData} tab={tabIndex} />
           ) : (
             <Box
+              className="center"
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
                 height: "200px",
               }}
             >

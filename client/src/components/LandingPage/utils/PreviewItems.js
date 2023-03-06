@@ -20,19 +20,15 @@ const tireString = (item) => {
 };
 const EMPTY = process.env.REACT_APP_EMPTY;
 function PreviewItems(item, type) {
-  // query page 정보에 limit 넣어주기
   const [body, setBody] = React.useState([]);
   React.useEffect(() => {
+    // query page 정보에 limit 넣어주기
     const reqURL = `/api/${item}/?type=${type}`;
     Axios.get(reqURL).then((response) => {
       setBody(response.data.payload);
     });
   }, []);
   const convertToCard = (props) => {
-    console.log(
-      "🚀 ~ file: PreviewItems.js:32 ~ convertToCard ~ props:",
-      props
-    );
     const size = props.size;
     const thumbNail = props.thumbNail;
     const type = props.type;
@@ -45,7 +41,7 @@ function PreviewItems(item, type) {
             sx={{ maxHeight: "80px" }}
             image={thumbNail ?? EMPTY}
           />
-          <CardContent sx={{ p: 0, display: "flex", justifyContent: "center" }}>
+          <CardContent className="jccc" sx={{ p: 0 }}>
             <Typography variant="caption" className="previewCard">
               {size} 인치
             </Typography>
@@ -54,46 +50,56 @@ function PreviewItems(item, type) {
       </Card>
     );
   };
-  const convertByItem = (data) => {
-    if (data.length === 0) return;
+  const convertToListItem = (item, index) => {
+    const brand = item.brand ? item.brand : "Brand  ";
+    const size = tireString(item);
+    const condition = "++" + item.condition + "%";
+    return (
+      <ListItemButton
+        key={"prev-" + index}
+        sx={{
+          borderBottom: "1px solid",
+          px: 0,
+          pb: 0.5,
+          alignItems: "flex-end",
+        }}
+        href={`/tires/${item.type}/${item._id}`}
+      >
+        <Typography variant="caption">{brand}</Typography>
+        <Typography fontWeight="bold" sx={{ px: 2 }}>
+          {size}
+        </Typography>
+        <Typography variant="caption">{condition}</Typography>
+      </ListItemButton>
+    );
+  };
+  const convertByItem = (previewData) => {
+    if (previewData.length === 0) return;
     const errorcode = "ERROR IN PREVIEW ITEMS";
     if (item === "tires") {
       return (
         <List
           subheader={
-            <Typography sx={{ display: "flex", justifyContent: "center" }}>
-              {type.toUpperCase()}
-            </Typography>
+            <Typography className="jccc">{type.toUpperCase()}</Typography>
           }
         >
-          {data.map((item, index) => {
-            const brand = item.brand ? item.brand : "Brand  ";
-            const size = tireString(item);
-            const condition = "++" + item.condition + "%";
-            return (
-              <ListItemButton
-                key={"prev-" + index}
-                sx={{
-                  borderBottom: "1px solid",
-                  px: 0,
-                  pb: 0.5,
-                  alignItems: "flex-end",
-                }}
-                href={`/tires/${item.type}/${item._id}`}
-              >
-                <Typography variant="caption">{brand}</Typography>
-                <Typography fontWeight="bold" sx={{ px: 2 }}>
-                  {size}
-                </Typography>
-                <Typography variant="caption">{condition}</Typography>
-              </ListItemButton>
-            );
-          })}{" "}
+          {previewData.map((item, index) => {
+            return convertToListItem(item, index);
+          })}
         </List>
       );
     } else if (item === "wheels") {
-      const type = data[0].type;
-
+      const type = previewData[0].type;
+      if (previewData.length < 6) {
+        const dummy = new Array(6 - previewData.length);
+        previewData = [...previewData, ...dummy];
+      } else {
+        previewData.splice(6);
+      }
+      console.log(
+        "🚀 ~ file: PreviewItems.js:98 ~ convertByItem ~ previewData:",
+        previewData
+      );
       return (
         <Grid
           container
@@ -107,10 +113,24 @@ function PreviewItems(item, type) {
           <Grid item xs={1} display="flex" justifyContent="center">
             <Typography>{type.toUpperCase()}</Typography>
           </Grid>
-          <Grid item container xs={11} sx={{ justifyContent: "space-around" }}>
-            {data.map((item, index) => {
+          <Grid item container xs={11} className="jcsa">
+            {previewData.map((item, index) => {
+              if (!item)
+                return (
+                  <Grid
+                    item
+                    className="ha prevDummy"
+                    key={`dummy+${index}`}
+                    xs={5}
+                  ></Grid>
+                );
               return (
-                <Grid item key={"wheel-" + type + "-" + index} xs={5}>
+                <Grid
+                  item
+                  className="ha"
+                  key={"wheel-" + type + "-" + index}
+                  xs={5}
+                >
                   {convertToCard(item)}
                 </Grid>
               );

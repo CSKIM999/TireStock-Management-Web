@@ -11,10 +11,6 @@ import ItemOption from "./ItemOption";
 import itemOptionTable from "../../modules/itemOptionTable";
 
 function OptionForWheel(props) {
-  console.log(
-    "🚀 ~ file: OptionForWheel.js:14 ~ OptionForWheel ~ props",
-    props
-  );
   const setStateFunction = props.getState;
   const OptionValue = props.prop;
   const region = OptionValue[0];

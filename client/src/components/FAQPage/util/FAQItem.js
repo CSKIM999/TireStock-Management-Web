@@ -5,8 +5,16 @@ import {
   Help,
   Info,
 } from "@mui/icons-material";
-import { Box, Card, CardActionArea, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  Grid,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 
 /**
  *
@@ -31,7 +39,7 @@ const iconSet = (state) => {
 };
 
 /**
- * @param {string} state [success / pending / fulfilled / ""EMPTY]
+ * @param {string} state [ pending / fulfilled / rejuected / notice / FAQ]
  * @param {string} title
  * @param {date} date
  * @param {string} _id

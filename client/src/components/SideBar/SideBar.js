@@ -112,7 +112,7 @@ function SideBar() {
           "requests" === mainpathNow ? "navSelected-Button" : ""
         }`}
       >
-        REPAIR
+        REQUEST
       </ListItemButton>
     </List>
   );

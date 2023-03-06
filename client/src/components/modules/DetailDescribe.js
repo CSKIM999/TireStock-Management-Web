@@ -23,7 +23,7 @@ const DetailDescribe = (title, caption, body) => {
         <Grid item>
           <Typography className="detailTitle-Typo ls4">{title}</Typography>
         </Grid>
-        <Typography variant="caption" sx={{ fontWeight: "bold", px: 3 }}>
+        <Typography className="fwb px3" variant="caption">
           {caption}
         </Typography>
       </Grid>

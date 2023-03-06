@@ -43,6 +43,7 @@ router.post(
     const IMAGE_FLAG = req.body.imageUpload === [] ? false : true;
     let getURL = [];
     let thumbNail;
+    
     if (IMAGE_FLAG) {
       const handledFiles = await handleFiles(true);
       getURL = handledFiles[0];

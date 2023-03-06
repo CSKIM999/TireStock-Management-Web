@@ -155,7 +155,7 @@ router.get("/", async (req, res) => {
                 return res.status(200).json({
                   success: true,
                   payload: [...preData, ...data],
-                  totalDocuments: count,
+                  totalDocuments: count + pre,
                 });
               }
             });

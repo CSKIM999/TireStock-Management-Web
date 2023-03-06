@@ -6,6 +6,7 @@ const initialState = {
     path: "",
     items: [],
   },
+  Loading: false,
 };
 
 const revokeAll = (arr) => {
@@ -58,8 +59,12 @@ const dataSlice = createSlice({
         }
       }
     },
+    setLoadging: (state, action) => {
+      state.Loading = action.payload;
+    },
   },
 });
 
-export const { testData, pushThumbNail, revokeThumbNail } = dataSlice.actions;
+export const { testData, pushThumbNail, revokeThumbNail, setLoadging } =
+  dataSlice.actions;
 export default dataSlice;

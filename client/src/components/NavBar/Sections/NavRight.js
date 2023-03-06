@@ -2,6 +2,8 @@ import * as React from "react";
 import { Button, Stack } from "@mui/material";
 import UserAccount from "./UserAccount";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadging } from "../../../store/dataSlice";
 
 const pages = ["HOME", "타이어", "휠", "복원 및 문의"];
 const pageURL = {
@@ -18,6 +20,8 @@ const pageMap = {
 };
 function NavRight() {
   const [nowPath, setNowPath] = React.useState(null);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.data.Loading);
   React.useEffect(() => {
     const [_, mainPath, detailPath] = window.location.pathname.split("/");
     if (mainPath) {
@@ -53,6 +57,13 @@ function NavRight() {
           </Button>
         ))}
       </Stack>
+      <Button
+        onClick={() => {
+          dispatch(setLoadging(!loading));
+        }}
+      >
+        REDUX
+      </Button>
       <UserAccount sx={{ color: "primary.main" }} />
     </Stack>
   );

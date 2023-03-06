@@ -24,6 +24,17 @@ export const globalTheme = createTheme({
             width: "100%",
             height: "100%",
           },
+          ".ha": {
+            height: "auto",
+          },
+          ".px3": {
+            paddingLeft: "1.5rem",
+            paddingRight: "1.5rem",
+          },
+          ".py2": {
+            paddingTop: "1rem",
+            paddingBottom: "1rem",
+          },
           ".pb2": {
             paddingBottom: "1rem",
           },
@@ -48,6 +59,14 @@ export const globalTheme = createTheme({
           ".aic": {
             display: "flex",
             alignItems: "center",
+          },
+          ".aife": {
+            display: "flex",
+            alignItems: "flex-end",
+          },
+          ".jccc": {
+            display: "flex",
+            justifyContent: "center",
           },
           ".center": {
             display: "flex",
@@ -196,8 +215,15 @@ export const globalTheme = createTheme({
             padding: 5,
             borderRadius: 10,
           },
+          ".ReqBoard-Grid": {
+            borderBottom: "2px solid " + ftColor.main,
+            height: "4.5rem",
+          },
           ".dummy": {
             border: 0,
+          },
+          ".prevDummy": {
+            height: 100,
           },
         },
       },
@@ -341,10 +367,25 @@ export const globalTheme = createTheme({
             fontSize: "1.5rem",
             fontWeight: "bold",
           },
+
+          "&.detailNickname-Typo": {
+            fontSize: "0.8rem",
+            fontWeight: "bold",
+          },
+
           "&.modalTitle-Typo": {
             display: "flex",
             alignItems: "center",
             paddingTop: "1.5rem",
+          },
+        },
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          "&.itemCard-Skeleton": {
+            transform: "inherit",
           },
         },
       },
