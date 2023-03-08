@@ -38,7 +38,7 @@ const ProductInfo = (prop) => {
       </Grid>
       <Grid item xs={5}>
         <Stack spacing={spacingTop}>
-          <Typography variant="caption" sx={{ ...fontSX, pt: 1.5 }}>
+          <Typography variant="caption" className="fwb pt2">
             제품정보
           </Typography>
           {tagDetail[item].map((item, index) => (

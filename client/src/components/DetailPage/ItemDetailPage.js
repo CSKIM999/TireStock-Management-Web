@@ -27,9 +27,11 @@ const handleItem = (item, response) => {
     data: {},
   };
   if (item === "tires") {
+    console.log("🚀 ~ file: ItemDetailPage.js:31 ~ handleItem ~ temp:", temp);
     temp.data.width = response.width ? response.width : "";
     temp.data.profile = response.profile ? response.profile : "";
     temp.data.size = response.size ? response.size : "";
+    temp.data.brand = response.brand ? response.brand : "";
     temp.data.condition = response.condition ? response.condition : "";
   } else if (item === "wheels") {
     temp.data.region = response.region ? response.region : "";

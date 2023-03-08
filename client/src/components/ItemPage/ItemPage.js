@@ -15,18 +15,31 @@ function ItemPage(props) {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [SearchedItem, setSearchedItem] = React.useState([]);
+  const [findIndex, setFindIndex] = React.useState(1);
   const [OptionValue, setOptionValue] = React.useState(
     props.item === "tires"
       ? new Array(5).fill("전체")
       : new Array(3).fill("전체")
   );
   const isAdmin = useSelector((state) => state.user.isAdmin);
-  const loading = useSelector((state) => state.user.Loading);
   let { type } = useParams();
   const tireKeys = Object.keys(itemOptionTable.tire);
   const wheelKeys = Object.keys(itemOptionTable.wheel);
   const dispatchLoading = (bool) => {
     dispatch(setLoadging(bool));
+  };
+  const AxiosAndSetItems = async (url) => {
+    await Axios.get(url).then((response) => {
+      if (response) {
+        if (findIndex === 1) {
+          setSearchedItem([...response.data.payload]);
+        } else {
+          setSearchedItem([...SearchedItem, ...response.data.payload]);
+        }
+      } else {
+        console.log("axios error in ITEMPAGE");
+      }
+    });
   };
 
   React.useEffect(() => {
@@ -36,7 +49,7 @@ function ItemPage(props) {
     const width = ["width", searchParams.get("width")];
     const region = ["region", searchParams.get("region")];
     const design = ["design", searchParams.get("design")];
-    let flag = false;
+    let itemMatchFlag = false;
     if (size ?? profile ?? width ?? region ?? design ?? false) {
       if (props.item === "tires") {
         for (const [item, v] of [size, profile, width]) {
@@ -48,7 +61,7 @@ function ItemPage(props) {
               value = table.findIndex((e) => e === +v) + 1;
             } else {
               value = table.findIndex((e) => e >= +v) + 1;
-              flag = true;
+              itemMatchFlag = true;
             }
             optionalItems.push([index, value]);
           }
@@ -63,7 +76,7 @@ function ItemPage(props) {
             value = table.findIndex((e) => e === +size[1]) + 1;
           } else {
             value = table.findIndex((e) => e >= +size[1]) + 1;
-            flag = true;
+            itemMatchFlag = true;
           }
           optionalItems.push([index, value]);
         }
@@ -73,7 +86,7 @@ function ItemPage(props) {
         newValue[i] = v;
       }
       setOptionValue([...newValue]);
-      if (flag)
+      if (itemMatchFlag)
         alert(
           "입력된 사이즈와 정확히 일치하는 제품이 없어, 유사 사이즈로 검색합니다."
         );
@@ -82,11 +95,12 @@ function ItemPage(props) {
 
   React.useEffect(() => {
     let keywordURL = `/api/${props.item}/?type=${type}`;
-    let flag = false;
+    let loadingFlag = false;
     dispatchLoading(true);
+    setFindIndex(1);
     setTimeout(() => {
-      if (flag) dispatchLoading(false);
-      flag = true;
+      if (loadingFlag) dispatchLoading(false);
+      loadingFlag = true;
     }, 500);
 
     keywordURL = OptionValue.reduce((query, item, index) => {
@@ -109,15 +123,18 @@ function ItemPage(props) {
       }
       return query;
     }, keywordURL);
-    Axios.get(keywordURL).then((response) => {
-      if (response) {
-        setSearchedItem(response.data.payload);
-      } else {
-        console.log("axios error in ITEMPAGE");
-      }
-      if (flag) dispatchLoading(false);
-      flag = true;
-    });
+    // Axios.get(keywordURL).then((response) => {
+    //   if (response) {
+    //     setSearchedItem([...SearchedItem, ...response.data.payload]);
+    //   } else {
+    //     console.log("axios error in ITEMPAGE");
+    //   }
+    //   if (loadingFlag) dispatchLoading(false);
+    //   loadingFlag = true;
+    // });
+    AxiosAndSetItems(keywordURL);
+    if (loadingFlag) dispatchLoading(false);
+    loadingFlag = true;
   }, [OptionValue]);
 
   const handleOption = (index, value) => {

@@ -43,7 +43,7 @@ router.post(
     const IMAGE_FLAG = req.body.imageUpload === [] ? false : true;
     let getURL = [];
     let thumbNail;
-    
+
     if (IMAGE_FLAG) {
       const handledFiles = await handleFiles(true);
       getURL = handledFiles[0];
@@ -65,9 +65,9 @@ router.get("/", (req, res) => {
   const tire_width = +req.query.width;
   const tire_profile = +req.query.profile;
   const tire_condition = +req.query.condition;
-  const page = req.query.page;
-  let limit = page ? page * 10 : null;
-  let skip = page ? (page - 1) * 10 : null;
+  const findIndex = req.query.findIndex;
+  const limit = findIndex ? findIndex * 6 : 6;
+  const skip = limit ? limit - 6 : 0;
   const EMPTY = { $gt: 0 };
   Tire.find({
     type: tire_type,
@@ -77,8 +77,8 @@ router.get("/", (req, res) => {
     profile: tire_profile ? tire_profile : EMPTY,
     condition: tire_condition ? tire_condition : EMPTY,
   })
-    .skip(skip ?? 0)
-    .limit(limit ?? 12)
+    .skip(0)
+    .limit(10)
     .select("title size width profile condition type thumbNail")
     .exec((err, body) => {
       if (err) return res.status(400).send(err);

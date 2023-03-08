@@ -101,7 +101,7 @@ const ItemDetailTitle = (props) => {
           <FormControlLabel value="FAQ" control={<Radio />} label="FAQ" />
         </>
       );
-    else
+    else if (isAdmin && props.item === "requests")
       return (
         <>
           <FormControlLabel
@@ -113,6 +113,7 @@ const ItemDetailTitle = (props) => {
           <FormControlLabel value="rejected" control={<Radio />} label="실패" />
         </>
       );
+    else return <></>;
   };
 
   return (
@@ -120,7 +121,10 @@ const ItemDetailTitle = (props) => {
       <Box className="aife full">
         <Typography className="detailTitle-Typo">{props.title}</Typography>
         <Typography className="detailNickname-Typo px3" variant="subtitle1">
-          {props.data.writerRole ? "관리자" : `작성자 : ${props.data.nickname}`}
+          {props.item === "requests" &&
+            (props.data.writerRole
+              ? "관리자"
+              : `작성자 : ${props.data.nickname}`)}
         </Typography>
       </Box>
       <Box className="aife">

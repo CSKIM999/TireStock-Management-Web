@@ -15,18 +15,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallbackPrompt } from "../../hooks/useCallbackPrompt";
-import {
-  pushThumbNail,
-  revokeThumbNail,
-  testData,
-} from "../../store/dataSlice";
+import { pushThumbNail, revokeThumbNail } from "../../store/dataSlice";
 import imageCompression from "browser-image-compression";
 import BreadCrumb from "../modules/BreadCrumb";
 import ProductOption from "./modules/ProductOption";
 import Upload from "./modules/Upload";
 const itemCheck = { requests: 1, tires: 1, wheels: 1 };
 const PO_Mapping = {
-  TIRE: ["size", "width", "profile", "condition", "brand"],
+  TIRE: ["width", "profile", "size", "condition", "brand"],
   WHEEL: ["size", "region", "design"],
 };
 // props.adjust 를 통해 수정인지 생성인지 확인
@@ -50,7 +46,6 @@ function PostPage({ adjust }) {
   const [contents, setContents] = React.useState("");
   const [images, setImages] = React.useState([]);
   const [form, setForm] = React.useState(new FormData());
-  const [loading, setLoading] = React.useState(true);
   const [initialState, setInitialState] = React.useState(null);
   const [modify, setModify] = React.useState(false);
   const [noticeOrFAQ, setNoticeOrFAQ] = React.useState(isAdmin ? true : false);
@@ -82,10 +77,6 @@ function PostPage({ adjust }) {
             setPO_type(payload.type.toUpperCase());
             const keyword = item === "tires" ? "TIRE" : "WHEEL";
             let temporaryArr = PO_props;
-            console.log(
-              "🚀 ~ file: PostPage.js:85 ~ awaitAxios.get ~ PO_props",
-              PO_props
-            );
             PO_Mapping[keyword].forEach((item, index) => {
               temporaryArr[index] = `${payload[item]}`;
             });
@@ -98,17 +89,12 @@ function PostPage({ adjust }) {
   }, []);
 
   React.useEffect(() => {
-    if (POST_OR_UPDATE && initialState === null && title.length > 0) {
+    if (POST_OR_UPDATE && initialState === null && title.length > 0)
       return setInitialState([title, contents, [...images]]);
-    }
+
     if (!POST_OR_UPDATE) return setInitialState([title, contents, [...images]]);
-    if (
-      !modify &&
-      initialState !== [title, contents, images] &&
-      initialState !== null
-    ) {
+    if (!modify && initialState && initialState !== [title, contents, images])
       setModify(true);
-    }
   }, [title, contents, images]);
 
   function resetThumbnails(arr) {
@@ -198,7 +184,6 @@ function PostPage({ adjust }) {
     if (item === "requests") {
       if (isAdmin && noticeOrFAQ) body.state = "notice";
       if (isAdmin && !noticeOrFAQ) body.state = "FAQ";
-      console.log(body);
     } else {
       body["type"] = PO_type.toLowerCase();
       if (item === "tires") {
@@ -226,6 +211,7 @@ function PostPage({ adjust }) {
         });
       }
     }
+    console.log(body);
 
     if (!POST_OR_UPDATE) {
       await appendAll(body);

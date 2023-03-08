@@ -5,7 +5,11 @@ import EmptyBoard from "./EmptyBoard";
 import { useSelector } from "react-redux";
 
 function MatchItem(props) {
-  const fill = new Array(6 - props.renderData.length);
+  let fill = [];
+
+  if (props.renderData.length < 6) {
+    fill = new Array(6 - props.renderData.length);
+  }
   const renderData = [...props.renderData, ...fill];
   if (renderData[0]) {
     return renderData.map((item, index) => {
@@ -40,6 +44,10 @@ function MatchItem(props) {
 const ItemBoard = (props) => {
   const dummy = [...new Array(6)].map((_, i) => i + 1);
   const loading = useSelector((state) => state.data.Loading);
+  const itemLength = props.renderData.length;
+  const bodyHeight =
+    33 * parseInt(itemLength / 6) +
+    16.5 * (itemLength % 6 === 0 ? 0 : itemLength % 6 < 3 ? 1 : 2);
   return (
     <Grid
       item
@@ -48,6 +56,7 @@ const ItemBoard = (props) => {
       sx={{
         py: 5,
         minHeight: "33rem",
+        height: `${bodyHeight}rem`,
         justifyContent: "space-around",
         alignItems: "center",
       }}

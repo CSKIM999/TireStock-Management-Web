@@ -15,14 +15,12 @@ import {
 import { Box, Stack } from "@mui/system";
 import React from "react";
 
-const FullWH = { width: "100%", height: "100%" };
-
 const mapping = {
   type: ["TIRE", "WHEEL"],
   TIRES: {
-    size: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i + 13}`)],
     width: ["NONE", ...Array.from({ length: 22 }, (_, i) => `${i * 5 + 200}`)],
     profile: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i * 5 + 30}`)],
+    size: ["NONE", ...Array.from({ length: 10 }, (_, i) => `${i + 13}`)],
     condition: [
       "NONE",
       ...Array.from({ length: 10 }, (_, i) => `${100 - i * 10}`),
@@ -47,6 +45,10 @@ function ProductOption({ PO_item, PO_type, PO_props }) {
   };
   const handleProps = (event, index) => {
     let newProps = [...Props];
+    console.log(
+      "🚀 ~ file: ProductOption.js:48 ~ handleProps ~ newProps:",
+      newProps
+    );
     newProps[index] = event === "NONE" ? "" : event;
     setProps([...newProps]);
   };
