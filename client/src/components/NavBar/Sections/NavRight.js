@@ -20,8 +20,6 @@ const pageMap = {
 };
 function NavRight() {
   const [nowPath, setNowPath] = React.useState(null);
-  const dispatch = useDispatch();
-  const loading = useSelector((state) => state.data.Loading);
   React.useEffect(() => {
     const [_, mainPath, detailPath] = window.location.pathname.split("/");
     if (mainPath) {
@@ -57,13 +55,6 @@ function NavRight() {
           </Button>
         ))}
       </Stack>
-      <Button
-        onClick={() => {
-          dispatch(setLoadging(!loading));
-        }}
-      >
-        REDUX
-      </Button>
       <UserAccount sx={{ color: "primary.main" }} />
     </Stack>
   );

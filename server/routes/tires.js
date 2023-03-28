@@ -77,8 +77,8 @@ router.get("/", (req, res) => {
     profile: tire_profile ? tire_profile : EMPTY,
     condition: tire_condition ? tire_condition : EMPTY,
   })
-    .skip(0)
-    .limit(10)
+    .skip(skip)
+    .limit(limit)
     .select("title size width profile condition type thumbNail")
     .exec((err, body) => {
       if (err) return res.status(400).send(err);

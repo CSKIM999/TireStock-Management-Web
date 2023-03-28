@@ -1,6 +1,7 @@
 import React from "react";
-import { Grid, Paper, Skeleton } from "@mui/material";
+import { Button, Grid, Paper, Skeleton } from "@mui/material";
 import ItemCard from "../../modules/ItemCard";
+import { GetApp, KeyboardDoubleArrowDown } from "@mui/icons-material";
 import EmptyBoard from "./EmptyBoard";
 import { useSelector } from "react-redux";
 
@@ -49,30 +50,41 @@ const ItemBoard = (props) => {
     33 * parseInt(itemLength / 6) +
     16.5 * (itemLength % 6 === 0 ? 0 : itemLength % 6 < 3 ? 1 : 2);
   return (
-    <Grid
-      item
-      container
-      direction="row"
-      sx={{
-        py: 5,
-        minHeight: "33rem",
-        height: `${bodyHeight}rem`,
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}
-    >
-      {!loading && MatchItem(props)}
-      {loading &&
-        dummy.map((_, i) => (
-          <Grid key={"dummy" + i} item xs={5.5} lg={3.5}>
-            <Skeleton
-              className="itemCard-Skeleton"
-              variant="rounded"
-              height="11rem"
-            />
-          </Grid>
-        ))}
-    </Grid>
+    <>
+      <Grid
+        item
+        container
+        direction="row"
+        sx={{
+          pt: 3,
+          minHeight: "33rem",
+          height: `${bodyHeight}rem`,
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        {!loading && MatchItem(props)}
+        {loading &&
+          dummy.map((_, i) => (
+            <Grid key={"dummy" + i} item xs={5.5} lg={3.5}>
+              <Skeleton
+                className="itemCard-Skeleton"
+                variant="rounded"
+                height="11rem"
+              />
+            </Grid>
+          ))}
+      </Grid>
+      <Button
+        size="large"
+        onClick={() => {
+          props.viewMore();
+        }}
+      >
+        더보기
+        <KeyboardDoubleArrowDown />
+      </Button>
+    </>
   );
 };
 

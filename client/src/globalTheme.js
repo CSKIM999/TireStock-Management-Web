@@ -56,6 +56,11 @@ export const globalTheme = createTheme({
           ".br3": {
             borderRadius: 0,
           },
+          ".center": {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
           ".aic": {
             display: "flex",
             alignItems: "center",
@@ -66,11 +71,6 @@ export const globalTheme = createTheme({
           },
           ".jccc": {
             display: "flex",
-            justifyContent: "center",
-          },
-          ".center": {
-            display: "flex",
-            alignItems: "center",
             justifyContent: "center",
           },
           ".jcsb": {
@@ -265,6 +265,9 @@ export const globalTheme = createTheme({
             transition: "transform 100ms",
           },
           "&.itemBoard-Paper": {
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
             backgroundColor: pointColor + "11",
             borderRadius: 0,
           },

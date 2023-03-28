@@ -123,15 +123,7 @@ function ItemPage(props) {
       }
       return query;
     }, keywordURL);
-    // Axios.get(keywordURL).then((response) => {
-    //   if (response) {
-    //     setSearchedItem([...SearchedItem, ...response.data.payload]);
-    //   } else {
-    //     console.log("axios error in ITEMPAGE");
-    //   }
-    //   if (loadingFlag) dispatchLoading(false);
-    //   loadingFlag = true;
-    // });
+
     AxiosAndSetItems(keywordURL);
     if (loadingFlag) dispatchLoading(false);
     loadingFlag = true;
@@ -143,23 +135,26 @@ function ItemPage(props) {
     setOptionValue([...newValue]);
   };
 
+  const viewMore = () => {
+    console.log("HI");
+    // 옵션을 바꿀 때 skip, limit 값을 초기화해주어야함.
+  };
+
   return (
     <Grid container direction="column" sx={{ px: 10, py: 5 }}>
-      <Grid item xs={2}>
-        <Box className="jcsb aic">
-          {BreadCrumb(props.item, type)}
-          {isAdmin ? (
-            <Button variant="outlined" href={`/posts/${props.item}`}>
-              재고등록
-            </Button>
-          ) : (
-            <></>
-          )}
-        </Box>
-        {OptionBoard(props.item, handleOption, OptionValue)}
-      </Grid>
+      <Box className="jcsb aic">
+        {BreadCrumb(props.item, type)}
+        {isAdmin ? (
+          <Button variant="outlined" href={`/posts/${props.item}`}>
+            재고등록
+          </Button>
+        ) : (
+          <></>
+        )}
+      </Box>
+      {OptionBoard(props.item, handleOption, OptionValue)}
       <Paper className="full itemBoard-Paper">
-        <ItemBoard renderData={SearchedItem} />
+        <ItemBoard renderData={SearchedItem} viewMore={viewMore} />
       </Paper>
     </Grid>
   );
