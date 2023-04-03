@@ -7,23 +7,16 @@ import { useSelector } from "react-redux";
 
 function MatchItem(props) {
   let fill = [];
-
-  if (props.renderData.length < 6) {
-    fill = new Array(6 - props.renderData.length);
+  const itemCount = props.renderData.length % 6;
+  if (0 < itemCount && itemCount < 6) {
+    fill = new Array(6 - (props.renderData.length % 6));
   }
   const renderData = [...props.renderData, ...fill];
   if (renderData[0]) {
     return renderData.map((item, index) => {
       if (item)
         return (
-          <Grid
-            key={index}
-            className="card-Grid"
-            item
-            xs={5.5}
-            lg={3.5}
-            // sx={{ height: "10.5rem" }}
-          >
+          <Grid key={index} className="card-Grid" item xs={5.5} lg={3.5}>
             <ItemCard prop={item} />
           </Grid>
         );
@@ -46,6 +39,7 @@ const ItemBoard = (props) => {
   const dummy = [...new Array(6)].map((_, i) => i + 1);
   const loading = useSelector((state) => state.data.Loading);
   const itemLength = props.renderData.length;
+
   const bodyHeight =
     33 * parseInt(itemLength / 6) +
     16.5 * (itemLength % 6 === 0 ? 0 : itemLength % 6 < 3 ? 1 : 2);
@@ -77,6 +71,7 @@ const ItemBoard = (props) => {
       </Grid>
       <Button
         size="large"
+        disabled={props.viewMoreFlag === null ? true : false}
         onClick={() => {
           props.viewMore();
         }}

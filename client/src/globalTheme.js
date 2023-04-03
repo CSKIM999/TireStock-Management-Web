@@ -261,7 +261,7 @@ export const globalTheme = createTheme({
           },
           "&.preview": { backgroundColor: pointColor + "11" },
           "&.preview a:hover": {
-            transform: "scale(1.03)",
+            transform: "scale(1.01)",
             transition: "transform 100ms",
           },
           "&.itemBoard-Paper": {

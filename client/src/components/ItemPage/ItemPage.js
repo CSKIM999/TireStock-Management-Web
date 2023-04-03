@@ -14,13 +14,15 @@ function ItemPage(props) {
 
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [SearchedItem, setSearchedItem] = React.useState([]);
+  const [searchedItem, setSearchedItem] = React.useState([]);
   const [findIndex, setFindIndex] = React.useState(1);
-  const [OptionValue, setOptionValue] = React.useState(
+  const [optionValue, setOptionValue] = React.useState(
     props.item === "tires"
       ? new Array(5).fill("전체")
       : new Array(3).fill("전체")
   );
+  const prevOptionValue = React.useRef();
+  const viewMoreFlag = React.useRef();
   const isAdmin = useSelector((state) => state.user.isAdmin);
   let { type } = useParams();
   const tireKeys = Object.keys(itemOptionTable.tire);
@@ -31,10 +33,15 @@ function ItemPage(props) {
   const AxiosAndSetItems = async (url) => {
     await Axios.get(url).then((response) => {
       if (response) {
+        if (response.data.payload.length < 6) {
+          viewMoreFlag.current = null;
+        } else {
+          viewMoreFlag.current = true;
+        }
         if (findIndex === 1) {
           setSearchedItem([...response.data.payload]);
         } else {
-          setSearchedItem([...SearchedItem, ...response.data.payload]);
+          setSearchedItem([...searchedItem, ...response.data.payload]);
         }
       } else {
         console.log("axios error in ITEMPAGE");
@@ -81,7 +88,7 @@ function ItemPage(props) {
           optionalItems.push([index, value]);
         }
       }
-      let newValue = [...OptionValue];
+      let newValue = [...optionValue];
       for (const [i, v] of optionalItems) {
         newValue[i] = v;
       }
@@ -97,13 +104,17 @@ function ItemPage(props) {
     let keywordURL = `/api/${props.item}/?type=${type}`;
     let loadingFlag = false;
     dispatchLoading(true);
-    setFindIndex(1);
+    if (optionValue !== prevOptionValue.current) {
+      setFindIndex(1);
+      prevOptionValue.current = optionValue;
+      viewMoreFlag.current = null;
+    }
     setTimeout(() => {
       if (loadingFlag) dispatchLoading(false);
       loadingFlag = true;
     }, 500);
 
-    keywordURL = OptionValue.reduce((query, item, index) => {
+    keywordURL = optionValue.reduce((query, item, index) => {
       const keyword = props.item;
       const table = itemOptionTable;
 
@@ -122,22 +133,26 @@ function ItemPage(props) {
         }
       }
       return query;
-    }, keywordURL);
+    }, keywordURL + `&findIndex=${findIndex}`);
 
     AxiosAndSetItems(keywordURL);
     if (loadingFlag) dispatchLoading(false);
     loadingFlag = true;
-  }, [OptionValue]);
+  }, [optionValue, findIndex]);
 
   const handleOption = (index, value) => {
-    let newValue = [...OptionValue];
+    let newValue = [...optionValue];
     newValue[index] = value;
     setOptionValue([...newValue]);
   };
 
   const viewMore = () => {
-    console.log("HI");
     // 옵션을 바꿀 때 skip, limit 값을 초기화해주어야함.
+    setFindIndex(findIndex + 1);
+    console.log(
+      "🚀 ~ file: ItemPage.js:146 ~ viewMore ~ findIndex:",
+      findIndex
+    );
   };
 
   return (
@@ -152,9 +167,13 @@ function ItemPage(props) {
           <></>
         )}
       </Box>
-      {OptionBoard(props.item, handleOption, OptionValue)}
+      {OptionBoard(props.item, handleOption, optionValue)}
       <Paper className="full itemBoard-Paper">
-        <ItemBoard renderData={SearchedItem} viewMore={viewMore} />
+        <ItemBoard
+          renderData={searchedItem}
+          viewMore={viewMore}
+          viewMoreFlag={viewMoreFlag.current}
+        />
       </Paper>
     </Grid>
   );
